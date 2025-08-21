@@ -1,6 +1,19 @@
 {
     "page": {
         "title": "Título da Página",
-        "description": "Descrição da Página"
+        "description": "Descrição da Página",
+        "abot": "Mais"
+    },
+    "LoginPage": {
+        "title": "Arena do saber!",
+        "description": "Faça login para ter acesso a todo o nosso conteúdo",
+        "formLabelEmail": "Email",
+        "formLabelPassword": "Senha",
+        "placeholderEmail": "seuemail@email.com",
+        "placeholderPassword": "******",
+        "checkbox": "Lembrar de mim",
+        "loginButton": "Entrar",
+        "forgotPassword": "Esqueceu a senha?",
+        "register": "Criar conta"
     }
 }

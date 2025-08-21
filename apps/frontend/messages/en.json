@@ -1,6 +1,7 @@
 {
     "page": {
         "title": "Page title",
-        "description": "Page description"
+        "description": "Page description",
+        "about": "About"
     }
 }

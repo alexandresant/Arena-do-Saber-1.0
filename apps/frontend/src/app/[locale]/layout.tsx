@@ -16,7 +16,7 @@ export default async function LocaleLayout({
   }
 
   return (
-    <NextIntlClientProvider>{children}</NextIntlClientProvider>
+    <NextIntlClientProvider locale={locale}>{children}</NextIntlClientProvider>
 
   )
 }
