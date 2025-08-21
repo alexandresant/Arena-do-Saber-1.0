@@ -1,0 +1,20 @@
+# Node
+node_modules/
+.pnpm-store/
+
+# Builds
+.next/
+dist/
+out/
+
+# Vite
+.vite/
+
+# Logs
+*.log
+
+# Configs locais
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
