@@ -1,19 +1,36 @@
 {
-    "page": {
-        "title": "Título da Página",
-        "description": "Descrição da Página",
-        "abot": "Mais"
-    },
-    "LoginPage": {
-        "title": "Arena do saber!",
-        "description": "Faça login para ter acesso a todo o nosso conteúdo",
-        "formLabelEmail": "Email",
-        "formLabelPassword": "Senha",
-        "placeholderEmail": "seuemail@email.com",
-        "placeholderPassword": "******",
-        "checkbox": "Lembrar de mim",
-        "loginButton": "Entrar",
-        "forgotPassword": "Esqueceu a senha?",
-        "register": "Criar conta"
-    }
+  "page": {
+    "title": "Título da Página",
+    "description": "Descrição da Página",
+    "about": "Mais"
+  },
+  "LoginPage": {
+    "title": "Arena do Saber!",
+    "description": "Faça login para ter acesso a todo o nosso conteúdo",
+    "formLabelEmail": "Email",
+    "formLabelPassword": "Senha",
+    "placeholderEmail": "seuemail@email.com",
+    "placeholderPassword": "******",
+    "checkbox": "Lembrar de mim",
+    "loginButton": "Entrar",
+    "forgotPassword": "Esqueceu a senha?",
+    "register": "Criar conta"
+  },
+  "RegisterPage": {
+    "title": "Arena do Saber!",
+    "description": "Registre-se para ter acesso a todos os nossos conteúdos",
+    "formLabelFirstName": "Nome",
+    "formLabelLastName": "Sobrenome",
+    "formLabelEmail": "Email",
+    "formLabelUsername": "Nome de Usuário",
+    "formLabelPassword": "Senha",
+    "formLabelConfirmPassword": "Confirmar Senha",
+    "placeholderFirstName": "Seu nome",
+    "placeholderLastName": "Seu sobrenome",
+    "placeholderEmail": "seuemail@email.com",
+    "placeholderUsername": "Escolha um nome de usuário",
+    "placeholderPassword": "******",
+    "placeholderConfirmPassword": "******",
+    "submit": "Registrar"
+  }
 }

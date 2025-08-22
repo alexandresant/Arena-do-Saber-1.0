@@ -31,8 +31,6 @@ export async function loginUser({ email, password }: UserProps): Promise<AuthRes
     }
 }
 
-// /lib/api/autentication.ts
-// ...
 export async function getAuthenticatedUser(jwt: string) {
   try {
     const response = await axios.get(`${STRAPI_URL}/api/me-full`, {

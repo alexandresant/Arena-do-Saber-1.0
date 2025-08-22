@@ -6,12 +6,11 @@ export interface UserProps{
 }
 
 export interface StrapiUser {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-  admin_verified: boolean;
-
+  id: number
+  username: string
+  email: string
+  role?: string
+  admin_verified: boolean
 }
 
 export interface AuthResponse {

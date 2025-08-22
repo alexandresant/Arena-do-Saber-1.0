@@ -109,6 +109,7 @@ export function Login() {
                                                 {...field}
                                             />
                                         </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
