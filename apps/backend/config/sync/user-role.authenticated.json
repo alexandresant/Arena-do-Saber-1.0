@@ -6,6 +6,11 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "syt9lv2kic3cel25zggjlubm",
+      "action": "api::me-full.me-full.me",
+      "locale": null
+    },
+    {
       "documentId": "g2dzixpnpjni1d1xwp4vbz05",
       "action": "plugin::users-permissions.auth.changePassword",
       "locale": null

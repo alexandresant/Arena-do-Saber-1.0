@@ -31,6 +31,9 @@
     "placeholderUsername": "Escolha um nome de usuário",
     "placeholderPassword": "******",
     "placeholderConfirmPassword": "******",
-    "submit": "Registrar"
+    "submit": "Registrar",
+    "userSuccesfullRegister": "Usuário cadastrado com sucesso!",
+    "usuarioEmailExist": "Usuário ou email já esta cadastrado.",
+    "userRegistered": "Já possui cadastro? Faça login!"
   }
 }

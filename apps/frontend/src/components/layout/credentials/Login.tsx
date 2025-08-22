@@ -1,27 +1,33 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import Link from "next/link"
 
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import logo from "../../../../public/logo.png"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
 import { getAuthenticatedUser, loginUser } from "@/lib/api/autentication"
+import { useRouter } from "@/i18n/navigation"
+
+import logo from "../../../../public/logo.png"
+
 
 const formSchema = z.object({
     email: z.email().min(1, "Digite um email válido"),
-    password: z.string().min(6, "A senha deve ter no mínimo 6 digitos")
+    password: z.string().min(6, "A senha deve ter no mínimo 6 digitos"),
+    rememberme: z.boolean().optional()
 })
 
 export function Login() {
+    const router = useRouter()
+
     const t = useTranslations("LoginPage")
 
     type FormLogin = z.infer<typeof formSchema>
@@ -29,15 +35,19 @@ export function Login() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
-            password: ""
+            password: "",
+            rememberme: false
         }
     })
 
-   async function onSubmit(data: FormLogin) {
-        try{
+    async function onSubmit(data: FormLogin) {
+        try {
             const responseData = await loginUser(data)
             const jwt = responseData.jwt
             console.log("JWT recebido:", jwt) // Adicione esta linha
+            
+            const storage = data.rememberme ? localStorage : sessionStorage
+            storage.setItem("jwt_token", jwt)
 
             const userData = await getAuthenticatedUser(jwt)
             console.log("Objeto do usuário retornado pelo Strapi:", userData)
@@ -45,21 +55,41 @@ export function Login() {
             const userRole = userData.role ? userData.role.name : "N/A"
             const userName = userData.username || userData.email.split("@")[0]
 
-            alert(`Bem vindo, ${userName}! Seu cargo é ${userRole}`)
+            if(userRole === "Authenticated"){
+                router.replace("/student-dasboard")
+            }
+            else if(userRole === "Teacher"){
+                router.replace("/teacher-dashboard")
+            }
+            else if(userRole === "Admin"){
+                router.replace("/admin-dashboard")
+            }
         }
-        catch(error){
-            if(error instanceof Error){
+        catch (error) {
+            if (error instanceof Error) {
                 alert(error.message)
             }
-            else{
+            else {
                 alert("Erro desconhecido")
             }
-            
+
         }
-        finally{
+        finally {
             form.reset()
         }
     }
+
+    useEffect(() => {
+        let token = localStorage.getItem("jwt_token")
+
+        if(!token){
+            token = sessionStorage.getItem("jwt_token")
+        }
+
+        if(token){
+            console.log("Usuário logado")
+        }
+    }, [])
     return (
         <div className="flex justify-center text-center mt-36">
             <Card className="w-[550px] h-[550px]">
@@ -115,7 +145,20 @@ export function Login() {
                             />
                             <div className="flex flex-row items-center justify-between mt-4">
                                 <div className="flex flex-row gap-2">
-                                    <Checkbox />
+                                    <FormField
+                                        control={form.control}
+                                        name="rememberme"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
                                     <Label>{t('checkbox')}</Label>
                                 </div>
                                 <Link href="/forgot-password" className="hover:text-muted-foreground">{t('forgotPassword')}</Link>

@@ -1,6 +1,6 @@
 {
   "documentId": "jb3elas3nhmpj5olw3zyqqmo",
-  "name": "admin",
+  "name": "Admin",
   "description": "Administrador da plataforma, terá acesso a todas as informções e todos as regras, terá acesso total ao sistema.\n",
   "type": "admin",
   "locale": null,

@@ -9,10 +9,12 @@ import { useTranslations } from "next-intl"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { SignUp } from "@/lib/api/autentication"
+import Link from "next/link"
+import { useState } from "react"
+import { Label } from "@/components/ui/label"
 
 const formSchema = z.object({
-  firstName: z.string().min(3, "Nome é obrigatório"),
-  lastName: z.string().min(3, "Sobrenome é obrigatório"),
   email: z.email("Digite um email válido"),
   username: z.string().min(3, "Digite um nome de usuário"),
   password: z.string().min(6, "Senha é obrigatória"),
@@ -23,14 +25,13 @@ const formSchema = z.object({
 })
 
 export function Register() {
+  const [userRegister, setUserRegister] = useState(false)
   const t = useTranslations("RegisterPage")
   type RegisterFormData = z.infer<typeof formSchema>
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
       email: "",
       username: "",
       password: "",
@@ -39,12 +40,35 @@ export function Register() {
   })
 
   async function onSubmit(data: RegisterFormData) {
-    console.log("Dados do formulário:", data)
-    // Aqui você chamaria a API do Strapi para criar o usuário
+    try{
+      const response = await SignUp(data)
+      setUserRegister(true)
+    }
+    catch (error){
+       if (error instanceof Error) {
+        if (error.message.includes("Email")) {
+          form.setError('email', {
+            message: error.message
+          })
+        }
+        else if(error.message.includes("Username")){
+          form.setError('username',{
+            message: "Nome de usuário ja existe!"
+          })
+        }
+      }
+      else {
+        alert("Erro ao cadastrar usuário.")
+      }
+    }
+    if(userRegister){
+      form.reset()
+      setUserRegister(false)
+    }
   }
 
   return (
-    <div className="flex justify-center text-center mt-10">
+    <div className="flex justify-center text-center mt-6">
       <Card className="w-[550px]">
         <CardHeader className="gap-1">
           <div className="flex flex-col items-center justify-center gap-2">
@@ -56,35 +80,6 @@ export function Register() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 text-left">
-              
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('formLabelFirstName')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('formLabelLastName')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Sobrenome" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -141,11 +136,20 @@ export function Register() {
                 )}
               />
 
+              <div>
+                {userRegister &&
+                  <Label className="text-green-500">{t('userSuccesfullRegister')}</Label>
+                  
+                }
+              </div>
               <Button type="submit" className="w-full mt-4">
                 {t('submit')}
               </Button>
             </form>
           </Form>
+          <div className="mt-4 hover:text-decoration: underline">
+                <Link href={"/login"}>{t('userRegistered')}</Link>
+          </div>
         </CardContent>
       </Card>
     </div>
