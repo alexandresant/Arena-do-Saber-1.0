@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { getAuthenticatedUser, loginUser } from "@/lib/api/autentication"
 
 const formSchema = z.object({
     email: z.email().min(1, "Digite um email válido"),
@@ -32,8 +33,32 @@ export function Login() {
         }
     })
 
-    function onSubmit(data: FormLogin) {
-        form.reset()
+   async function onSubmit(data: FormLogin) {
+        try{
+            const responseData = await loginUser(data)
+            const jwt = responseData.jwt
+            console.log("JWT recebido:", jwt) // Adicione esta linha
+
+            const userData = await getAuthenticatedUser(jwt)
+            console.log("Objeto do usuário retornado pelo Strapi:", userData)
+
+            const userRole = userData.role ? userData.role.name : "N/A"
+            const userName = userData.username || userData.email.split("@")[0]
+
+            alert(`Bem vindo, ${userName}! Seu cargo é ${userRole}`)
+        }
+        catch(error){
+            if(error instanceof Error){
+                alert(error.message)
+            }
+            else{
+                alert("Erro desconhecido")
+            }
+            
+        }
+        finally{
+            form.reset()
+        }
     }
     return (
         <div className="flex justify-center text-center mt-36">
@@ -61,6 +86,7 @@ export function Login() {
                                         <FormLabel>{t('formLabelEmail')}</FormLabel>
                                         <FormControl>
                                             <Input
+                                                type="email"
                                                 placeholder={t('placeholderEmail')}
                                                 {...field}
                                             />
@@ -78,6 +104,7 @@ export function Login() {
                                         <FormLabel>{t('formLabelPassword')}</FormLabel>
                                         <FormControl>
                                             <Input
+                                                type="password"
                                                 placeholder={t('placeholderPassword')}
                                                 {...field}
                                             />
