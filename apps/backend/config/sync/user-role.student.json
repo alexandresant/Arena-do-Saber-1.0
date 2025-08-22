@@ -1,0 +1,69 @@
+{
+  "documentId": "mof1lc8bbwan1g8u4naqcjan",
+  "name": "student",
+  "description": "Usuário aluno terá acesso a plataforma de estudos conteúdos e outras opções relacionado ao perfil aluno",
+  "type": "student",
+  "locale": null,
+  "permissions": [
+    {
+      "documentId": "zhm19d9ev0777733se60jiae",
+      "action": "plugin::users-permissions.auth.connect",
+      "locale": null
+    },
+    {
+      "documentId": "mb7z3ctz4m719zwvsir2fwsc",
+      "action": "plugin::users-permissions.auth.emailConfirmation",
+      "locale": null
+    },
+    {
+      "documentId": "v3oz4xazsolmy1cqvfbi3cfa",
+      "action": "plugin::users-permissions.auth.forgotPassword",
+      "locale": null
+    },
+    {
+      "documentId": "wsq9r1rog6y5bmwlngr9x2mk",
+      "action": "plugin::users-permissions.auth.register",
+      "locale": null
+    },
+    {
+      "documentId": "v1hg5gurs8ileo67m0ojd5vu",
+      "action": "plugin::users-permissions.auth.sendEmailConfirmation",
+      "locale": null
+    },
+    {
+      "documentId": "aw9e8sbjoyeqgun8w2zdwyyg",
+      "action": "plugin::users-permissions.user.count",
+      "locale": null
+    },
+    {
+      "documentId": "gasl53w7d40pzwb130wzid34",
+      "action": "plugin::users-permissions.user.create",
+      "locale": null
+    },
+    {
+      "documentId": "sw822itws70eif9v64kc1tfp",
+      "action": "plugin::users-permissions.user.destroy",
+      "locale": null
+    },
+    {
+      "documentId": "uti7vcpepuegbk3ekom7tznz",
+      "action": "plugin::users-permissions.user.find",
+      "locale": null
+    },
+    {
+      "documentId": "mzy1y39iygp2oq4b4zzcpmpg",
+      "action": "plugin::users-permissions.user.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "dvb2ma0yme86ra7tx4gh9dsn",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
+    },
+    {
+      "documentId": "pfa24fzrdfbfjjc6b3gig2mq",
+      "action": "plugin::users-permissions.user.update",
+      "locale": null
+    }
+  ]
+}

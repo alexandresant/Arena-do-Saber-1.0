@@ -1,0 +1,44 @@
+{
+  "documentId": "k0252173exer7tjbj7qie9dt",
+  "name": "teacher",
+  "description": "Terá acesso ao painel de gerenciamento de conteúdo e gerenciamento das atividades, além de outras atividades relacionadas ao perfil de professor\n",
+  "type": "teacher",
+  "locale": null,
+  "permissions": [
+    {
+      "documentId": "hycyrvaf6t80p4ljihpxz02a",
+      "action": "plugin::users-permissions.auth.connect",
+      "locale": null
+    },
+    {
+      "documentId": "ci8gac84id1h7chwx512zh4b",
+      "action": "plugin::users-permissions.auth.emailConfirmation",
+      "locale": null
+    },
+    {
+      "documentId": "k7rtau8wifup6o8l8u71nbfh",
+      "action": "plugin::users-permissions.auth.forgotPassword",
+      "locale": null
+    },
+    {
+      "documentId": "d9za7iv6zwteqiidy7jbodro",
+      "action": "plugin::users-permissions.auth.register",
+      "locale": null
+    },
+    {
+      "documentId": "bd4ngr88wvpn4rmrbj285qfi",
+      "action": "plugin::users-permissions.auth.sendEmailConfirmation",
+      "locale": null
+    },
+    {
+      "documentId": "woefmhykvzy2zc6dreogk4hy",
+      "action": "plugin::users-permissions.user.find",
+      "locale": null
+    },
+    {
+      "documentId": "nsx46s2pq8y3vpncjrc07pct",
+      "action": "plugin::users-permissions.user.me",
+      "locale": null
+    }
+  ]
+}
