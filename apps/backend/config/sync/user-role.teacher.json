@@ -6,6 +6,11 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "kvsvupv37yqqa8w5na9gtacb",
+      "action": "api::me-full.me-full.me",
+      "locale": null
+    },
+    {
       "documentId": "hycyrvaf6t80p4ljihpxz02a",
       "action": "plugin::users-permissions.auth.connect",
       "locale": null

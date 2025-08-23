@@ -6,6 +6,75 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "dciz2h6geiudw1u776wupowu",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::character-template.character-template",
+      "properties": {
+        "fields": [
+          "name",
+          "strenghtBase",
+          "intelligenceBase",
+          "agilityBase",
+          "constitutionBase"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "pnaw3z0wyue4ah898yv5cvyo",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::character-template.character-template",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "on5edbt9f6b6cz0k4qy66exl",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::character-template.character-template",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "nalz12o9cyju9foldwoif5nr",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::character-template.character-template",
+      "properties": {
+        "fields": [
+          "name",
+          "strenghtBase",
+          "intelligenceBase",
+          "agilityBase",
+          "constitutionBase"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "e0hen6c7eyblvqaq709yetu4",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::character-template.character-template",
+      "properties": {
+        "fields": [
+          "name",
+          "strenghtBase",
+          "intelligenceBase",
+          "agilityBase",
+          "constitutionBase"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
       "documentId": "oik6k4fyvxrg8mgyp3smpin9",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},

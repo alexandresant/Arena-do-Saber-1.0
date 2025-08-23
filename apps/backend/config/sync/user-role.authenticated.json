@@ -14,41 +14,6 @@
       "documentId": "g2dzixpnpjni1d1xwp4vbz05",
       "action": "plugin::users-permissions.auth.changePassword",
       "locale": null
-    },
-    {
-      "documentId": "yahnyit4llo4x79gim4u3y42",
-      "action": "plugin::users-permissions.user.count",
-      "locale": null
-    },
-    {
-      "documentId": "r3rjwanep0s5gj69u5zgbzil",
-      "action": "plugin::users-permissions.user.create",
-      "locale": null
-    },
-    {
-      "documentId": "y07bedbl94jwgs7njw7v77jl",
-      "action": "plugin::users-permissions.user.destroy",
-      "locale": null
-    },
-    {
-      "documentId": "qpnvdyt21vp09h2k8b4j5e46",
-      "action": "plugin::users-permissions.user.find",
-      "locale": null
-    },
-    {
-      "documentId": "hapklily1sgj5n4bpwedqjto",
-      "action": "plugin::users-permissions.user.findOne",
-      "locale": null
-    },
-    {
-      "documentId": "gq5f8jajh5a4ennvt3ktug7y",
-      "action": "plugin::users-permissions.user.me",
-      "locale": null
-    },
-    {
-      "documentId": "iydef2d1kpuxbvy01rhrvr7u",
-      "action": "plugin::users-permissions.user.update",
-      "locale": null
     }
   ]
 }

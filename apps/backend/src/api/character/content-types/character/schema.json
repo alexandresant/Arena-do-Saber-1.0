@@ -10,5 +10,40 @@
     "draftAndPublish": true
   },
   "pluginOptions": {},
-  "attributes": {}
+  "attributes": {
+    "nickName": {
+      "type": "string"
+    },
+    "level": {
+      "type": "integer",
+      "default": 1
+    },
+    "experience": {
+      "type": "integer",
+      "default": 0
+    },
+    "strength": {
+      "type": "integer"
+    },
+    "agility": {
+      "type": "integer"
+    },
+    "intelligence": {
+      "type": "integer"
+    },
+    "constitution": {
+      "type": "integer"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "character"
+    },
+    "character_template": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::character-template.character-template"
+    }
+  }
 }

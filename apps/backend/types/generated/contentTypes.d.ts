@@ -410,6 +410,41 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCharacterTemplateCharacterTemplate
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'character_templates';
+  info: {
+    displayName: 'CharacterTemplate';
+    pluralName: 'character-templates';
+    singularName: 'character-template';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    agilityBase: Schema.Attribute.Integer;
+    constitutionBase: Schema.Attribute.Integer;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    intelligenceBase: Schema.Attribute.Integer;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::character-template.character-template'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    strenghtBase: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
   collectionName: 'characters';
   info: {
@@ -421,19 +456,34 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    agility: Schema.Attribute.Integer;
+    character_template: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::character-template.character-template'
+    >;
+    constitution: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    experience: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    intelligence: Schema.Attribute.Integer;
+    level: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::character.character'
     > &
       Schema.Attribute.Private;
+    nickName: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    strength: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -895,6 +945,10 @@ export interface PluginUsersPermissionsUser
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    character: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::character.character'
+    >;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -946,6 +1000,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::character-template.character-template': ApiCharacterTemplateCharacterTemplate;
       'api::character.character': ApiCharacterCharacter;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

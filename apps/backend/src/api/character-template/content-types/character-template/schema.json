@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "character_templates",
+  "info": {
+    "singularName": "character-template",
+    "pluralName": "character-templates",
+    "displayName": "CharacterTemplate"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "strenghtBase": {
+      "type": "integer"
+    },
+    "intelligenceBase": {
+      "type": "integer"
+    },
+    "agilityBase": {
+      "type": "integer"
+    },
+    "constitutionBase": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}
