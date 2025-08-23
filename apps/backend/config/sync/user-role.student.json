@@ -1,10 +1,15 @@
 {
   "documentId": "mof1lc8bbwan1g8u4naqcjan",
-  "name": "student",
+  "name": "Student",
   "description": "Usuário aluno terá acesso a plataforma de estudos conteúdos e outras opções relacionado ao perfil aluno",
   "type": "student",
   "locale": null,
   "permissions": [
+    {
+      "documentId": "q3drjld55kcj6k1nsxx6zsnj",
+      "action": "api::me-full.me-full.me",
+      "locale": null
+    },
     {
       "documentId": "zhm19d9ev0777733se60jiae",
       "action": "plugin::users-permissions.auth.connect",

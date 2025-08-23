@@ -1,20 +1,25 @@
-export interface UserProps{
-    email: string
-    password: string
-    role?: "admin" | "teacher" | "student"
-    name?: string
+export interface UserProps {
+  email: string
+  password: string
+  role?: "admin" | "teacher" | "student"
+  name?: string
 }
 
 export interface StrapiUser {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-  admin_verified: boolean;
-
+  id: number
+  username: string
+  email: string
+  role?: string
+  admin_verified: boolean
 }
 
 export interface AuthResponse {
-  jwt: string;
-  user: StrapiUser;
+  jwt: string
+  user: StrapiUser
+}
+
+export interface RegisterProps {
+  email: string
+  username: string
+  password: string
 }
