@@ -35,5 +35,17 @@
     "userSuccesfullRegister": "Usuário cadastrado com sucesso!",
     "usuarioEmailExist": "Usuário ou email já esta cadastrado.",
     "userRegistered": "Já possui cadastro? Faça login!"
+  },
+  "CreateCharacterPage": {
+    "title": "Criar Personagem",
+    "description": "Crie seu personagem e inicie a sua jornada na Arena do Saber!",
+    "strength": "Força",
+    "intelligence": "Inteligência",
+    "agility": "Agilidade",
+    "constitution": "Constituição",
+    "charCreated": "Personagem criado com sucesso!",
+    "nickNameCharacter": "Apelido do Personagem",
+    "nickNameCharacterPlaceholder": "Digite o apelido do personagem",
+    "buttonCreateCharacter": "Criar Personagem"
   }
 }

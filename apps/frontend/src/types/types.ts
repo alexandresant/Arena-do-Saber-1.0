@@ -23,3 +23,14 @@ export interface RegisterProps {
   username: string
   password: string
 }
+export interface Character {
+    characterId: number;
+    name: string;
+    description: string;
+    image: string;
+    strengthBase: number;
+    intelligenceBase: number;
+    constitutionBase: number;
+    agilityBase: number;
+}
+

@@ -55,6 +55,7 @@ export function Login() {
       // Pega a sessão atual do usuário após login
       const sessionResponse = await fetch("/api/auth/session")
       const sessionData = await sessionResponse.json()
+      const userId = sessionData?.user?.id
 
       const userRole = sessionData?.user?.role || "Authenticated"
 
