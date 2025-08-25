@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { usePathname, useRouter } from "@/i18n/navigation"
+import { useRouter } from "@/i18n/navigation"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { Loader2 } from "lucide-react"
@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() =>{
     if (status === 'authenticated'){
-      router.replace('app/dashboard')
+      router.replace('app/create-character')
     }
     else if(status === 'unauthenticated'){
       router.replace('/login')
