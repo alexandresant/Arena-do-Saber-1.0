@@ -146,6 +146,21 @@
           "sortable": true
         }
       },
+      "character": {
+        "edit": {
+          "label": "character",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "nickName"
+        },
+        "list": {
+          "label": "character",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -248,6 +263,12 @@
           },
           {
             "name": "role",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "character",
             "size": 6
           }
         ]

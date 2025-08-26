@@ -1,7 +1,7 @@
 import { CreateCharacter } from "@/components/layout/student/CreateCharacter"
 
-export default function LoginPage(){
+export default function CreateCharacterPage(){
     return(
-        <CreateCharacter />
+            <CreateCharacter />
     )
 }

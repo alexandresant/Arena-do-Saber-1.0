@@ -1,13 +1,9 @@
-/**
- * character router
- */
-
 module.exports = {
   routes: [
     {
       method: 'POST',
-      path: '/create-character',
-      handler: 'character.createCharacter',
+      path: '/characters/create-character',
+      handler: 'api::character.character.createCharacter',
       config: {
         auth: {
           scope: [],

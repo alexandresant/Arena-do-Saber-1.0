@@ -8,18 +8,20 @@ export default factories.createCoreController('api::character.character', ({stra
     
     async createCharacter(ctx){
         try{
-            const { userId, templateId, name } = ctx.request.body
+            const { userId, characterId, nickName } = ctx.request.body
 
-            if(!userId || !templateId || !name){
+            if(!userId || !characterId || !nickName){
                 return(
-                    ctx.badRequest("Faltam parâmetros obrigatórios.")
+                    ctx.badRequest("Faltam parâmetros obrigatórios." + userId + " " + characterId + " " + nickName)
+                    
+                    
                 )
             }
             
             //Busca template
             const template = await strapi.entityService.findOne(
                 "api::character-template.character-template",
-                templateId
+                characterId
             )
 
             if(!template){
@@ -31,14 +33,14 @@ export default factories.createCoreController('api::character.character', ({stra
             //Cria personagem copiando atributos do template
             const newCharacter = await strapi.entityService.create("api::character.character", {
                 data: {
-                    name,
+                    nickName,
                     level: template.level,
-                    strength: template.strengthBase,
+                    strength: template.strenghtBase,
                     intelligence: template.intelligenceBase,
                     agility: template.agilityBase,
                     constitution: template.constitutionBase,
-                    template: templateId,
-                    user: userId,
+                    character_template: template.id,
+                    users_permissions_user: userId,
                     publishedAt: new Date()
                 }
             })

@@ -36,6 +36,11 @@
       "locale": null
     },
     {
+      "documentId": "gqe7t766653x0yza38fc6uvb",
+      "action": "api::character.character.createCharacter",
+      "locale": null
+    },
+    {
       "documentId": "mrq4cx6pib8nq88hles7meta",
       "action": "api::character.character.delete",
       "locale": null

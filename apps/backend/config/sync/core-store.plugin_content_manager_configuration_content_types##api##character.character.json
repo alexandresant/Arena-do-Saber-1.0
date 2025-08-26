@@ -19,6 +19,134 @@
           "sortable": true
         }
       },
+      "nickName": {
+        "edit": {
+          "label": "nickName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "nickName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "level": {
+        "edit": {
+          "label": "level",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "level",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "experience": {
+        "edit": {
+          "label": "experience",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "experience",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "strength": {
+        "edit": {
+          "label": "strength",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "strength",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "agility": {
+        "edit": {
+          "label": "agility",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "agility",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "intelligence": {
+        "edit": {
+          "label": "intelligence",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "intelligence",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "constitution": {
+        "edit": {
+          "label": "constitution",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "constitution",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "users_permissions_user": {
+        "edit": {
+          "label": "users_permissions_user",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "username"
+        },
+        "list": {
+          "label": "users_permissions_user",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "character_template": {
+        "edit": {
+          "label": "character_template",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "character_template",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -93,7 +221,54 @@
         "updatedAt",
         "createdBy"
       ],
-      "edit": []
+      "edit": [
+        [
+          {
+            "name": "nickName",
+            "size": 6
+          },
+          {
+            "name": "level",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "experience",
+            "size": 4
+          },
+          {
+            "name": "agility",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "intelligence",
+            "size": 4
+          },
+          {
+            "name": "constitution",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "users_permissions_user",
+            "size": 6
+          },
+          {
+            "name": "character_template",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "strength",
+            "size": 4
+          }
+        ]
+      ]
     },
     "uid": "api::character.character"
   },

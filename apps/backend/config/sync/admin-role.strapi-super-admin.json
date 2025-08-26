@@ -6,7 +6,7 @@
   "locale": null,
   "permissions": [
     {
-      "documentId": "dciz2h6geiudw1u776wupowu",
+      "documentId": "rusy3hra661rbg8yhfu4uz11",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -16,7 +16,9 @@
           "strenghtBase",
           "intelligenceBase",
           "agilityBase",
-          "constitutionBase"
+          "constitutionBase",
+          "description",
+          "image"
         ]
       },
       "conditions": [],
@@ -41,7 +43,7 @@
       "locale": null
     },
     {
-      "documentId": "nalz12o9cyju9foldwoif5nr",
+      "documentId": "at76xxqabsn68anxfn7mk6bh",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -51,14 +53,16 @@
           "strenghtBase",
           "intelligenceBase",
           "agilityBase",
-          "constitutionBase"
+          "constitutionBase",
+          "description",
+          "image"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "e0hen6c7eyblvqaq709yetu4",
+      "documentId": "v6nuhgwqddjbotp7fcghiepl",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -68,19 +72,31 @@
           "strenghtBase",
           "intelligenceBase",
           "agilityBase",
-          "constitutionBase"
+          "constitutionBase",
+          "description",
+          "image"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "oik6k4fyvxrg8mgyp3smpin9",
+      "documentId": "enqt84lrfcjfv7hx2f7yzm7o",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character.character",
       "properties": {
-        "fields": []
+        "fields": [
+          "nickName",
+          "level",
+          "experience",
+          "strength",
+          "agility",
+          "intelligence",
+          "constitution",
+          "users_permissions_user",
+          "character_template"
+        ]
       },
       "conditions": [],
       "locale": null
@@ -104,23 +120,43 @@
       "locale": null
     },
     {
-      "documentId": "xibzs91wcq8cmpzc2yk0xk9u",
+      "documentId": "nw6wvrm0e5cf37jkgl20nzm0",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character.character",
       "properties": {
-        "fields": []
+        "fields": [
+          "nickName",
+          "level",
+          "experience",
+          "strength",
+          "agility",
+          "intelligence",
+          "constitution",
+          "users_permissions_user",
+          "character_template"
+        ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "a6wcysi3ou3ya6ngwpoztiw2",
+      "documentId": "p801c6xivxv1r99xsadk1kz7",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character.character",
       "properties": {
-        "fields": []
+        "fields": [
+          "nickName",
+          "level",
+          "experience",
+          "strength",
+          "agility",
+          "intelligence",
+          "constitution",
+          "users_permissions_user",
+          "character_template"
+        ]
       },
       "conditions": [],
       "locale": null
@@ -423,7 +459,7 @@
       "locale": null
     },
     {
-      "documentId": "bo2bk4hk9ghqz09t0rbptaqc",
+      "documentId": "fpl8zt456i48akfyga4ss8hv",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -437,7 +473,8 @@
           "confirmationToken",
           "confirmed",
           "blocked",
-          "role"
+          "role",
+          "character"
         ]
       },
       "conditions": [],
@@ -462,7 +499,7 @@
       "locale": null
     },
     {
-      "documentId": "vkziu1rb06o4vr5im98fxyki",
+      "documentId": "qu4g6t0i82k8max5wp5omv45",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -476,14 +513,15 @@
           "confirmationToken",
           "confirmed",
           "blocked",
-          "role"
+          "role",
+          "character"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "lyojzij6w3tw38vo43qb2ugd",
+      "documentId": "ufgjk39r7ugrrgyo92a8m1fl",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -497,7 +535,8 @@
           "confirmationToken",
           "confirmed",
           "blocked",
-          "role"
+          "role",
+          "character"
         ]
       },
       "conditions": [],

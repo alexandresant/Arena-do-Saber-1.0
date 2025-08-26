@@ -6,6 +6,11 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "mugqkds5whd0944zdngb6d3f",
+      "action": "api::character.character.createCharacter",
+      "locale": null
+    },
+    {
       "documentId": "syt9lv2kic3cel25zggjlubm",
       "action": "api::me-full.me-full.me",
       "locale": null
