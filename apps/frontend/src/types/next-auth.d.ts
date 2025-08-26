@@ -7,6 +7,7 @@ declare module "next-auth" {
       name?: string | null
       email?: string | null
       role?: string | null // Adiciona o campo role à interface User
+      character: string
     }
     jwt: string
   }
@@ -16,6 +17,8 @@ declare module "next-auth" {
     name?: string | null
     email?: string | null
     jwt: string
+    role?: string
+    admin_verified?: boolean
   }
 }
 

@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() =>{
     if (status === 'authenticated'){
-      router.replace('app/create-character')
+      router.replace('/student/dasboard')
     }
     else if(status === 'unauthenticated'){
       router.replace('/login')

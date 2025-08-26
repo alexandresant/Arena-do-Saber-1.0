@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -14,7 +14,8 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { useRouter } from "@/i18n/navigation"
-import { signIn } from "next-auth/react"
+import { signIn, getSession } from "next-auth/react"
+import { getUserCharacters } from "@/lib/api/createCharacter"
 
 import logo from "../../../../public/logo.png"
 
@@ -52,16 +53,28 @@ export function Login() {
         return
       }
 
-      // Pega a sessão atual do usuário após login
-      const sessionResponse = await fetch("/api/auth/session")
-      const sessionData = await sessionResponse.json()
-      const userId = sessionData?.user?.id
+      const session = await getSession()
+      if (!session || !session.user || !session.jwt) {
+        alert("Erro ao obter a sessão do usuário. Por favor, tente novamente.")
+        return
+      }
 
-      const userRole = sessionData?.user?.role || "Authenticated"
+      const jwt = session?.jwt
+      console.log("JWT: " + jwt)
+
+      const userRole = session.user.role || "Authenticated"
+
+      const { hasCharacter } = await getUserCharacters(jwt)
+      console.log("hasCharacter do back-end:", hasCharacter);
 
       // Redireciona conforme a role
       if (userRole === "Authenticated") {
-        router.replace("/create-character")
+        if (hasCharacter) {
+          router.replace("/student-dashboard")
+        }
+        else {
+          router.replace("/create-character")
+        }
       } else if (userRole === "Teacher") {
         router.replace("/teacher-dashboard")
       } else if (userRole === "Admin") {

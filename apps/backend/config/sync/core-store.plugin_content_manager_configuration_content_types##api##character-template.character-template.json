@@ -113,8 +113,8 @@
         },
         "list": {
           "label": "image",
-          "searchable": false,
-          "sortable": false
+          "searchable": true,
+          "sortable": true
         }
       },
       "createdAt": {

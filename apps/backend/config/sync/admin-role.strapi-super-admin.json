@@ -6,7 +6,7 @@
   "locale": null,
   "permissions": [
     {
-      "documentId": "rusy3hra661rbg8yhfu4uz11",
+      "documentId": "e9jnq7wb86toxgu15zcdogv0",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -43,7 +43,7 @@
       "locale": null
     },
     {
-      "documentId": "at76xxqabsn68anxfn7mk6bh",
+      "documentId": "clerkxbf451y706b9enlvx3c",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -62,7 +62,7 @@
       "locale": null
     },
     {
-      "documentId": "v6nuhgwqddjbotp7fcghiepl",
+      "documentId": "hspb3jajlnwf0j69cagv2ojx",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character-template.character-template",

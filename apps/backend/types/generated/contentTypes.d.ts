@@ -474,7 +474,9 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
       'api::character.character'
     > &
       Schema.Attribute.Private;
-    nickName: Schema.Attribute.String;
+    nickName: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
     strength: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;

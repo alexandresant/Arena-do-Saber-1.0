@@ -11,11 +11,10 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Label } from "@/components/ui/label"
-import type { Character } from "@/types/types"
+import { useRouter } from "@/i18n/navigation"
 import { createCharacter, getCharacterTemplates } from "@/lib/api/createCharacter"
 import type { CharacterTemplate } from "@/types/types"
 import { useSession } from "next-auth/react"
-
 
 const formSchema = z.object({
     characterId: z.number().min(1, "O personagem é obrigatório"),
@@ -29,30 +28,29 @@ export function CreateCharacter() {
     const [characterTemplates, setCharacterTemplates] = useState<CharacterTemplate[]>([])
 
     const { data: session } = useSession()
+    const router = useRouter()
 
     type FormCreateCharacter = z.infer<typeof formSchema>
     const form = useForm<FormCreateCharacter>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             characterId: 0,
-            userId: userId || 0,
+            userId: 0,
             nickName: "",
         }
     })
 
     async function onSubmit(data: FormCreateCharacter) {
+        if (!session?.jwt) return
         try {
-            const responseData = await createCharacter(data.userId, data.characterId, data.nickName)
-            console.log(responseData)
+            const responseData = await createCharacter(data.userId, data.characterId, data.nickName, session?.jwt)
+            router.replace('/student-dashboard')
         }
         catch (error) {
             console.error("Erro ao criar personagem:", error)
         }
     }
 
-    const handleCharacterSelect = (char: Character) => {
-        form.setValue("characterId", char.characterId)
-    }
 
     useEffect(() => {
         if (session?.user) {
@@ -62,8 +60,9 @@ export function CreateCharacter() {
 
     useEffect(() => {
         const fetchCharacterTemplates = async () => {
+            if(!session?.jwt) return
             try {
-                const templatesData = await getCharacterTemplates()
+                const templatesData = await getCharacterTemplates(session?.jwt)
                 if (templatesData) {
                     setCharacterTemplates(templatesData.data)
                 }
@@ -73,7 +72,9 @@ export function CreateCharacter() {
             }
         }
         fetchCharacterTemplates()
-    }, [])
+    }, [session])
+
+    
 
     return (
         <div className="items-center text-center">

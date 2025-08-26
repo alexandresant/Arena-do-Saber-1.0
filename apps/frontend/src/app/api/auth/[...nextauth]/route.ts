@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt", // usar JWT em vez de salvar em banco
   },
   callbacks: {
-  async jwt({ token, user }) {
+  async jwt({ token, user, }) {
     if (user) {
       token.id = user.id
       token.jwt = (user as any).jwt

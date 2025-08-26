@@ -10,5 +10,11 @@ module.exports = {
         },
       },
     },
-  ],
-};
+    {
+      method: "GET",
+      path: "/characters/check-character",
+      handler: "api::character.character.checkCharacter",
+      
+    }
+  ]
+}

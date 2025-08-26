@@ -12,7 +12,9 @@
   "pluginOptions": {},
   "attributes": {
     "nickName": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "level": {
       "type": "integer",

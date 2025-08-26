@@ -31,20 +31,6 @@ export async function loginUser({ email, password }: UserProps): Promise<AuthRes
   }
 }
 
-export async function getAuthenticatedUser(jwt: string) {
-  try {
-    const response = await axios.get(`${STRAPI_URL}/api/me-full`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    //console.log("Resposta completa da API:", response);
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao buscar dados do usuário:", error);
-    throw new Error("Não foi possível carregar os dados do usuário.");
-  }
-}
 
 export async function SignUp({
   email,
