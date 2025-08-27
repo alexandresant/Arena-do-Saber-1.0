@@ -47,5 +47,55 @@
     "nickNameCharacter": "Apelido do Personagem",
     "nickNameCharacterPlaceholder": "Digite o apelido do personagem",
     "buttonCreateCharacter": "Criar Personagem"
+  },
+  "StudentDashboardPage": {
+    "title":"Arena do Saber!",
+    "description": "Bem-vindo de volta {userName}",
+    "logoutButton": "Sair",
+    "topCards": {
+      "nivel": "Nível",
+      "coins": "Moedas",
+      "content": "Conteúdo",
+      "victory": "Vitórias"
+    }, 
+    "characters": {
+      "charcter": "{character}",
+      "nickName": "{nickName}",
+      "experience": "Experiência",
+      "nivel": "Nível {nivel}",
+      "attributes": "Atributos",
+      "stregth": "Força",
+      "agility": "Velocidade",
+      "intelligence": "Inteligência",
+      "constitution": "Constituição",
+      "hp": "HP",
+      "mana": "Mana",
+      "defense": "Defesa",
+      "physicalAttack": "Ataque físico",
+      "magicAttack": "Ataque mágico",
+      "evasion": "Evasão"
+    },
+    "availableDiscipline": {
+      "title": "Matéiras disponíveis",
+      "description": "Escolha uma matéria para estudar",
+      "art": "Artes",
+      "biology": "Biologia",
+      "philosophy": "Filosofia",
+      "physicalEducation": "Educação Física",
+      "physical": "Física",
+      "geography": "Geografia",
+      "history": "História",
+      "english": "Inglês",
+      "allDisciplinesButton": "Ver todas as matérias"
+    },
+    "ranking":{
+      "topStudents": "Top Estudantes",
+      "topFighters": "Top Lutadores",
+      "rankingStudents": "Ranking de estudos",
+      "rankingFighters": "Ranking lutadores",
+      "yourprogress": "Seu progresso",
+      "victoryTax": "Taxa de vitórias",
+      "studyTime": "Tempo de estudo"
+    }
   }
 }
