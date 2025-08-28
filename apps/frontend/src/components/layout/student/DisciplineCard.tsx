@@ -18,7 +18,7 @@ export function DisciplineCard() {
             <CardContent className="space-y-2">
                 <div className="grid grid-cols-2 gap-2">
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/arte")}
                     >
                         <Label className="text-2xl">🎨</Label>
@@ -26,7 +26,7 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/biologia")}
                     >
                         <Label className="text-2xl">🧬</Label>
@@ -34,7 +34,7 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/educacao-fisica")}
                     >
                         <Label className="text-2xl">⚽</Label>
@@ -42,7 +42,7 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/filosofia")}
                     >
                         <Label className="text-2xl">🏛️</Label>
@@ -50,7 +50,7 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/fisica")}
                     >
                         <Label className="text-2xl">⚡</Label>
@@ -58,7 +58,7 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/geografia")}
                     >
                         <Label className="text-2xl">🌍</Label>
@@ -66,7 +66,7 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/historia")}
                     >
                         <Label className="text-2xl">📜</Label>
@@ -74,14 +74,19 @@ export function DisciplineCard() {
                     </Card>
 
                     <Card 
-                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.03]"
+                        className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/ingles")}
                     >
                         <Label className="text-2xl">🇬🇧</Label>
                         <Label>{t('english')}</Label>
                     </Card>
                 </div>
-                <Button className="w-full bg-transparent border text-gray-100 hover:text-gray-700">{t('allDisciplinesButton')}</Button>
+                <Button 
+                    className="w-full bg-transparent border text-gray-100 hover:text-gray-800"
+                    onClick={() => router.replace("/allDiscipline")}
+                >
+                    {t('allDisciplinesButton')}
+                </Button>
             </CardContent>
         </Card>
     )

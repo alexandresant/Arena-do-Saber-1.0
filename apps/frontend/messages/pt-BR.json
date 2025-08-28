@@ -49,15 +49,17 @@
     "buttonCreateCharacter": "Criar Personagem"
   },
   "StudentDashboardPage": {
-    "title":"Arena do Saber!",
+    "title": "Arena do Saber!",
     "description": "Bem-vindo de volta {userName}",
     "logoutButton": "Sair",
+    "topStudents": "Top Estudantes",
+    "topFighters": "Top Lutadores",
     "topCards": {
       "nivel": "Nível",
       "coins": "Moedas",
       "content": "Conteúdo",
       "victory": "Vitórias"
-    }, 
+    },
     "characters": {
       "charcter": "{character}",
       "nickName": "{nickName}",
@@ -89,11 +91,11 @@
       "english": "Inglês",
       "allDisciplinesButton": "Ver todas as matérias"
     },
-    "ranking":{
+    "ranking": {
       "topStudents": "Top Estudantes",
       "topFighters": "Top Lutadores",
       "rankingStudents": "Ranking de estudos",
-      "rankingFighters": "Ranking lutadores",
+      "rankingFighters": "Ranking de lutadores",
       "yourprogress": "Seu progresso",
       "victoryTax": "Taxa de vitórias",
       "studyTime": "Tempo de estudo"

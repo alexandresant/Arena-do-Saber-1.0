@@ -13,6 +13,9 @@ import { useTranslations } from "next-intl"
 import { useSession, signOut } from "next-auth/react"
 import { StatsCombatentCard } from "./StatsCombatentCard"
 import { DisciplineCard } from "./DisciplineCard"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { RankingStudentsCard } from "./RankingStudentsCard"
+import { RankingFightersCard } from "./RankingFightersCard"
 
 export function StudentDashboard() {
 
@@ -31,11 +34,11 @@ export function StudentDashboard() {
                     <CardTitle className="text-2xl">{t('title')}</CardTitle>
                     <CardDescription>{t('description', { userName })}</CardDescription>
                 </div>
-                <Button 
-                    className="bg-transparent border text-gray-100 hover:text-gray-700" 
+                <Button
+                    className="bg-transparent border text-gray-100 hover:text-gray-700"
                     onClick={() => signOut()}
                 >
-                    <LogOut className="h-8 w-8"/>
+                    <LogOut className="h-8 w-8" />
                     Sair
                 </Button>
             </CardHeader>
@@ -83,13 +86,18 @@ export function StudentDashboard() {
                     </div>
                     <div className="flex flex-col">
                         <div>
-                            top estudantes
-                        </div>
-                        <div>
-                            ranking
-                        </div>
-                        <div>
-                            seu progresso
+                            <Tabs defaultValue="topStudents">
+                                <TabsList className="w-full">
+                                    <TabsTrigger value="topStudents">{t('topStudents')}</TabsTrigger>
+                                    <TabsTrigger value="topFighters">{t('topFighters')}</TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="topStudents">
+                                    <RankingStudentsCard />
+                                </TabsContent>
+                                <TabsContent value="topFighters">
+                                    <RankingFightersCard />
+                                </TabsContent>
+                            </Tabs>
                         </div>
                     </div>
                 </div>
