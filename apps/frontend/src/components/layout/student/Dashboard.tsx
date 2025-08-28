@@ -1,16 +1,21 @@
 "use client"
-import { Card, CardContent, CardHeader, CardDescription, CardTitle} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { LogOut } from "lucide-react"
 
 import { NivelCard } from "./NivelCard"
 import { CoinsCard } from "./CoinsCard"
-
-import { useTranslations } from "next-intl"
-import { useSession } from "next-auth/react"
 import { ContentsCard } from "./ContentsCards"
 import { VictoryCard } from "./VictoryCard"
+import { CharacterCard } from "./CharacterCard"
+
+import { useTranslations } from "next-intl"
+import { useSession, signOut } from "next-auth/react"
+import { StatsCombatentCard } from "./StatsCombatentCard"
+import { DisciplineCard } from "./DisciplineCard"
 
 export function StudentDashboard() {
-    
+
     const t = useTranslations('StudentDashboardPage')
     const session = useSession()
     const userName = session.data?.user.name || "N/A"
@@ -21,24 +26,72 @@ export function StudentDashboard() {
     const victory = 54
     return (
         <Card>
-            <CardHeader>
-                <CardTitle className="text-2xl">{t('title')}</CardTitle>
-                <CardDescription>{t('description',{userName})}</CardDescription>
+            <CardHeader className="flex flex-row justify-between items-center">
+                <div className="flex flex-col">
+                    <CardTitle className="text-2xl">{t('title')}</CardTitle>
+                    <CardDescription>{t('description', { userName })}</CardDescription>
+                </div>
+                <Button 
+                    className="bg-transparent border text-gray-100 hover:text-gray-700" 
+                    onClick={() => signOut()}
+                >
+                    <LogOut className="h-8 w-8"/>
+                    Sair
+                </Button>
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                     <NivelCard
                         nivel={nivel}
                     />
-                    <CoinsCard 
+                    <CoinsCard
                         coins={coins}
                     />
-                    <ContentsCard 
+                    <ContentsCard
                         contents={contents}
                     />
-                    <VictoryCard 
+                    <VictoryCard
                         victory={victory}
                     />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+                    <div className="flex flex-col gap-2 ">
+                        <CharacterCard
+                            name="Maga"
+                            nickName="Magali"
+                            strength={250}
+                            agility={300}
+                            constitution={450}
+                            intelligence={2000}
+                            experience={1500}
+                            nivel={200}
+                        />
+
+                        <StatsCombatentCard
+                            totalHp={500}
+                            totalMana={1500}
+                            mana={1500}
+                            hp={350}
+                            phisicalAtack={350}
+                            magicAtack={1500}
+                            evasion={15}
+                            defense={500}
+                        />
+                    </div>
+                    <div>
+                        <DisciplineCard />
+                    </div>
+                    <div className="flex flex-col">
+                        <div>
+                            top estudantes
+                        </div>
+                        <div>
+                            ranking
+                        </div>
+                        <div>
+                            seu progresso
+                        </div>
+                    </div>
                 </div>
             </CardContent>
         </Card>

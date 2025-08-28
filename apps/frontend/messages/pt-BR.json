@@ -68,6 +68,7 @@
       "agility": "Velocidade",
       "intelligence": "Inteligência",
       "constitution": "Constituição",
+      "combatentStats": "Status do Combatente",
       "hp": "HP",
       "mana": "Mana",
       "defense": "Defesa",
