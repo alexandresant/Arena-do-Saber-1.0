@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Label } from "@/components/ui/label"
 import { Select, SelectItem, SelectTrigger, SelectContent, SelectValue } from "@/components/ui/select"
 
-import { BookOpenIcon } from "lucide-react"
+import { BookUser } from "lucide-react"
 import { useState } from "react"
 
 const mockTurmas = [
@@ -39,11 +39,11 @@ export function ClassCard() {
                             <Label>Turma</Label>
                             <Label className="text-muted-foreground">
                                 {className ?
-                                    className : "Selecione uma turma"
+                                    className : "Selecione uma turma para ver as informações"
                                 }
                             </Label>
                         </div>
-                        <BookOpenIcon className="h-8 w-8 text-blue-600" />
+                        <BookUser className="h-8 w-8 text-blue-600" />
                     </div>
                 </CardContent>
             </Card>

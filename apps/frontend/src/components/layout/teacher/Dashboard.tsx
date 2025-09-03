@@ -5,6 +5,7 @@ import type { TeacherDashboardProps } from "@/types/types"
 import { ClassCard } from "./ClassCard"
 import { StudentQtdCard } from "./StudentQtdCard"
 import { CreateClassCard } from "./CreateClassCard"
+import { CreateActivityCard } from "./CreateActivityCard"
 
 
 export function TeacherDashboard(){
@@ -22,6 +23,7 @@ export function TeacherDashboard(){
                         qtdAlunos={10}
                     />
                     <CreateClassCard />
+                    <CreateActivityCard />
                 </div>
             </CardContent>
         </Card>

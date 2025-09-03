@@ -2,7 +2,7 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState } from "react"
 import { CreateClassDialog } from "./CreateClassDialog"
-import { BookOpenIcon } from "lucide-react"
+import { BookUser } from "lucide-react"
 
 export function CreateClassCard() {
     const [openDialog, setOpenDialog] = useState(false)
@@ -17,7 +17,7 @@ export function CreateClassCard() {
                         <CardDescription>Clique para criar uma nova turma</CardDescription>
                     </div>
 
-                    <BookOpenIcon className="h-8 w-8 text-blue-600" />
+                    <BookUser className="h-8 w-8 text-blue-600" />
                 </CardHeader>
             </Card>
             <CreateClassDialog
