@@ -64,7 +64,7 @@
       "charcter": "{character}",
       "nickName": "{nickName}",
       "experience": "Experiência",
-      "nivel": "Nível {nivel}",
+      "nivel": "Nível {level}",
       "attributes": "Atributos",
       "stregth": "Força",
       "agility": "Velocidade",

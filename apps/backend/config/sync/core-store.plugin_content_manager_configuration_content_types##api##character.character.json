@@ -147,6 +147,118 @@
           "sortable": true
         }
       },
+      "name": {
+        "edit": {
+          "label": "name",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "name",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "experienceToNextLevel": {
+        "edit": {
+          "label": "experienceToNextLevel",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "experienceToNextLevel",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "defense": {
+        "edit": {
+          "label": "defense",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "defense",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "attack": {
+        "edit": {
+          "label": "attack",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "attack",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "hp": {
+        "edit": {
+          "label": "hp",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "hp",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "mana": {
+        "edit": {
+          "label": "mana",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "mana",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "magicAttack": {
+        "edit": {
+          "label": "magicAttack",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "magicAttack",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "evasion": {
+        "edit": {
+          "label": "evasion",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "evasion",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -265,6 +377,44 @@
         [
           {
             "name": "strength",
+            "size": 4
+          },
+          {
+            "name": "name",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "experienceToNextLevel",
+            "size": 4
+          },
+          {
+            "name": "attack",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "hp",
+            "size": 4
+          },
+          {
+            "name": "mana",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "evasion",
+            "size": 4
+          },
+          {
+            "name": "defense",
+            "size": 4
+          },
+          {
+            "name": "magicAttack",
             "size": 4
           }
         ]

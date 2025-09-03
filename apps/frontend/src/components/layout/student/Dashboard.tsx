@@ -16,17 +16,38 @@ import { DisciplineCard } from "./DisciplineCard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RankingStudentsCard } from "./RankingStudentsCard"
 import { RankingFightersCard } from "./RankingFightersCard"
+import { useEffect, useState } from "react"
+import type { Character } from "@/types/types"
+import { getCharacterStatus } from "@/lib/api/createCharacter"
 
 export function StudentDashboard() {
 
     const t = useTranslations('StudentDashboardPage')
     const session = useSession()
     const userName = session.data?.user.name || "N/A"
+    const [characterStatus, setCharacterStatus] = useState<Character | null>(null)
 
-    const nivel = 10
     const coins = 50
     const contents = 10
     const victory = 54
+
+    useEffect(() =>{
+        const fetchCharacterStatus = async () =>{
+            if(!session?.data?.jwt) return
+            try{
+                const characterData = await getCharacterStatus(session?.data.jwt, Number(session.data.user.id))
+                if(characterData.character){
+                    setCharacterStatus(characterData.character)
+                    console.log("Dados carregados: " , characterData.character)
+                }
+            }
+            catch(error){
+                console.error("Erro ao buscar status do personagem. " + error)
+            }
+        }
+        fetchCharacterStatus()
+    }, [session])
+
     return (
         <Card>
             <CardHeader className="flex flex-row justify-between items-center">
@@ -45,7 +66,7 @@ export function StudentDashboard() {
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                     <NivelCard
-                        nivel={nivel}
+                        nivel={characterStatus?.level ?? 1}
                     />
                     <CoinsCard
                         coins={coins}
@@ -60,25 +81,25 @@ export function StudentDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
                     <div className="flex flex-col gap-2 ">
                         <CharacterCard
-                            name="Maga"
-                            nickName="Magali"
-                            strength={250}
-                            agility={300}
-                            constitution={450}
-                            intelligence={2000}
-                            experience={1500}
-                            nivel={200}
+                            name={characterStatus?.name ?? "N/A"}
+                            nickName={characterStatus?.nickName ?? "N/A"}
+                            strength={characterStatus?.strength ?? 0}
+                            agility={characterStatus?.agility ?? 0}
+                            constitution={characterStatus?.constitution ?? 0}
+                            intelligence={characterStatus?.intelligence ?? 0}
+                            experience={characterStatus?.experience ?? 0}
+                            level={characterStatus?.level ?? 1}
                         />
 
                         <StatsCombatentCard
-                            totalHp={500}
-                            totalMana={1500}
-                            mana={1500}
-                            hp={350}
-                            phisicalAtack={350}
-                            magicAtack={1500}
-                            evasion={15}
-                            defense={500}
+                            totalHp={characterStatus?.hp ?? 0}
+                            totalMana={characterStatus?.mana ?? 0}
+                            mana={(characterStatus?.mana ?? 0) }
+                            hp={(characterStatus?.hp ?? 0)}
+                            phisicalAttack={characterStatus?.attack ?? 0}
+                            magicAttack={characterStatus?.magicAttack ?? 0}
+                            evasion={characterStatus?.evasion ?? 0}
+                            defense={characterStatus?.defense ?? 0}
                         />
                     </div>
                     <div>

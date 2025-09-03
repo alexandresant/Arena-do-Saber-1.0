@@ -41,6 +41,11 @@
       "locale": null
     },
     {
+      "documentId": "xmw45np1w56fdw5ziiw2rqfj",
+      "action": "api::character.character.findCharacter",
+      "locale": null
+    },
+    {
       "documentId": "syt9lv2kic3cel25zggjlubm",
       "action": "api::me-full.me-full.me",
       "locale": null

@@ -18,7 +18,8 @@
     },
     "level": {
       "type": "integer",
-      "default": 1
+      "default": 1,
+      "max": 99
     },
     "experience": {
       "type": "integer",
@@ -46,6 +47,30 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::character-template.character-template"
+    },
+    "name": {
+      "type": "string"
+    },
+    "experienceToNextLevel": {
+      "type": "integer"
+    },
+    "defense": {
+      "type": "integer"
+    },
+    "attack": {
+      "type": "integer"
+    },
+    "hp": {
+      "type": "integer"
+    },
+    "mana": {
+      "type": "integer"
+    },
+    "magicAttack": {
+      "type": "integer"
+    },
+    "evasion": {
+      "type": "integer"
     }
   }
 }

@@ -6,7 +6,7 @@
   "locale": null,
   "permissions": [
     {
-      "documentId": "e9jnq7wb86toxgu15zcdogv0",
+      "documentId": "exm4p7gmplm112axdhkwyoeg",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -18,7 +18,9 @@
           "agilityBase",
           "constitutionBase",
           "description",
-          "image"
+          "image",
+          "points",
+          "defenseBase"
         ]
       },
       "conditions": [],
@@ -43,7 +45,7 @@
       "locale": null
     },
     {
-      "documentId": "clerkxbf451y706b9enlvx3c",
+      "documentId": "pkij9mvx2y5hh2s6bzi1o24e",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -55,14 +57,16 @@
           "agilityBase",
           "constitutionBase",
           "description",
-          "image"
+          "image",
+          "points",
+          "defenseBase"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "hspb3jajlnwf0j69cagv2ojx",
+      "documentId": "bummx2flijrjabv29jvd42wu",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -74,14 +78,16 @@
           "agilityBase",
           "constitutionBase",
           "description",
-          "image"
+          "image",
+          "points",
+          "defenseBase"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "enqt84lrfcjfv7hx2f7yzm7o",
+      "documentId": "osjhqw5jfkylisbvpkdpqckk",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -95,7 +101,15 @@
           "intelligence",
           "constitution",
           "users_permissions_user",
-          "character_template"
+          "character_template",
+          "name",
+          "experienceToNextLevel",
+          "defense",
+          "attack",
+          "hp",
+          "mana",
+          "magicAttack",
+          "evasion"
         ]
       },
       "conditions": [],
@@ -120,7 +134,7 @@
       "locale": null
     },
     {
-      "documentId": "nw6wvrm0e5cf37jkgl20nzm0",
+      "documentId": "pl9wc2bzsdkxkzz8e6agjlrn",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -134,14 +148,22 @@
           "intelligence",
           "constitution",
           "users_permissions_user",
-          "character_template"
+          "character_template",
+          "name",
+          "experienceToNextLevel",
+          "defense",
+          "attack",
+          "hp",
+          "mana",
+          "magicAttack",
+          "evasion"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "p801c6xivxv1r99xsadk1kz7",
+      "documentId": "zpx0ehmxfsjygg1gaueiiqb9",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -155,7 +177,15 @@
           "intelligence",
           "constitution",
           "users_permissions_user",
-          "character_template"
+          "character_template",
+          "name",
+          "experienceToNextLevel",
+          "defense",
+          "attack",
+          "hp",
+          "mana",
+          "magicAttack",
+          "evasion"
         ]
       },
       "conditions": [],

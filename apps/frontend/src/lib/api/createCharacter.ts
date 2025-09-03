@@ -38,8 +38,27 @@ export async function getCharacterTemplates(jwt: string) {
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log("Templates recebidos da API:", response.data)
+    //console.log("Templates recebidos da API:", response.data)
     return response.data
 }
+
+export async function getCharacterStatus(jwt: string, userId: number) {
+  try {
+    const response = await axios.get(
+      `${STRAPI_URL}/api/characters?filters[users_permissions_user][id][$eq]=${userId}&populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+    //console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao carregar status do personagem.", error);
+    throw new Error("Erro ao carregar dados do personagem.");
+  }
+}
+
 
 

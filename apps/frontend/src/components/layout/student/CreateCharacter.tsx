@@ -29,6 +29,7 @@ export function CreateCharacter() {
 
     const { data: session } = useSession()
     const router = useRouter()
+    const jwt = session?.jwt
 
     type FormCreateCharacter = z.infer<typeof formSchema>
     const form = useForm<FormCreateCharacter>({
@@ -41,7 +42,7 @@ export function CreateCharacter() {
     })
 
     async function onSubmit(data: FormCreateCharacter) {
-        if (!session?.jwt) return
+        if (!jwt) return
         try {
             const responseData = await createCharacter(data.userId, data.characterId, data.nickName, session?.jwt)
             router.replace('/student-dashboard')
@@ -60,7 +61,11 @@ export function CreateCharacter() {
 
     useEffect(() => {
         const fetchCharacterTemplates = async () => {
-            if(!session?.jwt) return
+            if (!jwt) {
+                console.log("JWT não disponível, pulando a busca de templates.")
+                return
+            }
+
             try {
                 const templatesData = await getCharacterTemplates(session?.jwt)
                 if (templatesData) {
@@ -72,9 +77,9 @@ export function CreateCharacter() {
             }
         }
         fetchCharacterTemplates()
-    }, [session])
-
+    }, [jwt])
     
+
 
     return (
         <div className="items-center text-center">
@@ -118,7 +123,7 @@ export function CreateCharacter() {
                                                         <CardContent className="flex flex-col gap-1 items-start p- pt-0">
                                                             <div className="flex justify-between w-full">
                                                                 <Label>{t('strength')}</Label>
-                                                                <span>{char.strenghtBase}</span>
+                                                                <span>{char.strengthBase}</span>
                                                             </div>
                                                             <div className="flex justify-between w-full">
                                                                 <Label>{t('intelligence')}</Label>

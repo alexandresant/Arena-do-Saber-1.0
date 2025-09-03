@@ -427,9 +427,11 @@ export interface ApiCharacterTemplateCharacterTemplate
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    defenseBase: Schema.Attribute.Integer;
     description: Schema.Attribute.Text;
     image: Schema.Attribute.String;
     intelligenceBase: Schema.Attribute.Integer;
+    level: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -437,6 +439,7 @@ export interface ApiCharacterTemplateCharacterTemplate
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
+    points: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     strenghtBase: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;
@@ -457,6 +460,7 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
   };
   attributes: {
     agility: Schema.Attribute.Integer;
+    attack: Schema.Attribute.Integer;
     character_template: Schema.Attribute.Relation<
       'oneToOne',
       'api::character-template.character-template'
@@ -465,15 +469,29 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    defense: Schema.Attribute.Integer;
+    evasion: Schema.Attribute.Integer;
     experience: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    experienceToNextLevel: Schema.Attribute.Integer;
+    hp: Schema.Attribute.Integer;
     intelligence: Schema.Attribute.Integer;
-    level: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
+    level: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 99;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::character.character'
     > &
       Schema.Attribute.Private;
+    magicAttack: Schema.Attribute.Integer;
+    mana: Schema.Attribute.Integer;
+    name: Schema.Attribute.String;
     nickName: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
@@ -486,6 +504,90 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+  };
+}
+
+export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
+  collectionName: 'questions';
+  info: {
+    displayName: 'Question';
+    pluralName: 'questions';
+    singularName: 'question';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    answerA: Schema.Attribute.String;
+    answerB: Schema.Attribute.String;
+    answerC: Schema.Attribute.String;
+    answerD: Schema.Attribute.String;
+    correct: Schema.Attribute.Enumeration<['A', 'B', 'C', 'D']>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::question.question'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    question: Schema.Attribute.Text;
+    subject: Schema.Attribute.Relation<'manyToOne', 'api::subject.subject'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSubjectSubject extends Struct.CollectionTypeSchema {
+  collectionName: 'subjects';
+  info: {
+    displayName: 'Subject';
+    pluralName: 'subjects';
+    singularName: 'subject';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    icone: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subject.subject'
+    >;
+    name: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    questions: Schema.Attribute.Relation<'oneToMany', 'api::question.question'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1004,6 +1106,8 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::character-template.character-template': ApiCharacterTemplateCharacterTemplate;
       'api::character.character': ApiCharacterCharacter;
+      'api::question.question': ApiQuestionQuestion;
+      'api::subject.subject': ApiSubjectSubject;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

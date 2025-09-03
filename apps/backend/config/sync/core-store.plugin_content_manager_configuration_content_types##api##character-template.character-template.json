@@ -117,6 +117,34 @@
           "sortable": true
         }
       },
+      "points": {
+        "edit": {
+          "label": "points",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "points",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "defenseBase": {
+        "edit": {
+          "label": "defenseBase",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "defenseBase",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -185,12 +213,6 @@
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "strenghtBase",
-        "intelligenceBase"
-      ],
       "edit": [
         [
           {
@@ -225,7 +247,26 @@
             "name": "image",
             "size": 6
           }
+        ],
+        [
+          {
+            "name": "points",
+            "size": 4
+          },
+          {
+            "name": "defenseBase",
+            "size": 4
+          }
         ]
+      ],
+      "list": [
+        "id",
+        "name",
+        "strenghtBase",
+        "intelligenceBase",
+        "agilityBase",
+        "constitutionBase",
+        "defenseBase"
       ]
     },
     "uid": "api::character-template.character-template"

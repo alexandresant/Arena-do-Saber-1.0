@@ -24,7 +24,7 @@ export interface RegisterProps {
   password: string
 }
 export interface Character {
-  userId?: number
+  id?: number
   characterId?: number
   name: string
   nickName: string
@@ -35,7 +35,14 @@ export interface Character {
   constitution: number
   agility: number
   experience: number
-  nivel: number
+  level: number
+  experienceToNextLevel?: number
+  defense?: number
+  attack?: number
+  hp?: number
+  mana?: number
+  magicAttack?: number
+  evasion?: number
 }
 export interface CharacterTemplate {
   id: number
@@ -43,7 +50,7 @@ export interface CharacterTemplate {
   description: string
   image: string
   level: number
-  strenghtBase: number
+  strengthBase: number
   intelligenceBase: number
   constitutionBase: number
   agilityBase: number
@@ -53,8 +60,11 @@ export interface CombatentStats{
   totalMana: number
   mana: number
   hp: number
-  phisicalAtack: number
-  magicAtack: number
+  phisicalAttack: number
+  magicAttack: number
   evasion: number
   defense: number
+}
+export interface TeacherDashboardProps{
+  teacher: string
 }

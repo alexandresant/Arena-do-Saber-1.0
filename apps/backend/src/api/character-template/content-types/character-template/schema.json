@@ -32,6 +32,16 @@
     },
     "image": {
       "type": "string"
+    },
+    "points": {
+      "type": "integer"
+    },
+    "defenseBase": {
+      "type": "integer"
+    },
+    "level": {
+      "type": "integer",
+      "default": 1
     }
   }
 }

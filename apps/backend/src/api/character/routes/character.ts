@@ -1,3 +1,5 @@
+
+
 module.exports = {
   routes: [
     {
@@ -13,8 +15,12 @@ module.exports = {
     {
       method: "GET",
       path: "/characters/check-character",
-      handler: "api::character.character.checkCharacter",
-      
-    }
+      handler: "api::character.character.checkCharacter",     
+    },
+    {
+      method: 'GET',
+      path: '/characters',
+      handler: 'api::character.character.findCharacter', // rota core
+    },
   ]
 }

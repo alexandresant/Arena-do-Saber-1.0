@@ -3,6 +3,8 @@
  */
 
 import { factories } from '@strapi/strapi';
+import { calculatedDerived } from '../services/character';
+let objeto = {}
 
 export default factories.createCoreController('api::character.character', ({ strapi }) => ({
 
@@ -40,9 +42,13 @@ export default factories.createCoreController('api::character.character', ({ str
                 return ctx.notFound("Template não encontrado.");
             }
 
+            const derived = calculatedDerived(template.level, template.strenghtBase, template.intelligenceBase, template.agilityBase, template.constitutionBase, template.defenseBase)
+            console.log('Valores derivados:', derived);
+            
             // Cria o personagem copiando os atributos do template
             const newCharacter = await strapi.entityService.create("api::character.character", {
                 data: {
+                    name: template.name,
                     nickName,
                     level: template.level,
                     strength: template.strenghtBase,
@@ -51,14 +57,23 @@ export default factories.createCoreController('api::character.character', ({ str
                     constitution: template.constitutionBase,
                     character_template: template.id,
                     users_permissions_user: userId,
-                    publishedAt: new Date()
+                    publishedAt: new Date(),
+                    experience: 0,
+                    points: 0,
+                    hp:derived.hp,
+                    mana: derived.mana, 
+                    attack: derived.attack, 
+                    magicAttack: derived.magicAttack, 
+                    evasion: derived.evasion, 
+                    critChance: derived.critChance,
+                    defense: derived.defenseTotal
                 }
-            });
-
+            })
+            objeto = newCharacter
             return newCharacter;
         } catch (error) {
             console.error(error);
-            return ctx.internalServerError("Erro ao criar personagem");
+            return ctx.internalServerError("Erro ao criar personagem + " + objeto)
         }
     },
 
@@ -88,6 +103,35 @@ export default factories.createCoreController('api::character.character', ({ str
         console.error(error);
         return ctx.internalServerError("Erro ao verificar personagem.");
       }
-    }
+    },
+
+    async findCharacter(ctx){
+        try {
+        const user = ctx.state.user; // Obtém o usuário logado
+
+        if (!user) {
+          return ctx.unauthorized("Você não está autenticado.");
+        }
+
+        // Verifica se já existe um personagem para este usuário
+        const character = await strapi.db
+            .query('api::character.character')
+            .findOne({
+                where: { users_permissions_user: {id: user.id} }
+            });
+
+        // Retorna true ou false com base no resultado da busca
+        if (character) {
+          return { character };
+        } else {
+          return { hasCharacter: false };
+        }
+
+      } catch (error) {
+        console.error(error);
+        return ctx.internalServerError("Erro ao verificar personagem.");
+      }
+    },
+    
 }));
 

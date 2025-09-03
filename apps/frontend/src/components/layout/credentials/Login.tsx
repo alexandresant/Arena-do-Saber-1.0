@@ -60,12 +60,12 @@ export function Login() {
       }
 
       const jwt = session?.jwt
-      console.log("JWT: " + jwt)
+      //console.log("JWT: " + jwt)
 
       const userRole = session.user.role || "Authenticated"
 
       const { hasCharacter } = await getUserCharacters(jwt)
-      console.log("hasCharacter do back-end:", hasCharacter);
+      //console.log("hasCharacter do back-end:", hasCharacter);
 
       // Redireciona conforme a role
       if (userRole === "Authenticated") {

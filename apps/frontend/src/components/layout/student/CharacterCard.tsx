@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import type { Character } from "@/types/types"
 import { useTranslations } from "next-intl"
 
-export function CharacterCard({ name, nickName, strength, agility, constitution, intelligence, experience, nivel }: Character) {
+export function CharacterCard({ name, nickName, strength, agility, constitution, intelligence, experience, level }: Character) {
     const t = useTranslations('StudentDashboardPage.characters')
 
     return (
@@ -18,15 +18,15 @@ export function CharacterCard({ name, nickName, strength, agility, constitution,
                     <CardTitle>{nickName}</CardTitle>
                     <CardDescription className="mt-2">{name}</CardDescription>
                 </div>
-                <Badge className="bg-yellow-500">{t('nivel', { nivel })}</Badge>
+                <Badge className="bg-yellow-500">{t('nivel', { level })}</Badge>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="space-y-1">
                     <div className="flex flex-row justify-between items-center">
                         <Label>{t('experience')}</Label>
-                        <Label>50/100</Label>
+                        <Label>{experience} / 100</Label>
                     </div>
-                    <Progress value={50} className="w-[100%]"></Progress>
+                    <Progress value={experience} className="w-[100%]"></Progress>
                 </div>
                 <div className="mt-6 space-y-4">
                     <Label>{t('attributes')}</Label>
@@ -62,9 +62,6 @@ export function CharacterCard({ name, nickName, strength, agility, constitution,
                         <Badge>{constitution}</Badge>
                     </div>
                 </div>
-                
-
-
             </CardContent>
         </Card>
     )
