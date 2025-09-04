@@ -1,5 +1,5 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::character-template.character-template",
+  "key": "plugin_content_manager_configuration_content_types::api::subject.subject",
   "value": {
     "settings": {
       "bulkable": true,
@@ -33,62 +33,6 @@
           "sortable": true
         }
       },
-      "strenghtBase": {
-        "edit": {
-          "label": "strenghtBase",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "strenghtBase",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "intelligenceBase": {
-        "edit": {
-          "label": "intelligenceBase",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "intelligenceBase",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "agilityBase": {
-        "edit": {
-          "label": "agilityBase",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "agilityBase",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "constitutionBase": {
-        "edit": {
-          "label": "constitutionBase",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "constitutionBase",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "description": {
         "edit": {
           "label": "description",
@@ -103,60 +47,33 @@
           "sortable": true
         }
       },
-      "image": {
+      "icone": {
         "edit": {
-          "label": "image",
+          "label": "icone",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "image",
-          "searchable": true,
-          "sortable": true
+          "label": "icone",
+          "searchable": false,
+          "sortable": false
         }
       },
-      "points": {
+      "questions": {
         "edit": {
-          "label": "points",
+          "label": "questions",
           "description": "",
           "placeholder": "",
           "visible": true,
-          "editable": true
+          "editable": true,
+          "mainField": "answerA"
         },
         "list": {
-          "label": "points",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "defenseBase": {
-        "edit": {
-          "label": "defenseBase",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "defenseBase",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "level": {
-        "edit": {
-          "label": "level",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "level",
-          "searchable": true,
-          "sortable": true
+          "label": "questions",
+          "searchable": false,
+          "sortable": false
         }
       },
       "createdAt": {
@@ -230,11 +147,8 @@
       "list": [
         "id",
         "name",
-        "strenghtBase",
-        "intelligenceBase",
-        "agilityBase",
-        "constitutionBase",
-        "defenseBase"
+        "description",
+        "icone"
       ],
       "edit": [
         [
@@ -243,51 +157,23 @@
             "size": 6
           },
           {
-            "name": "strenghtBase",
-            "size": 4
-          }
-        ],
-        [
-          {
-            "name": "intelligenceBase",
-            "size": 4
-          },
-          {
-            "name": "agilityBase",
-            "size": 4
-          },
-          {
-            "name": "constitutionBase",
-            "size": 4
-          }
-        ],
-        [
-          {
             "name": "description",
             "size": 6
-          },
-          {
-            "name": "image",
-            "size": 6
           }
         ],
         [
           {
-            "name": "points",
-            "size": 4
+            "name": "icone",
+            "size": 6
           },
           {
-            "name": "defenseBase",
-            "size": 4
-          },
-          {
-            "name": "level",
-            "size": 4
+            "name": "questions",
+            "size": 6
           }
         ]
       ]
     },
-    "uid": "api::character-template.character-template"
+    "uid": "api::subject.subject"
   },
   "type": "object",
   "environment": null,

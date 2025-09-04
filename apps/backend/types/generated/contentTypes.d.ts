@@ -507,6 +507,40 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiClassClass extends Struct.CollectionTypeSchema {
+  collectionName: 'classes';
+  info: {
+    displayName: 'Class';
+    pluralName: 'classes';
+    singularName: 'class';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    code: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::class.class'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    student: Schema.Attribute.Relation<
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    teacher: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
   collectionName: 'questions';
   info: {
@@ -532,6 +566,7 @@ export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
       'api::question.question'
     > &
       Schema.Attribute.Private;
+    points: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     question: Schema.Attribute.Text;
     subject: Schema.Attribute.Relation<'manyToOne', 'api::subject.subject'>;
@@ -1053,6 +1088,8 @@ export interface PluginUsersPermissionsUser
       'oneToOne',
       'api::character.character'
     >;
+    class: Schema.Attribute.Relation<'oneToOne', 'api::class.class'>;
+    classes: Schema.Attribute.Relation<'manyToMany', 'api::class.class'>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1074,6 +1111,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    points: Schema.Attribute.Integer;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1106,6 +1144,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::character-template.character-template': ApiCharacterTemplateCharacterTemplate;
       'api::character.character': ApiCharacterCharacter;
+      'api::class.class': ApiClassClass;
       'api::question.question': ApiQuestionQuestion;
       'api::subject.subject': ApiSubjectSubject;
       'plugin::content-releases.release': PluginContentReleasesRelease;

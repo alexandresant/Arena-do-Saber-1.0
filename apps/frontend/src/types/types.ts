@@ -68,3 +68,20 @@ export interface CombatentStats{
 export interface TeacherDashboardProps{
   teacher: string
 }
+
+export interface ClassProps{
+  id: number
+  nome: string
+  alunos: {
+    id?: number
+    nome: string
+    level: number
+    nickName: string
+  }[]
+}
+
+export interface ClassCardProps{
+  turmas: ClassProps[]
+  turmaSelecionada: ClassProps | null
+  onClassSelect: (turma: ClassProps) => void
+}

@@ -40,6 +40,9 @@
       "relation": "manyToOne",
       "target": "api::subject.subject",
       "inversedBy": "questions"
+    },
+    "points": {
+      "type": "integer"
     }
   }
 }

@@ -71,6 +71,21 @@
       "relation": "oneToOne",
       "target": "api::character.character",
       "mappedBy": "users_permissions_user"
+    },
+    "points": {
+      "type": "integer"
+    },
+    "classes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::class.class",
+      "inversedBy": "student"
+    },
+    "class": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::class.class",
+      "mappedBy": "teacher"
     }
   }
 }

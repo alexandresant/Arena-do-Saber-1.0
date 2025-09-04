@@ -1,13 +1,13 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::plugin::users-permissions.user",
+  "key": "plugin_content_manager_configuration_content_types::api::question.question",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "username",
-      "defaultSortBy": "username",
+      "mainField": "answerA",
+      "defaultSortBy": "answerA",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,121 +19,93 @@
           "sortable": true
         }
       },
-      "username": {
+      "question": {
         "edit": {
-          "label": "username",
+          "label": "question",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "username",
+          "label": "question",
           "searchable": true,
           "sortable": true
         }
       },
-      "email": {
+      "answerA": {
         "edit": {
-          "label": "email",
+          "label": "answerA",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "email",
+          "label": "answerA",
           "searchable": true,
           "sortable": true
         }
       },
-      "provider": {
+      "answerB": {
         "edit": {
-          "label": "provider",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "provider",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "password": {
-        "edit": {
-          "label": "password",
+          "label": "answerB",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "password",
+          "label": "answerB",
           "searchable": true,
           "sortable": true
         }
       },
-      "resetPasswordToken": {
+      "answerC": {
         "edit": {
-          "label": "resetPasswordToken",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "resetPasswordToken",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "confirmationToken": {
-        "edit": {
-          "label": "confirmationToken",
-          "description": "",
-          "placeholder": "",
-          "visible": false,
-          "editable": true
-        },
-        "list": {
-          "label": "confirmationToken",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "confirmed": {
-        "edit": {
-          "label": "confirmed",
+          "label": "answerC",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "confirmed",
+          "label": "answerC",
           "searchable": true,
           "sortable": true
         }
       },
-      "blocked": {
+      "answerD": {
         "edit": {
-          "label": "blocked",
+          "label": "answerD",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "blocked",
+          "label": "answerD",
           "searchable": true,
           "sortable": true
         }
       },
-      "role": {
+      "correct": {
         "edit": {
-          "label": "role",
+          "label": "correct",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "correct",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "subject": {
+        "edit": {
+          "label": "subject",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -141,22 +113,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "role",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "character": {
-        "edit": {
-          "label": "character",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "nickName"
-        },
-        "list": {
-          "label": "character",
+          "label": "subject",
           "searchable": true,
           "sortable": true
         }
@@ -171,36 +128,6 @@
         },
         "list": {
           "label": "points",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "classes": {
-        "edit": {
-          "label": "classes",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "name"
-        },
-        "list": {
-          "label": "classes",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "class": {
-        "edit": {
-          "label": "class",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "name"
-        },
-        "list": {
-          "label": "class",
           "searchable": true,
           "sortable": true
         }
@@ -275,64 +202,54 @@
     "layouts": {
       "list": [
         "id",
-        "username",
-        "email",
-        "confirmed"
+        "question",
+        "answerA",
+        "answerB"
       ],
       "edit": [
         [
           {
-            "name": "username",
+            "name": "question",
             "size": 6
           },
           {
-            "name": "email",
+            "name": "answerA",
             "size": 6
           }
         ],
         [
           {
-            "name": "password",
+            "name": "answerB",
             "size": 6
           },
           {
-            "name": "confirmed",
-            "size": 4
-          }
-        ],
-        [
-          {
-            "name": "blocked",
-            "size": 4
-          },
-          {
-            "name": "role",
+            "name": "answerC",
             "size": 6
           }
         ],
         [
           {
-            "name": "character",
+            "name": "answerD",
+            "size": 6
+          },
+          {
+            "name": "correct",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "subject",
             "size": 6
           },
           {
             "name": "points",
             "size": 4
           }
-        ],
-        [
-          {
-            "name": "classes",
-            "size": 6
-          },
-          {
-            "name": "class",
-            "size": 6
-          }
         ]
       ]
     },
-    "uid": "plugin::users-permissions.user"
+    "uid": "api::question.question"
   },
   "type": "object",
   "environment": null,

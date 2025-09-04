@@ -6,7 +6,7 @@
   "locale": null,
   "permissions": [
     {
-      "documentId": "exm4p7gmplm112axdhkwyoeg",
+      "documentId": "uqp7s9wtsutxzfpsol6f4xua",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -20,7 +20,8 @@
           "description",
           "image",
           "points",
-          "defenseBase"
+          "defenseBase",
+          "level"
         ]
       },
       "conditions": [],
@@ -45,7 +46,7 @@
       "locale": null
     },
     {
-      "documentId": "pkij9mvx2y5hh2s6bzi1o24e",
+      "documentId": "sxsld9q8aafgx7o7tvzznz5g",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -59,14 +60,15 @@
           "description",
           "image",
           "points",
-          "defenseBase"
+          "defenseBase",
+          "level"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "bummx2flijrjabv29jvd42wu",
+      "documentId": "jatn901e81zimgza1552s4j3",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character-template.character-template",
@@ -80,7 +82,8 @@
           "description",
           "image",
           "points",
-          "defenseBase"
+          "defenseBase",
+          "level"
         ]
       },
       "conditions": [],
@@ -186,6 +189,233 @@
           "mana",
           "magicAttack",
           "evasion"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "tr9gj7ku6q3o3uiz12qx15h3",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::class.class",
+      "properties": {
+        "fields": [
+          "name",
+          "code",
+          "teacher",
+          "student"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "u7s7aydhsa346oadf6zv9917",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::class.class",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ei62tbeikzqbxk6uu6xyxjuo",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::class.class",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "fns7puoq739ehvsclmkjfqkj",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::class.class",
+      "properties": {
+        "fields": [
+          "name",
+          "code",
+          "teacher",
+          "student"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "g6ozhzfsn6kikttq37vu827j",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::class.class",
+      "properties": {
+        "fields": [
+          "name",
+          "code",
+          "teacher",
+          "student"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "dd50gjr52x6lswmznv6w5lfw",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::question.question",
+      "properties": {
+        "fields": [
+          "question",
+          "answerA",
+          "answerB",
+          "answerC",
+          "answerD",
+          "correct",
+          "subject",
+          "points"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "jhw41lnbomhcahv745aabbo1",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::question.question",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "awyarvknpee20zxq1voijqls",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::question.question",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "yf8h44ks3c3nia54jo91nd5p",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::question.question",
+      "properties": {
+        "fields": [
+          "question",
+          "answerA",
+          "answerB",
+          "answerC",
+          "answerD",
+          "correct",
+          "subject",
+          "points"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "u80ukz45r8hglmjafwly9sc9",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::question.question",
+      "properties": {
+        "fields": [
+          "question",
+          "answerA",
+          "answerB",
+          "answerC",
+          "answerD",
+          "correct",
+          "subject",
+          "points"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "zu503ag7lp1b2pg0ljb8t5hz",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::subject.subject",
+      "properties": {
+        "fields": [
+          "name",
+          "description",
+          "icone",
+          "questions"
+        ],
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ap5w3vjhflyw18hh90arcafp",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::subject.subject",
+      "properties": {
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "jptgw40cv8gfay2h4kpfvx1q",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::subject.subject",
+      "properties": {
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "j6qntukc2y42nn3rxtd1tp61",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::subject.subject",
+      "properties": {
+        "fields": [
+          "name",
+          "description",
+          "icone",
+          "questions"
+        ],
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ohuprwl0auc31lcuweoqmqnp",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::subject.subject",
+      "properties": {
+        "fields": [
+          "name",
+          "description",
+          "icone",
+          "questions"
+        ],
+        "locales": [
+          "en"
         ]
       },
       "conditions": [],
@@ -489,7 +719,7 @@
       "locale": null
     },
     {
-      "documentId": "fpl8zt456i48akfyga4ss8hv",
+      "documentId": "t6fff5xydpjh06ghljkrkmjy",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -504,7 +734,10 @@
           "confirmed",
           "blocked",
           "role",
-          "character"
+          "character",
+          "points",
+          "classes",
+          "class"
         ]
       },
       "conditions": [],
@@ -529,7 +762,7 @@
       "locale": null
     },
     {
-      "documentId": "qu4g6t0i82k8max5wp5omv45",
+      "documentId": "b6w3g5cg5m2r5j65wcoa659l",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -544,14 +777,17 @@
           "confirmed",
           "blocked",
           "role",
-          "character"
+          "character",
+          "points",
+          "classes",
+          "class"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "ufgjk39r7ugrrgyo92a8m1fl",
+      "documentId": "szo2vxc09s9y6dh474z5zx20",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -566,7 +802,10 @@
           "confirmed",
           "blocked",
           "role",
-          "character"
+          "character",
+          "points",
+          "classes",
+          "class"
         ]
       },
       "conditions": [],
