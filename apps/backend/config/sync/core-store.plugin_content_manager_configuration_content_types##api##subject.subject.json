@@ -61,21 +61,6 @@
           "sortable": false
         }
       },
-      "questions": {
-        "edit": {
-          "label": "questions",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "answerA"
-        },
-        "list": {
-          "label": "questions",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -164,10 +149,6 @@
         [
           {
             "name": "icone",
-            "size": 6
-          },
-          {
-            "name": "questions",
             "size": 6
           }
         ]

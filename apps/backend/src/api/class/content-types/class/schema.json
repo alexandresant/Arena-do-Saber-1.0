@@ -28,6 +28,15 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "classes"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "activities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "classId"
     }
   }
 }

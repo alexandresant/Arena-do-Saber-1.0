@@ -71,12 +71,16 @@ export interface TeacherDashboardProps{
 
 export interface ClassProps{
   id: number
-  nome: string
-  alunos: {
+  name: string
+  student: {
     id?: number
-    nome: string
+    username: string
     level: number
     nickName: string
+  }[]
+  activities?:{
+    id: number
+    name: string
   }[]
 }
 
@@ -84,4 +88,28 @@ export interface ClassCardProps{
   turmas: ClassProps[]
   turmaSelecionada: ClassProps | null
   onClassSelect: (turma: ClassProps) => void
+}
+
+export interface ActivityProps{
+  name: string
+  classId: number
+ 
+}
+
+export interface CreateClassProps{
+  name: string
+  code: string
+  teacher?: number
+  subject: string
+}
+
+export interface QuestionProps {
+  description: string
+  answerA: string
+  answerB: string
+  answerC: string
+  answerD: string
+  correct: "A" | "B" | "C" | "D"
+  points: number
+  activityId: number
 }

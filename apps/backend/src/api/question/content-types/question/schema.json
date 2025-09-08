@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "question": {
+    "description": {
       "type": "text"
     },
     "answerA": {
@@ -35,14 +35,14 @@
         "D"
       ]
     },
-    "subject": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::subject.subject",
-      "inversedBy": "questions"
-    },
     "points": {
       "type": "integer"
+    },
+    "activityId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::activity.activity",
+      "inversedBy": "questions"
     }
   }
 }

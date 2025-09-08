@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
             identifier: credentials?.email,
             password: credentials?.password,
           })
+          console.log(res.data)
 
           const user = res.data
           const jwt = res.data.jwt
@@ -37,14 +38,23 @@ export const authOptions: NextAuthOptions = {
               null
             )
           }
+          
+          const resUser = await axios.get(`${STRAPI_URL}/api/users/me?populate=role`, {
+            headers: {
+              Authorization: `Bearer ${jwt}`
+            }
+          })
+          console.log("Dados completos do usuário:", resUser.data)
+          const role = resUser.data.role?.name
+
+          
           return {
             id: user.user.id,
             name: user.user.username,
             email: user.user.email,
-            role: user.user.role?.name, // guardar o papel do usuário
             jwt, // incluir o JWT na resposta do usuário
+            role
           }
-          return null
         } catch (error) {
           console.error("Login error", error)
           return null
@@ -60,7 +70,7 @@ export const authOptions: NextAuthOptions = {
     if (user) {
       token.id = user.id
       token.jwt = (user as any).jwt
-      token.role = (user as any).role // 🔹 salva a role no token
+      token.role = user.role // 🔹 salva a role no token
     }
     return token
   },

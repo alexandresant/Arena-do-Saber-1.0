@@ -1,5 +1,5 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::class.class",
+  "key": "plugin_content_manager_configuration_content_types::api::activity.activity",
   "value": {
     "settings": {
       "bulkable": true,
@@ -33,67 +33,9 @@
           "sortable": true
         }
       },
-      "code": {
+      "classId": {
         "edit": {
-          "label": "code",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "code",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "teacher": {
-        "edit": {
-          "label": "teacher",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "username"
-        },
-        "list": {
-          "label": "teacher",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "student": {
-        "edit": {
-          "label": "student",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "username"
-        },
-        "list": {
-          "label": "student",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "subject": {
-        "edit": {
-          "label": "subject",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "subject",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "activities": {
-        "edit": {
-          "label": "activities",
+          "label": "classId",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -101,7 +43,22 @@
           "mainField": "name"
         },
         "list": {
-          "label": "activities",
+          "label": "classId",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "questions": {
+        "edit": {
+          "label": "questions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "answerA"
+        },
+        "list": {
+          "label": "questions",
           "searchable": false,
           "sortable": false
         }
@@ -177,7 +134,7 @@
       "list": [
         "id",
         "name",
-        "code",
+        "classId",
         "createdAt"
       ],
       "edit": [
@@ -187,33 +144,19 @@
             "size": 6
           },
           {
-            "name": "code",
+            "name": "classId",
             "size": 6
           }
         ],
         [
           {
-            "name": "teacher",
-            "size": 6
-          },
-          {
-            "name": "student",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "subject",
-            "size": 6
-          },
-          {
-            "name": "activities",
+            "name": "questions",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "api::class.class"
+    "uid": "api::activity.activity"
   },
   "type": "object",
   "environment": null,

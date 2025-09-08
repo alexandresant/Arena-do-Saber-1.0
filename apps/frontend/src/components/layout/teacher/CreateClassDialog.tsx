@@ -7,12 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { createClass } from "@/lib/api/createClass"
 
 
 const formSchema = z.object({
     name: z.string().min(3, "O nome da turma deve ter no mínimo 3 letras"),
     code: z.string().min(4, "Código deve ter ao menos 4 digitos"),
-    subject: z.string().min(3, "Digite uma matéria para a turma")
+    subject: z.string().min(3, "Digite uma matéria para a turma"),
 })
 
 export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: boolean, setOpenDialog: Dispatch<SetStateAction<boolean>> }) {
@@ -28,11 +29,12 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
 
     async function onSubmit(data: FormClass) {
         try {
-            console.log("Dados: ", data)
+            const response = await createClass(data)
             form.reset()
             setOpenDialog(false)
         }
         catch (error) {
+            
             console.error("Erro ao enviar formulário" + error)
         }
     }

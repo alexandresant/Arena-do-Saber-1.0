@@ -19,16 +19,16 @@
           "sortable": true
         }
       },
-      "question": {
+      "description": {
         "edit": {
-          "label": "question",
+          "label": "description",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "description",
           "searchable": true,
           "sortable": true
         }
@@ -103,21 +103,6 @@
           "sortable": true
         }
       },
-      "subject": {
-        "edit": {
-          "label": "subject",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "name"
-        },
-        "list": {
-          "label": "subject",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "points": {
         "edit": {
           "label": "points",
@@ -128,6 +113,21 @@
         },
         "list": {
           "label": "points",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "activityId": {
+        "edit": {
+          "label": "activityId",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "activityId",
           "searchable": true,
           "sortable": true
         }
@@ -202,16 +202,12 @@
     "layouts": {
       "list": [
         "id",
-        "question",
         "answerA",
-        "answerB"
+        "answerB",
+        "description"
       ],
       "edit": [
         [
-          {
-            "name": "question",
-            "size": 6
-          },
           {
             "name": "answerA",
             "size": 6
@@ -239,12 +235,18 @@
         ],
         [
           {
-            "name": "subject",
+            "name": "points",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "description",
             "size": 6
           },
           {
-            "name": "points",
-            "size": 4
+            "name": "activityId",
+            "size": 6
           }
         ]
       ]

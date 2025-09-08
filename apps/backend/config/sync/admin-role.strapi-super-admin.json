@@ -6,6 +6,69 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "t7wbdsfwt2xroee63q1vyf2p",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::activity.activity",
+      "properties": {
+        "fields": [
+          "name",
+          "classId",
+          "questions"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "rkvz1sfqvykiayzvcskpo5oq",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::activity.activity",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "hhcla7qinjg6ps3u78k62eyw",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::activity.activity",
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ntxlp4wnl4d2uif12ngjxwz6",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::activity.activity",
+      "properties": {
+        "fields": [
+          "name",
+          "classId",
+          "questions"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "nhp3hbgshwfs1cg7z6wjgsze",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::activity.activity",
+      "properties": {
+        "fields": [
+          "name",
+          "classId",
+          "questions"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
       "documentId": "uqp7s9wtsutxzfpsol6f4xua",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
@@ -195,7 +258,7 @@
       "locale": null
     },
     {
-      "documentId": "tr9gj7ku6q3o3uiz12qx15h3",
+      "documentId": "n4sw57j6y6kupfjbc1w56z5r",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -204,7 +267,9 @@
           "name",
           "code",
           "teacher",
-          "student"
+          "student",
+          "subject",
+          "activities"
         ]
       },
       "conditions": [],
@@ -229,7 +294,7 @@
       "locale": null
     },
     {
-      "documentId": "fns7puoq739ehvsclmkjfqkj",
+      "documentId": "btg2e0c7kg49j9auv74gqkv8",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -238,14 +303,16 @@
           "name",
           "code",
           "teacher",
-          "student"
+          "student",
+          "subject",
+          "activities"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "g6ozhzfsn6kikttq37vu827j",
+      "documentId": "kornpbst4cxv6q55ndpo0aa7",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -254,27 +321,29 @@
           "name",
           "code",
           "teacher",
-          "student"
+          "student",
+          "subject",
+          "activities"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "dd50gjr52x6lswmznv6w5lfw",
+      "documentId": "j26vo7ixpn74u8p8sp7oxbob",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::question.question",
       "properties": {
         "fields": [
-          "question",
+          "description",
           "answerA",
           "answerB",
           "answerC",
           "answerD",
           "correct",
-          "subject",
-          "points"
+          "points",
+          "activityId"
         ]
       },
       "conditions": [],
@@ -299,47 +368,47 @@
       "locale": null
     },
     {
-      "documentId": "yf8h44ks3c3nia54jo91nd5p",
+      "documentId": "fpzhm21em20nzvoun9cgy7sg",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::question.question",
       "properties": {
         "fields": [
-          "question",
+          "description",
           "answerA",
           "answerB",
           "answerC",
           "answerD",
           "correct",
-          "subject",
-          "points"
+          "points",
+          "activityId"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "u80ukz45r8hglmjafwly9sc9",
+      "documentId": "nr53yb2zldz7iwuy27n2u2w6",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::question.question",
       "properties": {
         "fields": [
-          "question",
+          "description",
           "answerA",
           "answerB",
           "answerC",
           "answerD",
           "correct",
-          "subject",
-          "points"
+          "points",
+          "activityId"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "zu503ag7lp1b2pg0ljb8t5hz",
+      "documentId": "m7u0gey76sip9nvykl32ecba",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -347,8 +416,7 @@
         "fields": [
           "name",
           "description",
-          "icone",
-          "questions"
+          "icone"
         ],
         "locales": [
           "en"
@@ -384,7 +452,7 @@
       "locale": null
     },
     {
-      "documentId": "j6qntukc2y42nn3rxtd1tp61",
+      "documentId": "tju0jfc4fbt4mxtwct6nkn9d",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -392,8 +460,7 @@
         "fields": [
           "name",
           "description",
-          "icone",
-          "questions"
+          "icone"
         ],
         "locales": [
           "en"
@@ -403,7 +470,7 @@
       "locale": null
     },
     {
-      "documentId": "ohuprwl0auc31lcuweoqmqnp",
+      "documentId": "zu3luz34765zjf5wzgt6xnzu",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -411,8 +478,7 @@
         "fields": [
           "name",
           "description",
-          "icone",
-          "questions"
+          "icone"
         ],
         "locales": [
           "en"

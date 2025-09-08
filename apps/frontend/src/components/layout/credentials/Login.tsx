@@ -62,24 +62,27 @@ export function Login() {
       const jwt = session?.jwt
       //console.log("JWT: " + jwt)
 
-      const userRole = session.user.role || "Authenticated"
-
+      const userRole = session.user.role
       const { hasCharacter } = await getUserCharacters(jwt)
       //console.log("hasCharacter do back-end:", hasCharacter);
-
+      console.log("User is: ", userRole)
       // Redireciona conforme a role
+
       if (userRole === "Authenticated") {
+        // student flow
         if (hasCharacter) {
           router.replace("/student-dashboard")
-        }
-        else {
+        } else {
           router.replace("/create-character")
         }
       } else if (userRole === "Teacher") {
         router.replace("/teacher-dashboard")
       } else if (userRole === "Admin") {
         router.replace("/admin-dashboard")
+      } else {
+        router.replace("/login")
       }
+
     } catch (error) {
       if (error instanceof Error) alert(error.message)
       else alert("Erro desconhecido")

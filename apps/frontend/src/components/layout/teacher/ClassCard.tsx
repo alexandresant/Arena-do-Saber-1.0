@@ -31,7 +31,7 @@ export function ClassCard({turmas, turmaSelecionada, onClassSelect }: ClassCardP
                         <div className="flex flex-col space-y-2">
                             <Label>Turma</Label>
                             <Label className="text-muted-foreground">
-                                {turmaSelecionada?.nome ?? "Selecione uma turma para ver as informações"
+                                {turmaSelecionada?.name ?? "Selecione uma turma para ver as informações"
                                 }
                             </Label>
                         </div>
@@ -46,7 +46,7 @@ export function ClassCard({turmas, turmaSelecionada, onClassSelect }: ClassCardP
                         <DialogTitle>Selecione um turma</DialogTitle>
                         <DialogDescription>Selecione uma turma para mostrar as informações e criar atividades</DialogDescription>
                     </DialogHeader>
-                    <Select value={turmaSelecionada?.nome} onValueChange={handleSelectChange}>
+                    <Select value={turmaSelecionada?.name} onValueChange={handleSelectChange}>
                         <SelectTrigger>
                             <SelectValue placeholder="Escolha uma turma"/>
                         </SelectTrigger>
@@ -56,7 +56,7 @@ export function ClassCard({turmas, turmaSelecionada, onClassSelect }: ClassCardP
                                     key={op.id}
                                     value={String(op.id)}
                                 >
-                                    {op.nome}
+                                    {op.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>

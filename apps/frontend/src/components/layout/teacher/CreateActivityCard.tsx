@@ -1,246 +1,127 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
+"use client"
+
 import { useState } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { FilePlus2 } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createActivity } from "@/lib/api/createActivty"
+import { CreateQuestionDialog } from "./CreateQuestionsDialog"
 
 const mockTurmas = [
-    { id: 1, name: "Turma A - 1º Ano" },
-    { id: 2, name: "Turma B - 2º Ano" },
-    { id: 3, name: "Turma C - 3º Ano" },
-    { id: 4, name: "Turma D - 4º Ano" },
-    { id: 5, name: "Turma E - 5º Ano" },
-    { id: 6, name: "Turma F - 6º Ano" },
-    { id: 7, name: "Turma G - 7º Ano" },
-    { id: 8, name: "Turma H - 8º Ano" },
-    { id: 9, name: "Turma I - 9º Ano" },
-    { id: 10, name: "Turma J - 1º EM" }
+  { id: 1, name: "Turma A - 1º Ano" },
+  { id: 2, name: "Turma B - 2º Ano" },
+  { id: 3, name: "Turma C - 3º Ano" },
+  { id: 4, name: "Turma D - 4º Ano" },
 ]
 
-const formSchema = z.object({
-    question: z.string().min(3, "Digite uma questão válida  !"),
-    answerA: z.string().min(1, "Digite uma resposta"),
-    answerB: z.string().min(1, "Digite uma resposta"),
-    answerC: z.string().min(1, "Digite uma resposta"),
-    answerD: z.string().min(1, "Digite uma resposta"),
-    correct: z.enum(["A", "B", "C", "D"], "Você deve indicar a opção correta!"),
-    points: z.number().min(100, "Defina a quantidade de pontos, mínimo 100!"),
-    class: z.string().min(1, "Turma é obrigatório!"),
-    name: z.string().min(3, "Digite um nome para a sua atividade!")
+const activitySchema = z.object({
+  name: z.string().min(3, "Digite um nome para a atividade!"),
+  classId: z.string().min(1, "Turma é obrigatória!"),
 })
 
+type ActivityForm = z.infer<typeof activitySchema>
+
 export function CreateActivityCard() {
-    const [openDialog, setOpenDialog] = useState(false)
+  const [openActivityDialog, setOpenActivityDialog] = useState(false)
+  const [openQuestionDialog, setOpenQuestionDialog] = useState(false)
+  const [activityId, setActivityId] = useState<number | null>(null)
 
-    type FormActivty = z.infer<typeof formSchema>
-    const form = useForm<FormActivty>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            question: "",
-            correct: "A",
-            points: 0,
-            name: "",
-            class: "",
-            answerA: "",
-            answerB: "",
-            answerC: "",
-            answerD: ""
-        }
-    })
+  const form = useForm<ActivityForm>({
+    resolver: zodResolver(activitySchema),
+    defaultValues: { name: "", classId: "" },
+  })
 
-    async function onSubmit(data: FormActivty) {
-        try {
-            console.log("Dados do formulário", data)
-            form.reset()
-            setOpenDialog(false)
-        }
-        catch (error) {
-            console.error("Não foi possível enviar o formulário: ", error)
-            form.reset()
-        }
+  async function onSubmit(values: ActivityForm) {
+    try {
+      const res = await createActivity(values)
+      const id = res.data.id
+
+      setActivityId(id)
+      setOpenActivityDialog(false)
+      setOpenQuestionDialog(true) // abre dialog de questões automaticamente
+    } catch (err) {
+      console.error("Erro ao criar atividade", err)
     }
+  }
 
-    return (
-        <>
-            <Card
-                onClick={() => setOpenDialog(true)}
-            >
-                <CardHeader className="flex flex-row items-center justify-between">
-                    <div>
-                        <CardTitle>+ Criar nova atividade</CardTitle>
-                        <CardDescription>Clique aqui e crie uma nova atividade</CardDescription>
-                    </div>
-                    <FilePlus2 className="w-8 h-8 text-blue-600" />
-                </CardHeader>
-            </Card>
+  return (
+    <>
+      <Card onClick={() => setOpenActivityDialog(true)}>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>+ Criar nova atividade</CardTitle>
+            <CardDescription>Clique aqui e crie uma nova atividade</CardDescription>
+          </div>
+          <FilePlus2 className="w-8 h-8 text-blue-600" />
+        </CardHeader>
+      </Card>
 
-            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Adicionar nova atividade</DialogTitle>
-                        <DialogDescription>Adicione o nome da atividade </DialogDescription>
-                    </DialogHeader>
-                    <Form {...form}>
-                        <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
-                            <FormField
-                                control={form.control}
-                                name="class"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Turma</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Selecione uma classe" />
-                                                </SelectTrigger>
-                                            </FormControl>
+      <Dialog open={openActivityDialog} onOpenChange={setOpenActivityDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Criar nova atividade</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="classId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Turma</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione uma turma" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {mockTurmas.map((t) => (
+                          <SelectItem key={t.id} value={String(t.id)}>
+                            {t.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome da Atividade</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Ex: Prova de Matemática" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">
+                Criar Atividade
+              </Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
 
-                                            <SelectContent>
-                                                {mockTurmas.map((op) => (
-                                                    <SelectItem
-                                                        key={op.id}
-                                                        value={op.name}
-                                                    >
-                                                        {op.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Nome</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Atividade exemplo"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="question"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Questão</FormLabel>
-                                        <FormControl>
-                                            <Textarea
-                                                placeholder="Questão exemplo"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="answerA"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Repostas</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Resposta A"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="answerB"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Resposta B"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="answerC"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Resposta C"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="answerD"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Resposta D"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="points"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Pontos</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="number"
-                                                placeholder="0"
-                                                {...field}
-                                                onChange={(e) => field.onChange(Number(e.target.value))}
-                                                value={field.value === 0 ? "" : field.value}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Button type="submit" className="w-full">Cadastrar questão</Button>
-                        </form>
-                    </Form>
-                </DialogContent>
-            </Dialog>
-        </>
-    )
+      {activityId && (
+        <CreateQuestionDialog
+          open={openQuestionDialog}
+          onOpenChange={setOpenQuestionDialog}
+          activityId={activityId}
+        />
+      )}
+    </>
+  )
 }

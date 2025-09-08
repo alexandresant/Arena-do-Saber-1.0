@@ -45,12 +45,6 @@
         "videos",
         "audios"
       ]
-    },
-    "questions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::question.question",
-      "mappedBy": "subject"
     }
   }
 }

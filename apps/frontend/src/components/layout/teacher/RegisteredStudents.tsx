@@ -8,7 +8,7 @@ export function RegisteredStudents({ turma }: { turma: ClassProps | null }) {
         <Card>
             <CardHeader>
                 <CardTitle>Alunos nesta turma</CardTitle>
-                <CardDescription>Turma {turma?.nome}</CardDescription>
+                <CardDescription>Turma {turma?.name}</CardDescription>
             </CardHeader>
             <CardContent>
                 {turma ? (
@@ -21,11 +21,11 @@ export function RegisteredStudents({ turma }: { turma: ClassProps | null }) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {turma.alunos.map((tu) => (
+                            {turma.student.map((tu) => (
                                 <TableRow
                                     key={tu.id}
                                 >
-                                    <TableCell>{tu.nome}</TableCell>
+                                    <TableCell>{tu.username}</TableCell>
                                     <TableCell>{tu.nickName}</TableCell>
                                     <TableCell>{tu.level}</TableCell>
                                 </TableRow>
