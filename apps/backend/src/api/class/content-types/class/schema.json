@@ -15,7 +15,8 @@
       "type": "string"
     },
     "code": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "teacher": {
       "type": "relation",

@@ -19,6 +19,7 @@ import { RankingFightersCard } from "./RankingFightersCard"
 import { useEffect, useState } from "react"
 import type { Character } from "@/types/types"
 import { getCharacterStatus } from "@/lib/api/createCharacter"
+import {JoinClassForm }from "./SelectClassCard"
 
 export function StudentDashboard() {
 
@@ -38,7 +39,7 @@ export function StudentDashboard() {
                 const characterData = await getCharacterStatus(session?.data.jwt, Number(session.data.user.id))
                 if(characterData.character){
                     setCharacterStatus(characterData.character)
-                    console.log("Dados carregados: " , characterData.character)
+                    //console.log("Dados carregados: " , characterData.character)
                 }
             }
             catch(error){
@@ -54,6 +55,7 @@ export function StudentDashboard() {
                 <div className="flex flex-col">
                     <CardTitle className="text-2xl">{t('title')}</CardTitle>
                     <CardDescription>{t('description', { userName })}</CardDescription>
+                                            <JoinClassForm />
                 </div>
                 <Button
                     className="bg-transparent border text-gray-100 hover:text-gray-700"

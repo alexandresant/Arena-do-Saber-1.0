@@ -6,7 +6,7 @@
   "locale": null,
   "permissions": [
     {
-      "documentId": "t7wbdsfwt2xroee63q1vyf2p",
+      "documentId": "fmh4zc1ajiubcd74ho3l9gc4",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::activity.activity",
@@ -39,7 +39,7 @@
       "locale": null
     },
     {
-      "documentId": "ntxlp4wnl4d2uif12ngjxwz6",
+      "documentId": "owazh3c9wm0qhm3ooq5lczd9",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::activity.activity",
@@ -54,7 +54,7 @@
       "locale": null
     },
     {
-      "documentId": "nhp3hbgshwfs1cg7z6wjgsze",
+      "documentId": "mp63zzscpx7m4tvgzl9ahfg9",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::activity.activity",
@@ -258,7 +258,7 @@
       "locale": null
     },
     {
-      "documentId": "n4sw57j6y6kupfjbc1w56z5r",
+      "documentId": "riavj591actjii6qipqf3ifx",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -294,7 +294,7 @@
       "locale": null
     },
     {
-      "documentId": "btg2e0c7kg49j9auv74gqkv8",
+      "documentId": "sheaqenzykaj7oabeawic43x",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -312,7 +312,7 @@
       "locale": null
     },
     {
-      "documentId": "kornpbst4cxv6q55ndpo0aa7",
+      "documentId": "mjywbd285pb23fj4ljoti9bi",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -330,7 +330,7 @@
       "locale": null
     },
     {
-      "documentId": "j26vo7ixpn74u8p8sp7oxbob",
+      "documentId": "oy3iw289lagj68t1mgwzlb43",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::question.question",
@@ -368,7 +368,7 @@
       "locale": null
     },
     {
-      "documentId": "fpzhm21em20nzvoun9cgy7sg",
+      "documentId": "al84rut1luojjlr1yrpg4cdv",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::question.question",
@@ -388,7 +388,7 @@
       "locale": null
     },
     {
-      "documentId": "nr53yb2zldz7iwuy27n2u2w6",
+      "documentId": "gtsopl5g2s2fnipli39224n6",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::question.question",

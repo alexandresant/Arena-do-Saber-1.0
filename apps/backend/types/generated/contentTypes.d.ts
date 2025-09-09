@@ -552,7 +552,7 @@ export interface ApiClassClass extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::activity.activity'
     >;
-    code: Schema.Attribute.String;
+    code: Schema.Attribute.String & Schema.Attribute.Unique;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

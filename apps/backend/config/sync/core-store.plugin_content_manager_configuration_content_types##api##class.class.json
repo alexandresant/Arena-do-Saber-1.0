@@ -195,10 +195,6 @@
           {
             "name": "teacher",
             "size": 6
-          },
-          {
-            "name": "student",
-            "size": 6
           }
         ],
         [
@@ -208,6 +204,12 @@
           },
           {
             "name": "activities",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "student",
             "size": 6
           }
         ]

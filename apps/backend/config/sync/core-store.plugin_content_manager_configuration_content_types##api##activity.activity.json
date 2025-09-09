@@ -55,7 +55,7 @@
           "placeholder": "",
           "visible": true,
           "editable": true,
-          "mainField": "answerA"
+          "mainField": "correct"
         },
         "list": {
           "label": "questions",
@@ -131,12 +131,6 @@
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "name",
-        "classId",
-        "createdAt"
-      ],
       "edit": [
         [
           {
@@ -154,6 +148,12 @@
             "size": 6
           }
         ]
+      ],
+      "list": [
+        "id",
+        "name",
+        "classId",
+        "createdAt"
       ]
     },
     "uid": "api::activity.activity"
