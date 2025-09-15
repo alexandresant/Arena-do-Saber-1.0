@@ -1,7 +1,11 @@
 // src/app/api/auth/[...nextauth]/route.ts
-import NextAuth from "next-auth";
-import type { NextAuthOptions } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
+import NextAuth from "next-auth"
+import type { NextAuthOptions } from "next-auth"
+import GitHubProvider from "next-auth/providers/github"
+import CredentialsProvider from "next-auth/providers/credentials"
+import axios from "axios"
+
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
 // Defina as suas opções de autenticação
 export const authOptions: NextAuthOptions = {
@@ -11,12 +15,78 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
     }),
-    // Adicione outros provedores aqui, se necessário
+    // Provedor de credenciais (Strapi)
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        try {
+          const res = await axios.post(`${STRAPI_URL}/api/auth/local`, {
+            identifier: credentials?.email,
+            password: credentials?.password,
+          })
+          console.log(res.data)
+
+          const user = res.data
+          const jwt = res.data.jwt
+
+          if (!user) {
+            return (
+              null
+            )
+          }
+          
+          const resUser = await axios.get(`${STRAPI_URL}/api/users/me?populate=role`, {
+            headers: {
+              Authorization: `Bearer ${jwt}`
+            }
+          })
+          console.log("Dados completos do usuário:", resUser.data)
+          const role = resUser.data.role?.name
+
+          
+          return {
+            id: user.user.id,
+            name: user.user.username,
+            email: user.user.email,
+            jwt, // incluir o JWT na resposta do usuário
+            role
+          }
+        } catch (error) {
+          console.error("Login error", error)
+          return null
+        }
+      },
+    }),
   ],
-};
+  session: {
+    strategy: "jwt", // usar JWT em vez de salvar em banco
+  },
+  callbacks: {
+  async jwt({ token, user, }) {
+    if (user) {
+      token.id = user.id
+      token.jwt = (user as any).jwt
+      token.role = user.role // 🔹 salva a role no token
+    }
+    return token
+  },
+  async session({ session, token }) {
+    if (token) {
+      session.user.id = token.id as string
+      session.user.role = (token as any).role // 🔹 salva a role na session
+      ;(session as any).jwt = token.jwt
+    }
+    return session
+  },
+}
+}
 
 // Crie o handler com base nas opções
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions)
 
 // Exporte os métodos GET e POST
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }

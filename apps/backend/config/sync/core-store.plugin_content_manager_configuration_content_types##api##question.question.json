@@ -1,0 +1,259 @@
+{
+  "key": "plugin_content_manager_configuration_content_types::api::question.question",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "mainField": "answerA",
+      "defaultSortBy": "answerA",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "description",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "description",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "answerA": {
+        "edit": {
+          "label": "answerA",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "answerA",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "answerB": {
+        "edit": {
+          "label": "answerB",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "answerB",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "answerC": {
+        "edit": {
+          "label": "answerC",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "answerC",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "answerD": {
+        "edit": {
+          "label": "answerD",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "answerD",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "correct": {
+        "edit": {
+          "label": "correct",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "correct",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "points": {
+        "edit": {
+          "label": "points",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "points",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "activityId": {
+        "edit": {
+          "label": "activityId",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "activityId",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "updatedAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "updatedAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "updatedBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "updatedBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "answerA",
+        "answerB",
+        "description"
+      ],
+      "edit": [
+        [
+          {
+            "name": "answerA",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "answerB",
+            "size": 6
+          },
+          {
+            "name": "answerC",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "answerD",
+            "size": 6
+          },
+          {
+            "name": "correct",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "points",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "description",
+            "size": 6
+          },
+          {
+            "name": "activityId",
+            "size": 6
+          }
+        ]
+      ]
+    },
+    "uid": "api::question.question"
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

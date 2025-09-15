@@ -6,6 +6,71 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "tc5924rqnr35z7utbq4s7avg",
+      "action": "api::character-template.character-template.create",
+      "locale": null
+    },
+    {
+      "documentId": "tcqmp4rgv1jjoe7nv87cjdko",
+      "action": "api::character-template.character-template.delete",
+      "locale": null
+    },
+    {
+      "documentId": "jiuwm6cdwq6nqojjybxfraeu",
+      "action": "api::character-template.character-template.find",
+      "locale": null
+    },
+    {
+      "documentId": "c3mw7g3e32blsik9bnmfvpi6",
+      "action": "api::character-template.character-template.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "c21b0ag9lcvra6goxq838gii",
+      "action": "api::character-template.character-template.update",
+      "locale": null
+    },
+    {
+      "documentId": "rvhe8kunijmdkwer19y0u7z2",
+      "action": "api::character.character.checkCharacter",
+      "locale": null
+    },
+    {
+      "documentId": "yr1rrtpd7mxxi4bpbtj0xdtt",
+      "action": "api::character.character.create",
+      "locale": null
+    },
+    {
+      "documentId": "gqe7t766653x0yza38fc6uvb",
+      "action": "api::character.character.createCharacter",
+      "locale": null
+    },
+    {
+      "documentId": "mrq4cx6pib8nq88hles7meta",
+      "action": "api::character.character.delete",
+      "locale": null
+    },
+    {
+      "documentId": "d92qljbh7196ny6wh0bfaw51",
+      "action": "api::character.character.find",
+      "locale": null
+    },
+    {
+      "documentId": "dsebguw9bi7diknfah5juulz",
+      "action": "api::character.character.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "t7ao3xpze6jaawtja13lkg3d",
+      "action": "api::character.character.update",
+      "locale": null
+    },
+    {
+      "documentId": "ubf5mmkwxvaxs793jgow2amd",
+      "action": "api::me-full.me-full.me",
+      "locale": null
+    },
+    {
       "documentId": "jo3g3dopfpqtaev3w7ouyczo",
       "action": "plugin::content-type-builder.components.getComponent",
       "locale": null

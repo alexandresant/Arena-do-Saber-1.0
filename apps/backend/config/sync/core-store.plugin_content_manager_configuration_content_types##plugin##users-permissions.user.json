@@ -146,6 +146,65 @@
           "sortable": true
         }
       },
+      "character": {
+        "edit": {
+          "label": "character",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "nickName"
+        },
+        "list": {
+          "label": "character",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "points": {
+        "edit": {
+          "label": "points",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "points",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "classes": {
+        "edit": {
+          "label": "classes",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "classes",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "class": {
+        "edit": {
+          "label": "class",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "class",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -248,6 +307,26 @@
           },
           {
             "name": "role",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "character",
+            "size": 6
+          },
+          {
+            "name": "points",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "classes",
+            "size": 6
+          },
+          {
+            "name": "class",
             "size": 6
           }
         ]

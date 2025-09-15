@@ -35,5 +35,70 @@
     "userSuccesfullRegister": "Usuário cadastrado com sucesso!",
     "usuarioEmailExist": "Usuário ou email já esta cadastrado.",
     "userRegistered": "Já possui cadastro? Faça login!"
+  },
+  "CreateCharacterPage": {
+    "title": "Criar Personagem",
+    "description": "Escolha seu personagem e inicie a sua jornada na Arena do Saber!",
+    "strength": "Força",
+    "intelligence": "Inteligência",
+    "agility": "Agilidade",
+    "constitution": "Constituição",
+    "charCreated": "Personagem criado com sucesso!",
+    "nickNameCharacter": "Apelido do Personagem",
+    "nickNameCharacterPlaceholder": "Digite o apelido do personagem",
+    "buttonCreateCharacter": "Criar Personagem"
+  },
+  "StudentDashboardPage": {
+    "title": "Arena do Saber!",
+    "description": "Bem-vindo de volta {userName}",
+    "logoutButton": "Sair",
+    "topStudents": "Top Estudantes",
+    "topFighters": "Top Lutadores",
+    "topCards": {
+      "nivel": "Nível",
+      "coins": "Moedas",
+      "content": "Conteúdo",
+      "victory": "Vitórias"
+    },
+    "characters": {
+      "charcter": "{character}",
+      "nickName": "{nickName}",
+      "experience": "Experiência",
+      "nivel": "Nível {level}",
+      "attributes": "Atributos",
+      "stregth": "Força",
+      "agility": "Velocidade",
+      "intelligence": "Inteligência",
+      "constitution": "Constituição",
+      "combatentStats": "Status do Combatente",
+      "hp": "HP",
+      "mana": "Mana",
+      "defense": "Defesa",
+      "physicalAttack": "Ataque físico",
+      "magicAttack": "Ataque mágico",
+      "evasion": "Evasão"
+    },
+    "availableDiscipline": {
+      "title": "Matéiras disponíveis",
+      "description": "Escolha uma matéria para estudar",
+      "art": "Artes",
+      "biology": "Biologia",
+      "philosophy": "Filosofia",
+      "physicalEducation": "Educação Física",
+      "physical": "Física",
+      "geography": "Geografia",
+      "history": "História",
+      "english": "Inglês",
+      "allDisciplinesButton": "Ver todas as matérias"
+    },
+    "ranking": {
+      "topStudents": "Top Estudantes",
+      "topFighters": "Top Lutadores",
+      "rankingStudents": "Ranking de estudos",
+      "rankingFighters": "Ranking de lutadores",
+      "yourprogress": "Seu progresso",
+      "victoryTax": "Taxa de vitórias",
+      "studyTime": "Tempo de estudo"
+    }
   }
 }
