@@ -55,7 +55,7 @@ export function StudentDashboard() {
                 <div className="flex flex-col">
                     <CardTitle className="text-2xl">{t('title')}</CardTitle>
                     <CardDescription>{t('description', { userName })}</CardDescription>
-                                            <JoinClassForm />
+                    
                 </div>
                 <Button
                     className="bg-transparent border text-gray-100 hover:text-gray-700"
@@ -105,7 +105,8 @@ export function StudentDashboard() {
                         />
                     </div>
                     <div>
-                        <DisciplineCard />
+                        {/*<DisciplineCard />*/}
+                        <JoinClassForm />
                     </div>
                     <div className="flex flex-col">
                         <div>

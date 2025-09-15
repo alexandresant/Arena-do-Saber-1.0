@@ -9,8 +9,10 @@ import { useState, useEffect } from "react"
 import type { ClassProps } from "@/types/types"
 import { ActivtyClass } from "./ActivityClass"
 import { loadClass } from "@/lib/api/createClass"
+import { useTranslations } from "next-intl"
 
 export function TeacherDashboard() {
+    const t = useTranslations("TeacherDashboardPage.TeacherDashboard")
     const [turmaSelecionada, setTurmaSelecionada] = useState<ClassProps | null>(null)
     const [turmas, setTurmas] = useState<ClassProps[]>([])
 
@@ -23,21 +25,17 @@ export function TeacherDashboard() {
                 console.error('Failed to load classes:', error);
             }
         }
-
         fetchTurmas()
     }, [])
 
-    if (turmas.length === 0) {
-        return <div>Carregando turmas...</div>;
-    }
-
 
     const teacher = "Alexandre Buhrer"
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Arena do Saber Painel do Professor</CardTitle>
-                <CardDescription>Bem vindo de volta professor {teacher}</CardDescription>
+                <CardTitle>{t("CardTitle")}</CardTitle>
+                <CardDescription>{t("CardDescription", { teacher })}</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
@@ -52,8 +50,7 @@ export function TeacherDashboard() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-2 gap-2">
                     <RegisteredStudents turma={turmaSelecionada} />
-                    <ActivtyClass
-                        turma={turmaSelecionada} />
+                    <ActivtyClass turma={turmaSelecionada} />
                 </div>
             </CardContent>
         </Card>

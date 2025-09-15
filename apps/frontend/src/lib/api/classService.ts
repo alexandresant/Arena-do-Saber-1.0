@@ -64,3 +64,15 @@ export async function getClasses(code: string) {
     throw error;
   }
 }
+
+export async function loadClass() {
+  const session = await getSession();
+  const jwt = session?.jwt;
+
+  const response = await axios.get(`${STRAPI_URL}/api/classes`,{
+    headers:{
+      Authorization: `Bearer ${jwt}`
+    }
+  })
+  return response.data
+}

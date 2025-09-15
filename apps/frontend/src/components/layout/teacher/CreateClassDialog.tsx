@@ -1,6 +1,6 @@
 "use client"
 import { Dialog, DialogContent, DialogHeader, DialogDescription, DialogTitle } from "@/components/ui/dialog"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -8,12 +8,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { createClass } from "@/lib/api/createClass"
-
+import { useTranslations } from "next-intl"
 
 const formSchema = z.object({
     name: z.string().min(3, "O nome da turma deve ter no mínimo 3 letras"),
     code: z.string().min(4, "Código deve ter ao menos 4 digitos"),
-    subject: z.string().min(3, "Digite uma matéria para a turma"),
+    subject: z.string().min(3, "Digite uma matéria para a turma")
 })
 
 export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: boolean, setOpenDialog: Dispatch<SetStateAction<boolean>> }) {
@@ -27,14 +27,14 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
         }
     })
 
+    const t = useTranslations("TeacherDashboardPage.CreateClassDialog")
+
     async function onSubmit(data: FormClass) {
         try {
             const response = await createClass(data)
             form.reset()
             setOpenDialog(false)
-        }
-        catch (error) {
-            
+        } catch (error) {
             console.error("Erro ao enviar formulário" + error)
         }
     }
@@ -43,8 +43,8 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogContent className="gap-2">
                 <DialogHeader>
-                    <DialogTitle>Cadastrar nova turma</DialogTitle>
-                    <DialogDescription>Adicione os dados da turma</DialogDescription>
+                    <DialogTitle>{t("DialogTitle")}</DialogTitle>
+                    <DialogDescription>{t("DialogDescription")}</DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -53,10 +53,10 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
                             name="name"
                             render={({ field }) => (
                                 <FormItem className="mt-3">
-                                    <FormLabel>Nome da turma</FormLabel>
+                                    <FormLabel>{t("FormLabelName")}</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Digite um nome para a sua turma"
+                                            placeholder={t("FormPlaceholderName")}
                                             {...field}
                                         />
                                     </FormControl>
@@ -70,10 +70,10 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
                             name="subject"
                             render={({ field }) => (
                                 <FormItem className="mt-3">
-                                    <FormLabel>Matéria</FormLabel>
+                                    <FormLabel>{t("FormLabelSubject")}</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Digite uam nova Matéria"
+                                            placeholder={t("FormPlaceholderSubject")}
                                             {...field}
                                         />
                                     </FormControl>
@@ -87,10 +87,10 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
                             name="code"
                             render={({ field }) => (
                                 <FormItem className="mt-3">
-                                    <FormLabel>Crie um código de acesso para a sua turma</FormLabel>
+                                    <FormLabel>{t("FormLabelCode")}</FormLabel>
                                     <FormControl>
                                         <Input 
-                                            placeholder="Código"
+                                            placeholder={t("FormPlaceholderCode")}
                                             {...field}
                                         />
                                     </FormControl>
@@ -98,7 +98,7 @@ export function CreateClassDialog({ openDialog, setOpenDialog }: { openDialog: b
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="mt-2 w-full">Cadastrar</Button>
+                        <Button type="submit" className="mt-2 w-full">{t("ButtonSubmit")}</Button>
                     </form>
                 </Form>
             </DialogContent>

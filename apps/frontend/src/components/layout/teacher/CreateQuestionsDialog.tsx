@@ -10,7 +10,9 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { createQuestion } from "@/lib/api/createQuestions"
-import { useState } from "react"
+import { useTranslations } from "next-intl"
+
+type QuestionForm = z.infer<typeof questionSchema>
 
 const questionSchema = z.object({
   description: z.string().min(3, "Digite uma questão válida!"),
@@ -21,8 +23,6 @@ const questionSchema = z.object({
   correct: z.enum(["A", "B", "C", "D"], "Selecione a opção correta"),
   points: z.number().min(1, "Defina os pontos da questão"),
 })
-
-type QuestionForm = z.infer<typeof questionSchema>
 
 export function CreateQuestionDialog({
   open,
@@ -46,10 +46,11 @@ export function CreateQuestionDialog({
     },
   })
 
+  const t = useTranslations("TeacherDashboardPage.CreateQuestionDialog")
+
   async function onSubmit(data: QuestionForm) {
     try {
-      //console.log("Id enviado: ", activityId)
-      await createQuestion({ ...data, activityId }) // envia para a Activity correta
+      await createQuestion({ ...data, activityId })
       form.reset()
     } catch (err) {
       console.error("Erro ao enviar questão", err)
@@ -60,8 +61,8 @@ export function CreateQuestionDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Adicionar Questão</DialogTitle>
-          <DialogDescription>Cadastre as questões da atividade</DialogDescription>
+          <DialogTitle>{t("DialogTitle")}</DialogTitle>
+          <DialogDescription>{t("DialogDescription")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
@@ -70,9 +71,9 @@ export function CreateQuestionDialog({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Questão</FormLabel>
+                  <FormLabel>{t("FormLabelDescription")}</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Descrição da questão" {...field} />
+                    <Textarea placeholder={t("FormPlaceholderDescription")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,9 +85,9 @@ export function CreateQuestionDialog({
               name="answerA"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Resposta A</FormLabel>
+                  <FormLabel>{t("FormLabelAnswerA")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Resposta A" {...field} />
+                    <Input placeholder={t("FormPlaceholderAnswerA")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,9 +99,9 @@ export function CreateQuestionDialog({
               name="answerB"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Resposta B</FormLabel>
+                  <FormLabel>{t("FormLabelAnswerB")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Resposta B" {...field} />
+                    <Input placeholder={t("FormPlaceholderAnswerB")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,9 +113,9 @@ export function CreateQuestionDialog({
               name="answerC"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Resposta C</FormLabel>
+                  <FormLabel>{t("FormLabelAnswerC")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Resposta C" {...field} />
+                    <Input placeholder={t("FormPlaceholderAnswerC")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,9 +127,9 @@ export function CreateQuestionDialog({
               name="answerD"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Resposta D</FormLabel>
+                  <FormLabel>{t("FormLabelAnswerD")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Resposta D" {...field} />
+                    <Input placeholder={t("FormPlaceholderAnswerD")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,11 +141,11 @@ export function CreateQuestionDialog({
               name="correct"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Opção correta</FormLabel>
+                  <FormLabel>{t("FormLabelCorrect")}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione a opção correta" />
+                        <SelectValue placeholder={t("FormPlaceholderCorrect")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -164,11 +165,11 @@ export function CreateQuestionDialog({
               name="points"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Pontos</FormLabel>
+                  <FormLabel>{t("FormLabelPoints")}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="0"
+                      placeholder={t("FormPlaceholderPoints")}
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                       value={field.value === 0 ? "" : field.value}
@@ -180,9 +181,8 @@ export function CreateQuestionDialog({
             />
 
             <Button type="submit" className="w-full">
-              Cadastrar Questão
+              {t("ButtonSubmit")}
             </Button>
-            
           </form>
         </Form>
       </DialogContent>

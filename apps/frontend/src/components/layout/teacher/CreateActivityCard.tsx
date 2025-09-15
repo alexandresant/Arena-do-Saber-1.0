@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -13,17 +13,13 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createActivity } from "@/lib/api/createActivty"
 import { CreateQuestionDialog } from "./CreateQuestionsDialog"
-
-const mockTurmas = [
-  { id: 1, name: "Turma A - 1º Ano" },
-  { id: 2, name: "Turma B - 2º Ano" },
-  { id: 3, name: "Turma C - 3º Ano" },
-  { id: 4, name: "Turma D - 4º Ano" },
-]
+import { useTranslations } from "next-intl"
+import { ClassProps } from "@/types/types"
+import { loadClass } from "@/lib/api/createClass"
 
 const activitySchema = z.object({
   name: z.string().min(3, "Digite um nome para a atividade!"),
-  classId: z.string().min(1, "Turma é obrigatória!"),
+  classId: z.string().min(1, "Turma é obrigatória!")
 })
 
 type ActivityForm = z.infer<typeof activitySchema>
@@ -32,10 +28,13 @@ export function CreateActivityCard() {
   const [openActivityDialog, setOpenActivityDialog] = useState(false)
   const [openQuestionDialog, setOpenQuestionDialog] = useState(false)
   const [activityId, setActivityId] = useState<number | null>(null)
+  const [turmas, setTurmas] = useState<ClassProps[]>([])
+
+  const t = useTranslations("TeacherDashboardPage.CreateActivityCard")
 
   const form = useForm<ActivityForm>({
     resolver: zodResolver(activitySchema),
-    defaultValues: { name: "", classId: "" },
+    defaultValues: { name: "", classId: "" }
   })
 
   async function onSubmit(values: ActivityForm) {
@@ -45,19 +44,32 @@ export function CreateActivityCard() {
 
       setActivityId(id)
       setOpenActivityDialog(false)
-      setOpenQuestionDialog(true) // abre dialog de questões automaticamente
+      setOpenQuestionDialog(true)
     } catch (err) {
       console.error("Erro ao criar atividade", err)
     }
   }
+
+  useEffect(() => {
+          async function fetchTurmas() {
+              try {
+                  const data = await loadClass();
+                  setTurmas(data);
+              } catch (error) {
+                  console.error('Failed to load classes:', error);
+              }
+          }
+          fetchTurmas()
+      }, [])
+  
 
   return (
     <>
       <Card onClick={() => setOpenActivityDialog(true)}>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>+ Criar nova atividade</CardTitle>
-            <CardDescription>Clique aqui e crie uma nova atividade</CardDescription>
+            <CardTitle>{t("CardTitle")}</CardTitle>
+            <CardDescription>{t("CardDescription")}</CardDescription>
           </div>
           <FilePlus2 className="w-8 h-8 text-blue-600" />
         </CardHeader>
@@ -66,7 +78,7 @@ export function CreateActivityCard() {
       <Dialog open={openActivityDialog} onOpenChange={setOpenActivityDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Criar nova atividade</DialogTitle>
+            <DialogTitle>{t("DialogTitle")}</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -75,15 +87,15 @@ export function CreateActivityCard() {
                 name="classId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Turma</FormLabel>
+                    <FormLabel>{t("FormLabelClass")}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Selecione uma turma" />
+                          <SelectValue placeholder={t("FormSelectPlaceholder")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {mockTurmas.map((t) => (
+                        {turmas.map((t) => (
                           <SelectItem key={t.id} value={String(t.id)}>
                             {t.name}
                           </SelectItem>
@@ -99,16 +111,16 @@ export function CreateActivityCard() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome da Atividade</FormLabel>
+                    <FormLabel>{t("FormLabelName")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Prova de Matemática" {...field} />
+                      <Input placeholder={t("FormInputPlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button type="submit" className="w-full">
-                Criar Atividade
+                {t("ButtonSubmit")}
               </Button>
             </form>
           </Form>
