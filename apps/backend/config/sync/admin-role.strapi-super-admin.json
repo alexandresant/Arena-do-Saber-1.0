@@ -258,7 +258,7 @@
       "locale": null
     },
     {
-      "documentId": "riavj591actjii6qipqf3ifx",
+      "documentId": "bb6bw2a079zc2fy8accyi5ad",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -266,10 +266,10 @@
         "fields": [
           "name",
           "code",
-          "teacher",
           "student",
           "subject",
-          "activities"
+          "activities",
+          "teacher"
         ]
       },
       "conditions": [],
@@ -294,7 +294,7 @@
       "locale": null
     },
     {
-      "documentId": "sheaqenzykaj7oabeawic43x",
+      "documentId": "e31jg1sx0kagb6l6cqbyhezp",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -302,17 +302,17 @@
         "fields": [
           "name",
           "code",
-          "teacher",
           "student",
           "subject",
-          "activities"
+          "activities",
+          "teacher"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "mjywbd285pb23fj4ljoti9bi",
+      "documentId": "rlwkx57z6fxgv5kewj24fas3",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -320,10 +320,10 @@
         "fields": [
           "name",
           "code",
-          "teacher",
           "student",
           "subject",
-          "activities"
+          "activities",
+          "teacher"
         ]
       },
       "conditions": [],
@@ -785,7 +785,7 @@
       "locale": null
     },
     {
-      "documentId": "t6fff5xydpjh06ghljkrkmjy",
+      "documentId": "djuddtze1vaud84n4oyeu553",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -802,8 +802,7 @@
           "role",
           "character",
           "points",
-          "classes",
-          "class"
+          "classes"
         ]
       },
       "conditions": [],
@@ -828,7 +827,7 @@
       "locale": null
     },
     {
-      "documentId": "b6w3g5cg5m2r5j65wcoa659l",
+      "documentId": "tmr0blao54akm049u0a02jf0",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -845,15 +844,14 @@
           "role",
           "character",
           "points",
-          "classes",
-          "class"
+          "classes"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "szo2vxc09s9y6dh474z5zx20",
+      "documentId": "ml9nghq6xsh20nqzwqsmcyai",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -870,8 +868,7 @@
           "role",
           "character",
           "points",
-          "classes",
-          "class"
+          "classes"
         ]
       },
       "conditions": [],

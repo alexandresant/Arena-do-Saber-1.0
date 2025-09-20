@@ -99,6 +99,29 @@
       "yourprogress": "Seu progresso",
       "victoryTax": "Taxa de vitórias",
       "studyTime": "Tempo de estudo"
+    },
+    "JoinClassForm": {
+      "title": "Entrar em uma turma",
+      "description": "Digite o código da turma fornecida pelo seu professor",
+      "classCodeLabel": "Código da turma",
+      "classCodePlaceholder": "Ex: ABC123",
+      "submit": "Entrar na turma",
+      "loading": "Entrando...",
+      "alreadyEnrolled": "Você já está nesta turma!",
+      "newClass": "Nova Turma {code}",
+      "defaultTeacher": "Professor",
+      "defaultSubject": "Matéria",
+      "success": "Inscrição realizada com sucesso!",
+      "error": "Erro ao entrar na turma",
+      "navigate": "Navegando para a página da turma {id}. Esta funcionalidade será implementada.",
+      "myClassesTitle": "Minhas Turmas",
+      "myClassesDescription": "Turmas que você está participando",
+      "noClasses": "Você não está em nenhuma turma ainda.",
+      "joinWithCode": "Entre em uma turma usando o código fornecido pelo seu professor.",
+      "subject": "Matéria",
+      "class": "Turma",
+      "teacher": "Professor",
+      "activities": "Atividades"
     }
   },
   "TeacherDashboardPage": {

@@ -71,16 +71,6 @@
       "locale": null
     },
     {
-      "documentId": "an2olemhyn8b32w2swg6v0ti",
-      "action": "api::class.class.create",
-      "locale": null
-    },
-    {
-      "documentId": "xoxddsq2kg365in6rz3q7qdq",
-      "action": "api::class.class.delete",
-      "locale": null
-    },
-    {
       "documentId": "sunn6spldntt0cq6rhgu5196",
       "action": "api::class.class.find",
       "locale": null

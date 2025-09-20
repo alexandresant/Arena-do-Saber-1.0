@@ -545,7 +545,7 @@ export interface ApiClassClass extends Struct.CollectionTypeSchema {
     singularName: 'class';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     activities: Schema.Attribute.Relation<
@@ -1125,7 +1125,6 @@ export interface PluginUsersPermissionsUser
       'oneToOne',
       'api::character.character'
     >;
-    class: Schema.Attribute.Relation<'oneToOne', 'api::class.class'>;
     classes: Schema.Attribute.Relation<'manyToMany', 'api::class.class'>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;

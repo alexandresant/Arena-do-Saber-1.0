@@ -43,7 +43,7 @@ export async function createClass({ name, code, subject }: CreateClassProps) {
 }
 
 export async function loadClass(){
-  const response = await axios.get(`${STRAPI_URL}/api/classes?populate[student]&populate[activities]=name`, {
+  const response = await axios.get(`${STRAPI_URL}/api/classes?populate[student][populate]=class`, {
     headers:{
       Authorization: `Bearer ${jwt}`
     }

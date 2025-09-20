@@ -5,6 +5,8 @@ import { getClasses } from "@/lib/api/classService"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import { useTranslations } from "next-intl"
+
 import {
   Card,
   CardContent,
@@ -31,19 +33,18 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Users, BookOpen } from "lucide-react"
+import { Loader2, BookOpen } from "lucide-react"
 
-// Esquema de validação com Zod
+import { loadClassStudents } from "@/lib/api/classService"
+
 const joinClassSchema = z.object({
   code: z.string()
     .min(1, { message: "O código da turma é obrigatório" })
     .regex(/^[a-zA-Z0-9]+$/, { message: "O código deve conter apenas letras e números" })
 })
 
-// Tipo inferido a partir do esquema Zod
 type JoinClassFormValues = z.infer<typeof joinClassSchema>
 
-// Interface para os dados da turma
 interface Class {
   id: string
   code: string
@@ -55,7 +56,6 @@ interface Class {
   joinedAt: string
 }
 
-// Dados mockados para as turmas do usuário
 const mockClasses: Class[] = [
   {
     id: "1",
@@ -90,24 +90,32 @@ const mockClasses: Class[] = [
 ]
 
 export function JoinClassForm() {
+  const t = useTranslations("StudentDashboardPage.JoinClassForm")
+
   const [message, setMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [userClasses, setUserClasses] = useState<Class[]>([])
   const [isLoadingClasses, setIsLoadingClasses] = useState(true)
+  const [turmas, setTurmas] = useState<Class[]>([])
 
-  // Simula o carregamento das turmas do usuário
+  useEffect(() => {
+    const loadUserClasses = async () =>{
+      const classes = await loadClassStudents()
+      setTurmas(classes)
+    }
+    loadUserClasses()
+
+  }, [])
+
   useEffect(() => {
     const loadUserClasses = async () => {
-      // Simula um delay de rede
       await new Promise(resolve => setTimeout(resolve, 1000))
       setUserClasses(mockClasses)
       setIsLoadingClasses(false)
     }
-
     loadUserClasses()
   }, [])
 
-  // Configuração do formulário com React Hook Form e validação Zod
   const form = useForm<JoinClassFormValues>({
     resolver: zodResolver(joinClassSchema),
     defaultValues: {
@@ -120,54 +128,48 @@ export function JoinClassForm() {
     setMessage(null)
 
     try {
-      // Simula a chamada à API
       await new Promise(resolve => setTimeout(resolve, 1500))
       
-      // Verifica se o código já existe
       const classExists = mockClasses.some(c => c.code === data.code)
       
       if (classExists) {
-        setMessage("Você já está nesta turma!")
+        setMessage(t("alreadyEnrolled"))
       } else {
-        // Adiciona uma nova turma à lista (apenas para demonstração)
         const newClass: Class = {
           id: (mockClasses.length + 1).toString(),
           code: data.code,
-          name: `Nova Turma ${data.code}`,
-          teacher: "Professor",
-          subject: "Matéria",
+          name: t("newClass", { code: data.code }),
+          teacher: t("defaultTeacher"),
+          subject: t("defaultSubject"),
           studentCount: 20,
           activityCount: 0,
           joinedAt: new Date().toISOString().split('T')[0]
         }
         
         setUserClasses(prev => [...prev, newClass])
-        setMessage("Inscrição realizada com sucesso!")
+        setMessage(t("success"))
       }
       
-      form.reset() // Limpar o formulário após sucesso
+      form.reset()
     } catch (err: any) {
-      setMessage(err.message || "Erro ao entrar na turma")
+      setMessage(err.message || t("error"))
     } finally {
       setLoading(false)
     }
   }
 
-  // Função para simular a navegação para a página da turma
   const handleClassClick = (classId: string) => {
-    // Aqui você pode usar o useRouter do Next.js quando implementar
     console.log(`Navegando para a turma: ${classId}`)
-    // router.push(`/class/${classId}`)
-    alert(`Navegando para a página da turma ${classId}. Esta funcionalidade será implementada.`)
+    alert(t("navigate", { id: classId }))
   }
 
   return (
     <div className="space-y-6">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Entrar em uma turma</CardTitle>
+          <CardTitle>{t("title")}</CardTitle>
           <CardDescription>
-            Digite o código da turma fornecida pelo seu professor
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -178,10 +180,10 @@ export function JoinClassForm() {
                 name="code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Código da turma</FormLabel>
+                    <FormLabel>{t("classCodeLabel")}</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="Ex: ABC123" 
+                        placeholder={t("classCodePlaceholder")} 
                         {...field} 
                         disabled={loading}
                       />
@@ -199,10 +201,10 @@ export function JoinClassForm() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Entrando...
+                    {t("loading")}
                   </>
                 ) : (
-                  "Entrar na turma"
+                  t("submit")
                 )}
               </Button>
               
@@ -222,9 +224,9 @@ export function JoinClassForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Minhas Turmas</CardTitle>
+          <CardTitle>{t("myClassesTitle")}</CardTitle>
           <CardDescription>
-            Turmas que você está participando
+            {t("myClassesDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -235,17 +237,17 @@ export function JoinClassForm() {
           ) : userClasses.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
-              <p>Você não está em nenhuma turma ainda.</p>
-              <p className="text-sm">Entre em uma turma usando o código fornecido pelo seu professor.</p>
+              <p>{t("noClasses")}</p>
+              <p className="text-sm">{t("joinWithCode")}</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Matéria</TableHead>
-                  <TableHead>Turma</TableHead>
-                  <TableHead>Professor</TableHead>         
-                  <TableHead className="text-center">Atividades</TableHead>
+                  <TableHead>{t("subject")}</TableHead>
+                  <TableHead>{t("class")}</TableHead>
+                  <TableHead>{t("teacher")}</TableHead>         
+                  <TableHead className="text-center">{t("activities")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

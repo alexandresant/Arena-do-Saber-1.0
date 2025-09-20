@@ -31,12 +31,12 @@ export async function getClasses(code: string) {
     }
 
     const classData = response.data.data[0];
-    console.log("Class data structure:", classData);
+    //console.log("Class data structure:", classData);
 
     const classId = classData.documentId; // Strapi v5 usa documentId no PUT
     const students = classData.students || [];
 
-    console.log("Students found:", students);
+    //console.log("Students found:", students);
 
     // Verifica se o aluno já está inscrito
     const alreadyIn = students.some((s: any) => s.id === userId);
@@ -76,3 +76,23 @@ export async function loadClass() {
   })
   return response.data
 }
+ export async function loadClassStudents(){
+  const session = await getSession()
+  const jwt = session?.jwt
+  const userId = session?.user.id
+
+
+  try {
+    const response  = await axios.get(`${STRAPI_URL}/api/users/${userId}?populate=classes`,{
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    })
+    console.log("Turmas deste aluno: ", response.data)
+    //console.log("Resposta bruta: ", JSON.stringify(response.data, null, 2))
+    return response.data
+  }
+  catch(error){
+    console.error("Erro ao carregar turmas do usuário", error)
+  }
+ }

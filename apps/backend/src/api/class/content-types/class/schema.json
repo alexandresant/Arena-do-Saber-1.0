@@ -7,7 +7,7 @@
     "displayName": "Class"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -17,12 +17,6 @@
     "code": {
       "type": "string",
       "unique": true
-    },
-    "teacher": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "class"
     },
     "student": {
       "type": "relation",
@@ -38,6 +32,11 @@
       "relation": "oneToMany",
       "target": "api::activity.activity",
       "mappedBy": "classId"
+    },
+    "teacher": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }
