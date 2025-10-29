@@ -196,6 +196,11 @@
     "StudentQtdCard": {
       "CardTitle": "Quantidade de alunos na turma",
       "StudentsInClass": "Alunos nesta turma"
+    },
+    "SelectActivities": {
+      "title": "Selecione uma atividade",
+      "loadingActivities": "Carregando atividades...",
+      "noActivities": "Nenhuma atividade disponível nesta turma."
     }
   }
 }
