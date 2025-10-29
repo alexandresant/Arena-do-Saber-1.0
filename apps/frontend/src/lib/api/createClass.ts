@@ -43,7 +43,7 @@ export async function createClass({ name, code, subject }: CreateClassProps) {
 }
 
 export async function loadClass(){
-  const response = await axios.get(`${STRAPI_URL}/api/classes?populate[student][populate]=character`, {
+  const response = await axios.get(`${STRAPI_URL}/api/classes?populate[student][populate]=classes`, {
     headers:{
       Authorization: `Bearer ${jwt}`
     }
@@ -51,5 +51,6 @@ export async function loadClass(){
   console.log("Dados das turmas: ", response.data)
   return response.data.data
 }
+
 
 

@@ -2,39 +2,39 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { ClassProps } from "@/types/types"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useTranslations } from "next-intl"
 
 export function RegisteredStudents({ turma }: { turma: ClassProps | null }) {
+    const t = useTranslations("TeacherDashboardPage.RegisteredStudents")
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Alunos nesta turma</CardTitle>
-                <CardDescription>Turma {turma?.name}</CardDescription>
+                <CardTitle>{t("CardTitle")}</CardTitle>
+                <CardDescription>{t("ClassLabel")} {turma?.name}</CardDescription>
             </CardHeader>
             <CardContent>
                 {turma ? (
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Nome</TableHead>
-                                <TableHead>NickName</TableHead>
-                                <TableHead>Nivel</TableHead>
+                                <TableHead>{t("TableHeadName")}</TableHead>
+                                <TableHead>{t("TableHeadNickName")}</TableHead>
+                                <TableHead>{t("TableHeadLevel")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {turma.student.map((tu) => (
-                                <TableRow
-                                    key={tu.id}
-                                >
+                                <TableRow key={tu.id}>
                                     <TableCell>{tu.username}</TableCell>
                                     <TableCell>{tu.nickName}</TableCell>
                                     <TableCell>{tu.level}</TableCell>
                                 </TableRow>
                             ))}
-
                         </TableBody>
                     </Table>
                 ) : (
-                    <Label>Selecione uma turma para ver os alunos</Label>
+                    <Label>{t("SelectClassLabel")}</Label>
                 )}
             </CardContent>
         </Card>

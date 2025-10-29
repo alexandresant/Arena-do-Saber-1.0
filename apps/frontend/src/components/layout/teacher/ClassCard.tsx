@@ -7,32 +7,30 @@ import { ClassCardProps, ClassProps } from "@/types/types"
 
 import { BookUser } from "lucide-react"
 import { useState } from "react"
-import { id } from "zod/v4/locales"
+import { useTranslations } from "next-intl"
 
-
-export function ClassCard({turmas, turmaSelecionada, onClassSelect }: ClassCardProps) {
+export function ClassCard({ turmas, turmaSelecionada, onClassSelect }: ClassCardProps) {
     const [openDialog, setOpenDialog] = useState(false)
+    const t = useTranslations("TeacherDashboardPage.ClassCard")
 
-    function handleSelectChange(value: string){
+    function handleSelectChange(value: string) {
         const id = Number(value)
         const turma = turmas.find((tu) => tu.id === id)
-        if (turma){
+        if (turma) {
             onClassSelect(turma)
         }
         setOpenDialog(false)
     }
+
     return (
         <>
-            <Card
-                onClick={() => setOpenDialog(true)}
-            >
+            <Card onClick={() => setOpenDialog(true)}>
                 <CardContent>
                     <div className="flex flex-row justify-between items-center">
                         <div className="flex flex-col space-y-2">
-                            <Label>Turma</Label>
+                            <Label>{t("LabelClass")}</Label>
                             <Label className="text-muted-foreground">
-                                {turmaSelecionada?.name ?? "Selecione uma turma para ver as informações"
-                                }
+                                {turmaSelecionada?.name ?? t("LabelSelectPrompt")}
                             </Label>
                         </div>
                         <BookUser className="h-8 w-8 text-blue-600" />
@@ -43,19 +41,16 @@ export function ClassCard({turmas, turmaSelecionada, onClassSelect }: ClassCardP
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Selecione um turma</DialogTitle>
-                        <DialogDescription>Selecione uma turma para mostrar as informações e criar atividades</DialogDescription>
+                        <DialogTitle>{t("DialogTitle")}</DialogTitle>
+                        <DialogDescription>{t("DialogDescription")}</DialogDescription>
                     </DialogHeader>
                     <Select value={turmaSelecionada?.name} onValueChange={handleSelectChange}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Escolha uma turma"/>
+                            <SelectValue placeholder={t("SelectPlaceholder")} />
                         </SelectTrigger>
                         <SelectContent>
                             {turmas.map((op) => (
-                                <SelectItem
-                                    key={op.id}
-                                    value={String(op.id)}
-                                >
+                                <SelectItem key={op.id} value={String(op.id)}>
                                     {op.name}
                                 </SelectItem>
                             ))}

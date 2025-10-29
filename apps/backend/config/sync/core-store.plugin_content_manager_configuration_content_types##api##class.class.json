@@ -47,21 +47,6 @@
           "sortable": true
         }
       },
-      "teacher": {
-        "edit": {
-          "label": "teacher",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "username"
-        },
-        "list": {
-          "label": "teacher",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "student": {
         "edit": {
           "label": "student",
@@ -104,6 +89,21 @@
           "label": "activities",
           "searchable": false,
           "sortable": false
+        }
+      },
+      "teacher": {
+        "edit": {
+          "label": "teacher",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "username"
+        },
+        "list": {
+          "label": "teacher",
+          "searchable": true,
+          "sortable": true
         }
       },
       "createdAt": {
@@ -193,21 +193,21 @@
         ],
         [
           {
-            "name": "teacher",
-            "size": 6
-          },
-          {
-            "name": "student",
-            "size": 6
-          }
-        ],
-        [
-          {
             "name": "subject",
             "size": 6
           },
           {
             "name": "activities",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "student",
+            "size": 6
+          },
+          {
+            "name": "teacher",
             "size": 6
           }
         ]

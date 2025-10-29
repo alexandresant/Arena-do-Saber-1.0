@@ -99,6 +99,108 @@
       "yourprogress": "Seu progresso",
       "victoryTax": "Taxa de vitórias",
       "studyTime": "Tempo de estudo"
+    },
+    "JoinClassForm": {
+      "title": "Entrar em uma turma",
+      "description": "Digite o código da turma fornecida pelo seu professor",
+      "classCodeLabel": "Código da turma",
+      "classCodePlaceholder": "Ex: ABC123",
+      "submit": "Entrar na turma",
+      "loading": "Entrando...",
+      "alreadyEnrolled": "Você já está nesta turma!",
+      "newClass": "Nova Turma {code}",
+      "defaultTeacher": "Professor",
+      "defaultSubject": "Matéria",
+      "success": "Inscrição realizada com sucesso!",
+      "error": "Erro ao entrar na turma",
+      "navigate": "Navegando para a página da turma {id}. Esta funcionalidade será implementada.",
+      "myClassesTitle": "Minhas Turmas",
+      "myClassesDescription": "Turmas que você está participando",
+      "noClasses": "Você não está em nenhuma turma ainda.",
+      "joinWithCode": "Entre em uma turma usando o código fornecido pelo seu professor.",
+      "subject": "Matéria",
+      "class": "Turma",
+      "teacher": "Professor",
+      "activities": "Atividades"
+    }
+  },
+  "TeacherDashboardPage": {
+    "ActivtyClass": {
+      "CardTitle": "Atividades nesta turma",
+      "CardDescriptionPrefix": "Turma: "
+    },
+    "ClassCard": {
+      "LabelClass": "Turma",
+      "LabelSelectPrompt": "Selecione uma turma para ver as informações",
+      "DialogTitle": "Selecione um turma",
+      "DialogDescription": "Selecione uma turma para mostrar as informações e criar atividades",
+      "SelectPlaceholder": "Escolha uma turma"
+    },
+    "CreateActivityCard": {
+      "CardTitle": "+ Criar nova atividade",
+      "CardDescription": "Clique aqui e crie uma nova atividade",
+      "DialogTitle": "Criar nova atividade",
+      "FormLabelClass": "Turma",
+      "FormSelectPlaceholder": "Selecione uma turma",
+      "FormLabelName": "Nome da Atividade",
+      "FormInputPlaceholder": "Ex: Prova de Matemática",
+      "ButtonSubmit": "Criar Atividade"
+    },
+    "CreateClassCard": {
+      "CardTitle": "+ Criar nova turma",
+      "CardDescription": "Clique para criar uma nova turma"
+    },
+    "CreateClassDialog": {
+      "DialogTitle": "Cadastrar nova turma",
+      "DialogDescription": "Adicione os dados da turma",
+      "FormLabelName": "Nome da turma",
+      "FormPlaceholderName": "Digite um nome para a sua turma",
+      "FormLabelSubject": "Matéria",
+      "FormPlaceholderSubject": "Digite uam nova Matéria",
+      "FormLabelCode": "Crie um código de acesso para a sua turma",
+      "FormPlaceholderCode": "Código",
+      "ButtonSubmit": "Cadastrar"
+    },
+    "CreateQuestionDialog": {
+      "DialogTitle": "Adicionar Questão",
+      "DialogDescription": "Cadastre as questões da atividade",
+      "FormLabelDescription": "Questão",
+      "FormPlaceholderDescription": "Descrição da questão",
+      "FormLabelAnswerA": "Resposta A",
+      "FormPlaceholderAnswerA": "Resposta A",
+      "FormLabelAnswerB": "Resposta B",
+      "FormPlaceholderAnswerB": "Resposta B",
+      "FormLabelAnswerC": "Resposta C",
+      "FormPlaceholderAnswerC": "Resposta C",
+      "FormLabelAnswerD": "Resposta D",
+      "FormPlaceholderAnswerD": "Resposta D",
+      "FormLabelCorrect": "Opção correta",
+      "FormPlaceholderCorrect": "Selecione a opção correta",
+      "FormLabelPoints": "Pontos",
+      "FormPlaceholderPoints": "0",
+      "ButtonSubmit": "Cadastrar Questão"
+    },
+    "TeacherDashboard": {
+      "CardTitle": "Arena do Saber Painel do Professor",
+      "CardDescription": "Bem vindo de volta professor {teacher}",
+      "Loading": "Carregando turmas..."
+    },
+    "RegisteredStudents": {
+      "CardTitle": "Alunos nesta turma",
+      "ClassLabel": "Turma",
+      "TableHeadName": "Nome",
+      "TableHeadNickName": "NickName",
+      "TableHeadLevel": "Nivel",
+      "SelectClassLabel": "Selecione uma turma para ver os alunos"
+    },
+    "StudentQtdCard": {
+      "CardTitle": "Quantidade de alunos na turma",
+      "StudentsInClass": "Alunos nesta turma"
+    },
+    "SelectActivities": {
+      "title": "Selecione uma atividade",
+      "loadingActivities": "Carregando atividades...",
+      "noActivities": "Nenhuma atividade disponível nesta turma."
     }
   }
 }

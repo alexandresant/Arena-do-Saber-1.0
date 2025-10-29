@@ -190,21 +190,6 @@
           "sortable": false
         }
       },
-      "class": {
-        "edit": {
-          "label": "class",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "name"
-        },
-        "list": {
-          "label": "class",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -323,10 +308,6 @@
         [
           {
             "name": "classes",
-            "size": 6
-          },
-          {
-            "name": "class",
             "size": 6
           }
         ]

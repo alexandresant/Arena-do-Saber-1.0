@@ -6,7 +6,7 @@
   "locale": null,
   "permissions": [
     {
-      "documentId": "t7wbdsfwt2xroee63q1vyf2p",
+      "documentId": "fmh4zc1ajiubcd74ho3l9gc4",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::activity.activity",
@@ -39,7 +39,7 @@
       "locale": null
     },
     {
-      "documentId": "ntxlp4wnl4d2uif12ngjxwz6",
+      "documentId": "owazh3c9wm0qhm3ooq5lczd9",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::activity.activity",
@@ -54,7 +54,7 @@
       "locale": null
     },
     {
-      "documentId": "nhp3hbgshwfs1cg7z6wjgsze",
+      "documentId": "mp63zzscpx7m4tvgzl9ahfg9",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::activity.activity",
@@ -258,7 +258,7 @@
       "locale": null
     },
     {
-      "documentId": "n4sw57j6y6kupfjbc1w56z5r",
+      "documentId": "bb6bw2a079zc2fy8accyi5ad",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -266,10 +266,10 @@
         "fields": [
           "name",
           "code",
-          "teacher",
           "student",
           "subject",
-          "activities"
+          "activities",
+          "teacher"
         ]
       },
       "conditions": [],
@@ -294,7 +294,7 @@
       "locale": null
     },
     {
-      "documentId": "btg2e0c7kg49j9auv74gqkv8",
+      "documentId": "e31jg1sx0kagb6l6cqbyhezp",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -302,17 +302,17 @@
         "fields": [
           "name",
           "code",
-          "teacher",
           "student",
           "subject",
-          "activities"
+          "activities",
+          "teacher"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "kornpbst4cxv6q55ndpo0aa7",
+      "documentId": "rlwkx57z6fxgv5kewj24fas3",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::class.class",
@@ -320,17 +320,17 @@
         "fields": [
           "name",
           "code",
-          "teacher",
           "student",
           "subject",
-          "activities"
+          "activities",
+          "teacher"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "j26vo7ixpn74u8p8sp7oxbob",
+      "documentId": "oy3iw289lagj68t1mgwzlb43",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::question.question",
@@ -368,7 +368,7 @@
       "locale": null
     },
     {
-      "documentId": "fpzhm21em20nzvoun9cgy7sg",
+      "documentId": "al84rut1luojjlr1yrpg4cdv",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::question.question",
@@ -388,7 +388,7 @@
       "locale": null
     },
     {
-      "documentId": "nr53yb2zldz7iwuy27n2u2w6",
+      "documentId": "gtsopl5g2s2fnipli39224n6",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::question.question",
@@ -785,7 +785,7 @@
       "locale": null
     },
     {
-      "documentId": "t6fff5xydpjh06ghljkrkmjy",
+      "documentId": "djuddtze1vaud84n4oyeu553",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -802,8 +802,7 @@
           "role",
           "character",
           "points",
-          "classes",
-          "class"
+          "classes"
         ]
       },
       "conditions": [],
@@ -828,7 +827,7 @@
       "locale": null
     },
     {
-      "documentId": "b6w3g5cg5m2r5j65wcoa659l",
+      "documentId": "tmr0blao54akm049u0a02jf0",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -845,15 +844,14 @@
           "role",
           "character",
           "points",
-          "classes",
-          "class"
+          "classes"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "szo2vxc09s9y6dh474z5zx20",
+      "documentId": "ml9nghq6xsh20nqzwqsmcyai",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "plugin::users-permissions.user",
@@ -870,8 +868,7 @@
           "role",
           "character",
           "points",
-          "classes",
-          "class"
+          "classes"
         ]
       },
       "conditions": [],

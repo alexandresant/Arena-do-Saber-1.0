@@ -93,7 +93,23 @@ export interface ClassCardProps{
 export interface ActivityProps{
   name: string
   classId: number
- 
+  attributes: {
+    name: string
+    questions: {
+      data: {
+        id: number
+        attributes: {
+          description: string
+          answerA: string
+          answerB: string
+          answerC: string
+          answerD: string
+          correct: "A" | "B" | "C" | "D"
+          points: number
+        }
+      }[]
+    }
+  }
 }
 
 export interface CreateClassProps{

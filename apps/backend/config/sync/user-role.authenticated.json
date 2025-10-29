@@ -6,6 +6,31 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "j8xpiase4otlwkrgxbpsallz",
+      "action": "api::activity.activity.create",
+      "locale": null
+    },
+    {
+      "documentId": "dtnb3g4tpkhvgn50k9o25bim",
+      "action": "api::activity.activity.delete",
+      "locale": null
+    },
+    {
+      "documentId": "lbj7ytnqzd162rtbb9jewonf",
+      "action": "api::activity.activity.find",
+      "locale": null
+    },
+    {
+      "documentId": "cr7shz4j43ri7ug52d0co0cy",
+      "action": "api::activity.activity.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "y5z1bt4fqp1n8gpdudf67mcz",
+      "action": "api::activity.activity.update",
+      "locale": null
+    },
+    {
       "documentId": "ny1h4m6nlhdhk0mvncangown",
       "action": "api::character-template.character-template.create",
       "locale": null
@@ -46,8 +71,48 @@
       "locale": null
     },
     {
+      "documentId": "sunn6spldntt0cq6rhgu5196",
+      "action": "api::class.class.find",
+      "locale": null
+    },
+    {
+      "documentId": "htlyiq65l2mppesp4c24mdte",
+      "action": "api::class.class.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "wkcjbvo0lmyuj5unxd4hbh7m",
+      "action": "api::class.class.update",
+      "locale": null
+    },
+    {
       "documentId": "syt9lv2kic3cel25zggjlubm",
       "action": "api::me-full.me-full.me",
+      "locale": null
+    },
+    {
+      "documentId": "x4lcontiwslhfgg6j81z8pty",
+      "action": "api::question.question.create",
+      "locale": null
+    },
+    {
+      "documentId": "nfcm5uapnk3k94jfoqjdlh3i",
+      "action": "api::question.question.delete",
+      "locale": null
+    },
+    {
+      "documentId": "toe78tcms8du7p2ni2nnu2q0",
+      "action": "api::question.question.find",
+      "locale": null
+    },
+    {
+      "documentId": "vquicm8v1co0yd9e9il6gdwu",
+      "action": "api::question.question.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "z4kahkdbos5xnm7ci2xkw5zc",
+      "action": "api::question.question.update",
       "locale": null
     },
     {

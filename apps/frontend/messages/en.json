@@ -1,7 +1,178 @@
 {
     "page": {
-        "title": "Page title",
-        "description": "Page description",
-        "about": "About"
+        "title": "Page Title",
+        "description": "Page Description",
+        "about": "More"
+    },
+    "LoginPage": {
+        "title": "Arena of Knowledge!",
+        "description": "Log in to access all of our content",
+        "formLabelEmail": "Email",
+        "formLabelPassword": "Password",
+        "placeholderEmail": "youremail@email.com",
+        "placeholderPassword": "******",
+        "checkbox": "Remember me",
+        "loginButton": "Log In",
+        "forgotPassword": "Forgot your password?",
+        "register": "Create Account"
+    },
+    "RegisterPage": {
+        "title": "Arena of Knowledge!",
+        "description": "Sign up to access all of our content",
+        "formLabelFirstName": "First Name",
+        "formLabelLastName": "Last Name",
+        "formLabelEmail": "Email",
+        "formLabelUsername": "Username",
+        "formLabelPassword": "Password",
+        "formLabelConfirmPassword": "Confirm Password",
+        "placeholderFirstName": "Your first name",
+        "placeholderLastName": "Your last name",
+        "placeholderEmail": "youremail@email.com",
+        "placeholderUsername": "Choose a username",
+        "placeholderPassword": "******",
+        "placeholderConfirmPassword": "******",
+        "submit": "Register",
+        "userSuccesfullRegister": "User registered successfully!",
+        "usuarioEmailExist": "User or email already registered.",
+        "userRegistered": "Already registered? Log in!"
+    },
+    "CreateCharacterPage": {
+        "title": "Create Character",
+        "description": "Choose your character and start your journey in the Arena of Knowledge!",
+        "strength": "Strength",
+        "intelligence": "Intelligence",
+        "agility": "Agility",
+        "constitution": "Constitution",
+        "charCreated": "Character created successfully!",
+        "nickNameCharacter": "Character Nickname",
+        "nickNameCharacterPlaceholder": "Enter the character nickname",
+        "buttonCreateCharacter": "Create Character"
+    },
+    "StudentDashboardPage": {
+        "title": "Arena of Knowledge!",
+        "description": "Welcome back {userName}",
+        "logoutButton": "Log Out",
+        "topStudents": "Top Students",
+        "topFighters": "Top Fighters",
+        "topCards": {
+            "nivel": "Level",
+            "coins": "Coins",
+            "content": "Content",
+            "victory": "Victories"
+        },
+        "characters": {
+            "charcter": "{character}",
+            "nickName": "{nickName}",
+            "experience": "Experience",
+            "nivel": "Level {level}",
+            "attributes": "Attributes",
+            "stregth": "Strength",
+            "agility": "Agility",
+            "intelligence": "Intelligence",
+            "constitution": "Constitution",
+            "combatentStats": "Combatant Stats",
+            "hp": "HP",
+            "mana": "Mana",
+            "defense": "Defense",
+            "physicalAttack": "Physical Attack",
+            "magicAttack": "Magic Attack",
+            "evasion": "Evasion"
+        },
+        "availableDiscipline": {
+            "title": "Available Subjects",
+            "description": "Choose a subject to study",
+            "art": "Arts",
+            "biology": "Biology",
+            "philosophy": "Philosophy",
+            "physicalEducation": "Physical Education",
+            "physical": "Physics",
+            "geography": "Geography",
+            "history": "History",
+            "english": "English",
+            "allDisciplinesButton": "See all subjects"
+        },
+        "ranking": {
+            "topStudents": "Top Students",
+            "topFighters": "Top Fighters",
+            "rankingStudents": "Study Ranking",
+            "rankingFighters": "Fighter Ranking",
+            "yourprogress": "Your Progress",
+            "victoryTax": "Victory Rate",
+            "studyTime": "Study Time"
+        }
+    },
+    "TeacherDashboardPage": {
+        "ActivtyClass": {
+            "CardTitle": "Activities in this class",
+            "CardDescriptionPrefix": "Class: "
+        },
+        "ClassCard": {
+            "LabelClass": "Class",
+            "LabelSelectPrompt": "Select a class to see the information",
+            "DialogTitle": "Select a class",
+            "DialogDescription": "Select a class to show the information and create activities",
+            "SelectPlaceholder": "Choose a class"
+        },
+        "CreateActivityCard": {
+            "CardTitle": "+ Create new activity",
+            "CardDescription": "Click here and create a new activity",
+            "DialogTitle": "Create new activity",
+            "FormLabelClass": "Class",
+            "FormSelectPlaceholder": "Select a class",
+            "FormLabelName": "Activity Name",
+            "FormInputPlaceholder": "Ex: Math Test",
+            "ButtonSubmit": "Create Activity"
+        },
+        "CreateClassCard": {
+            "CardTitle": "+ Create new class",
+            "CardDescription": "Click to create a new class"
+        },
+        "CreateClassDialog": {
+            "DialogTitle": "Register new class",
+            "DialogDescription": "Add the class information",
+            "FormLabelName": "Class Name",
+            "FormPlaceholderName": "Enter a name for your class",
+            "FormLabelSubject": "Subject",
+            "FormPlaceholderSubject": "Enter a new subject",
+            "FormLabelCode": "Create an access code for your class",
+            "FormPlaceholderCode": "Code",
+            "ButtonSubmit": "Register"
+        },
+        "CreateQuestionDialog": {
+            "DialogTitle": "Add Question",
+            "DialogDescription": "Register the questions for the activity",
+            "FormLabelDescription": "Question",
+            "FormPlaceholderDescription": "Question description",
+            "FormLabelAnswerA": "Answer A",
+            "FormPlaceholderAnswerA": "Answer A",
+            "FormLabelAnswerB": "Answer B",
+            "FormPlaceholderAnswerB": "Answer B",
+            "FormLabelAnswerC": "Answer C",
+            "FormPlaceholderAnswerC": "Answer C",
+            "FormLabelAnswerD": "Answer D",
+            "FormPlaceholderAnswerD": "Answer D",
+            "FormLabelCorrect": "Correct Option",
+            "FormPlaceholderCorrect": "Select the correct option",
+            "FormLabelPoints": "Points",
+            "FormPlaceholderPoints": "0",
+            "ButtonSubmit": "Register Question"
+        },
+        "TeacherDashboard": {
+            "CardTitle": "Arena do Saber Teacher Dashboard",
+            "CardDescription": "Welcome back teacher {teacher}",
+            "Loading": "Loading classes..."
+        },
+        "RegisteredStudents": {
+            "CardTitle": "Students in this class",
+            "ClassLabel": "Class",
+            "TableHeadName": "Name",
+            "TableHeadNickName": "NickName",
+            "TableHeadLevel": "Level",
+            "SelectClassLabel": "Select a class to see the students"
+        },
+        "StudentQtdCard": {
+            "CardTitle": "Number of students in the class",
+            "StudentsInClass": "students in this class"
+        }
     }
 }
