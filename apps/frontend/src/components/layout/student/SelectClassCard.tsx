@@ -22,6 +22,8 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Loader2, BookOpen } from "lucide-react"
 
+import { useRouter } from "@/i18n/navigation"
+
 const joinClassSchema = z.object({
   code: z.string()
     .min(1, { message: "O código da turma é obrigatório" })
@@ -41,6 +43,7 @@ interface Class {
 
 export function JoinClassForm() {
   const t = useTranslations("StudentDashboardPage.JoinClassForm")
+  const router = useRouter()
 
   const [message, setMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -96,7 +99,7 @@ export function JoinClassForm() {
   }
 
   const handleClassClick = (classId: string) => {
-    alert(t("navigate", { id: classId }))
+    router.replace("/select-activities")
   }
 
   return (
@@ -182,7 +185,6 @@ export function JoinClassForm() {
                     <TableCell>{classItem.subject}</TableCell>
                     <TableCell>
                       <div>{classItem.name}</div>
-                      <div className="text-sm text-muted-foreground">{classItem.code}</div>
                     </TableCell>
                     <TableCell>{classItem.teacher}</TableCell>
                     <TableCell className="text-center">

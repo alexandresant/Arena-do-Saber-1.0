@@ -13,7 +13,7 @@ export async function loadActivities() {
     }
 
     try {
-        const response = await axios.get(`${STRAPI_URL}/api/activities?populate[questions]populate= activities`, {
+        const response = await axios.get(`${STRAPI_URL}/api/activities?populate=questions`, {
             headers: {
                 Authorization: `Bearer ${jwt}`,
             },
