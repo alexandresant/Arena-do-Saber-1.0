@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react"
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
-export async function loadActivities() {
+export async function loadActivities(classId: string) {
     const session = await getSession()
 
     const jwt = session?.jwt
@@ -12,15 +12,16 @@ export async function loadActivities() {
         return []
     }
 
+    const queryString = `filters[classId][id][$eq]=${classId}&populate=questions`
     try {
-        const response = await axios.get(`${STRAPI_URL}/api/activities?populate=questions`, {
+        const response = await axios.get(`${STRAPI_URL}/api/activities?${queryString}`, {
             headers: {
                 Authorization: `Bearer ${jwt}`,
             },
         }
         )
         const activities = response.data.data
-        console.log("Dados das atividades carregadas: ", activities)
+        console.log(`Dados das atividades da Turma ID ${classId} carregadas: `, activities)
         return activities
     }
     catch (error) {

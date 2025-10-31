@@ -7,10 +7,18 @@ import { useTranslations } from "next-intl"
 import { useState, useEffect } from "react"
 import { ActivityProps } from "@/types/types"
 import { loadActivities } from "@/lib/api/loadActivities"
+import { Button } from "@/components/ui/button"
+import { Home } from "lucide-react"
+import { useRouter } from "@/i18n/navigation"
+import { useSearchParams } from "next/navigation"
 
 // === COMPONENTE ===
 export function SelectActivities() {
   const t = useTranslations("SelectActivities")
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const classId = searchParams.get("classId")
+  const className = searchParams.get("className")
 
   const [activities, setActivities] = useState<ActivityProps[]>([])
   const [selectedActivity, setSelectedActivity] = useState<ActivityProps | null>(null)
@@ -18,7 +26,7 @@ export function SelectActivities() {
 
   useEffect(() => {
     const fetchActivities = async () => {
-      const loadedActivities = await loadActivities()
+      const loadedActivities = await loadActivities(classId || "")
       setActivities(loadedActivities)
     }
 
@@ -37,9 +45,19 @@ export function SelectActivities() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Turma Arduino</CardTitle>
-        <CardDescription>Selecione uma atividade</CardDescription>
+      <CardHeader className="flex flex-col-2 gap-2 justify-between items-center">
+        <div>
+          <CardTitle>Turma {className}</CardTitle>
+          <CardDescription>Selecione uma atividade</CardDescription>
+        </div>
+        <div>
+          <Button className="bg-transparent border text-gray-100 hover:text-gray-700"
+            onClick={() => router.push("/student-dashboard")}
+          >
+            <Home />
+            Home
+          </Button>
+        </div>
       </CardHeader>
 
       <CardContent>
@@ -98,9 +116,8 @@ export function SelectActivities() {
                           return (
                             <li
                               key={option}
-                              className={`p-2 border rounded cursor-pointer hover:bg-primary/10 ${
-                                isSelected ? "bg-primary/20 border-primary" : "border-transparent"
-                              }`}
+                              className={`p-2 border rounded cursor-pointer hover:bg-primary/10 ${isSelected ? "bg-primary/20 border-primary" : "border-transparent"
+                                }`}
                               onClick={() => selectAnswer(q.id, option)}
                             >
                               {option}: {text}
