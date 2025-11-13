@@ -42,7 +42,8 @@ export interface Character {
   hp?: number
   mana?: number
   magicAttack?: number
-  evasion?: number
+  evasion?: number,
+  points?: number
 }
 export interface CharacterTemplate {
   id: number

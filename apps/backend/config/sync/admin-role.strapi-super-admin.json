@@ -153,7 +153,7 @@
       "locale": null
     },
     {
-      "documentId": "osjhqw5jfkylisbvpkdpqckk",
+      "documentId": "du4fwlciz4wks8vqos23vfln",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -175,7 +175,8 @@
           "hp",
           "mana",
           "magicAttack",
-          "evasion"
+          "evasion",
+          "points"
         ]
       },
       "conditions": [],
@@ -200,7 +201,7 @@
       "locale": null
     },
     {
-      "documentId": "pl9wc2bzsdkxkzz8e6agjlrn",
+      "documentId": "bwro8ntt3fh6918hs5vv2vjl",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -222,14 +223,15 @@
           "hp",
           "mana",
           "magicAttack",
-          "evasion"
+          "evasion",
+          "points"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "zpx0ehmxfsjygg1gaueiiqb9",
+      "documentId": "skc940ek8w7my3ilrp8vmrqp",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -251,7 +253,8 @@
           "hp",
           "mana",
           "magicAttack",
-          "evasion"
+          "evasion",
+          "points"
         ]
       },
       "conditions": [],
@@ -562,24 +565,6 @@
     {
       "documentId": "nvt53nlav6mntr18ukrip4cy",
       "action": "admin::project-settings.update",
-      "actionParameters": {},
-      "subject": null,
-      "properties": {},
-      "conditions": [],
-      "locale": null
-    },
-    {
-      "documentId": "unza0xowf2adbzbpwxpz93t1",
-      "action": "admin::provider-login.read",
-      "actionParameters": {},
-      "subject": null,
-      "properties": {},
-      "conditions": [],
-      "locale": null
-    },
-    {
-      "documentId": "gjmiicgvwu75q2tglvs7r03e",
-      "action": "admin::provider-login.update",
       "actionParameters": {},
       "subject": null,
       "properties": {},

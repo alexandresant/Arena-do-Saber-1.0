@@ -42,6 +42,42 @@ export async function submitPoints(points: number): Promise<boolean> {
       }
     )
 
+    try {
+      const resCharacter = await axios.get(`${STRAPI_URL}/api/characters`, {
+        params: {
+          "filters[user][id][$eq]": user.id,
+        },
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+
+      const character = resCharacter.data.data[0]
+
+      if (character) {
+        const characterId = character.id
+        const currentCharPoints = character.attributes.points || 0
+        const updatedCharPoints = currentCharPoints + points
+
+        await axios.put(
+          `${STRAPI_URL}/api/characters/${characterId}`,
+          { points: updatedCharPoints },
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        console.log(`✅ Pontuação do personagem atualizada com sucesso: ${updatedCharPoints} pontos totais`)
+      }
+      else {
+        console.warn("Personagem não encontrado para o usuário")
+      }
+    }
+    catch (error) {
+      console.error("❌ Erro ao atualizar pontuação do personagem: ", error)
+    }
     console.log(`✅ Pontuação atualizada com sucesso: ${updatedPoints} pontos totais`)
     return true
   } catch (error) {

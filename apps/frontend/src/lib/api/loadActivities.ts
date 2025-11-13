@@ -21,7 +21,7 @@ export async function loadActivities(classId: string) {
         }
         )
         const activities = response.data.data
-        console.log(`Dados das atividades da Turma ID ${classId} carregadas: `, activities)
+        //console.log(`Dados das atividades da Turma ID ${classId} carregadas: `, activities)
         return activities
     }
     catch (error) {

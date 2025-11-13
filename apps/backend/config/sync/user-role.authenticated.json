@@ -91,16 +91,6 @@
       "locale": null
     },
     {
-      "documentId": "x4lcontiwslhfgg6j81z8pty",
-      "action": "api::question.question.create",
-      "locale": null
-    },
-    {
-      "documentId": "nfcm5uapnk3k94jfoqjdlh3i",
-      "action": "api::question.question.delete",
-      "locale": null
-    },
-    {
       "documentId": "toe78tcms8du7p2ni2nnu2q0",
       "action": "api::question.question.find",
       "locale": null

@@ -71,6 +71,9 @@
     },
     "evasion": {
       "type": "integer"
+    },
+    "points": {
+      "type": "integer"
     }
   }
 }

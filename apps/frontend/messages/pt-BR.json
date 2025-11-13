@@ -57,7 +57,7 @@
     "topCards": {
       "nivel": "Nível",
       "coins": "Moedas",
-      "content": "Conteúdo",
+      "content": "Pontos",
       "victory": "Vitórias"
     },
     "characters": {
@@ -76,7 +76,8 @@
       "defense": "Defesa",
       "physicalAttack": "Ataque físico",
       "magicAttack": "Ataque mágico",
-      "evasion": "Evasão"
+      "evasion": "Evasão",
+      "points": "Pontos"
     },
     "availableDiscipline": {
       "title": "Matéiras disponíveis",
