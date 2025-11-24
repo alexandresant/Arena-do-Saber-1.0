@@ -23,7 +23,7 @@ export async function loadClasses() {
         )
 
         const classes = response.data.data
-        console.log("Dados das turmas carregadas: ", classes)
+        //console.log("Dados das turmas carregadas: ", classes)
 
         return classes
     } catch (err) {

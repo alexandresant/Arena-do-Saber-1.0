@@ -42,7 +42,8 @@ export interface Character {
   hp?: number
   mana?: number
   magicAttack?: number
-  evasion?: number
+  evasion?: number,
+  points?: number
 }
 export interface CharacterTemplate {
   id: number
@@ -55,7 +56,7 @@ export interface CharacterTemplate {
   constitutionBase: number
   agilityBase: number
 }
-export interface CombatentStats{
+export interface CombatentStats {
   totalHp: number
   totalMana: number
   mana: number
@@ -65,11 +66,11 @@ export interface CombatentStats{
   evasion: number
   defense: number
 }
-export interface TeacherDashboardProps{
+export interface TeacherDashboardProps {
   teacher: string
 }
 
-export interface ClassProps{
+export interface ClassProps {
   id: number
   name: string
   student: {
@@ -78,41 +79,34 @@ export interface ClassProps{
     level: number
     nickName: string
   }[]
-  activities?:{
+  activities?: {
     id: number
     name: string
   }[]
 }
 
-export interface ClassCardProps{
+export interface ClassCardProps {
   turmas: ClassProps[]
   turmaSelecionada: ClassProps | null
   onClassSelect: (turma: ClassProps) => void
 }
 
-export interface ActivityProps{
+export interface ActivityProps {
   name: string
-  classId: number
-  attributes: {
-    name: string
-    questions: {
-      data: {
-        id: number
-        attributes: {
-          description: string
-          answerA: string
-          answerB: string
-          answerC: string
-          answerD: string
-          correct: "A" | "B" | "C" | "D"
-          points: number
-        }
-      }[]
-    }
-  }
+  id: number
+  questions: {
+    id: number
+    description: string
+    answerA: string
+    answerB: string
+    answerC: string
+    answerD: string
+    correct: "A" | "B" | "C" | "D"
+    points: number
+  }[]
 }
 
-export interface CreateClassProps{
+export interface CreateClassProps {
   name: string
   code: string
   teacher?: number

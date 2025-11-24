@@ -16,10 +16,11 @@ import { DisciplineCard } from "./DisciplineCard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RankingStudentsCard } from "./RankingStudentsCard"
 import { RankingFightersCard } from "./RankingFightersCard"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import type { Character } from "@/types/types"
 import { getCharacterStatus } from "@/lib/api/createCharacter"
-import {JoinClassForm }from "./SelectClassCard"
+import { JoinClassForm } from "./SelectClassCard"
+import { getUserPoints } from "@/lib/api/loadpointsUser"
 
 export function StudentDashboard() {
 
@@ -27,26 +28,41 @@ export function StudentDashboard() {
     const session = useSession()
     const userName = session.data?.user.name || "N/A"
     const [characterStatus, setCharacterStatus] = useState<Character | null>(null)
+    const [userPoints, setUserPoints] = useState<number | null>(null)
 
     const coins = 50
-    const contents = 10
     const victory = 54
 
-    useEffect(() =>{
-        const fetchCharacterStatus = async () =>{
-            if(!session?.data?.jwt) return
-            try{
+    useEffect(() => {
+        const fetchCharacterStatus = async () => {
+            if (!session?.data?.jwt) return
+            try {
                 const characterData = await getCharacterStatus(session?.data.jwt, Number(session.data.user.id))
-                if(characterData.character){
+                if (characterData.character) {
                     setCharacterStatus(characterData.character)
-                    //console.log("Dados carregados: " , characterData.character)
+                    console.log("Dados carregados: ", characterData.character)
                 }
             }
-            catch(error){
+            catch (error) {
                 console.error("Erro ao buscar status do personagem. " + error)
             }
         }
         fetchCharacterStatus()
+    }, [session])
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!session?.data?.jwt) return
+            try {
+                const userPointsValue = await getUserPoints()
+                if (userPointsValue !== null && userPointsValue !== undefined) {
+                    setUserPoints(userPointsValue)
+                    console.log("Pontos do usuário carregados:", userPointsValue)
+                }
+            } catch (error) {
+                console.error("Erro ao buscar pontos do usuário.", error)
+            }
+        }
+        fetchUserData()
     }, [session])
 
     return (
@@ -55,7 +71,7 @@ export function StudentDashboard() {
                 <div className="flex flex-col">
                     <CardTitle className="text-2xl">{t('title')}</CardTitle>
                     <CardDescription>{t('description', { userName })}</CardDescription>
-                    
+
                 </div>
                 <Button
                     className="bg-transparent border text-gray-100 hover:text-gray-700"
@@ -74,7 +90,7 @@ export function StudentDashboard() {
                         coins={coins}
                     />
                     <ContentsCard
-                        contents={contents}
+                        contents={userPoints ?? 0}
                     />
                     <VictoryCard
                         victory={victory}
@@ -91,12 +107,13 @@ export function StudentDashboard() {
                             intelligence={characterStatus?.intelligence ?? 0}
                             experience={characterStatus?.experience ?? 0}
                             level={characterStatus?.level ?? 1}
+                            points={characterStatus?.points ?? 0}
                         />
 
                         <StatsCombatentCard
                             totalHp={characterStatus?.hp ?? 0}
                             totalMana={characterStatus?.mana ?? 0}
-                            mana={(characterStatus?.mana ?? 0) }
+                            mana={(characterStatus?.mana ?? 0)}
                             hp={(characterStatus?.hp ?? 0)}
                             phisicalAttack={characterStatus?.attack ?? 0}
                             magicAttack={characterStatus?.magicAttack ?? 0}

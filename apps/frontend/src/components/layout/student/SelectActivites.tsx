@@ -2,110 +2,123 @@
 
 import { Card, CardContent, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { BookOpen } from "lucide-react"
+import { BookOpen, Home, Trophy } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState, useEffect } from "react"
 import { ActivityProps } from "@/types/types"
+import { loadActivities } from "@/lib/api/loadActivities"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "@/i18n/navigation"
+import { useSearchParams } from "next/navigation"
+import { submitPoints } from "@/lib/api/submitPoints"
+// 🎯 Importação do Sonner
+import { toast } from "sonner" 
 
-// === MOCK DATA ===
-export const mockActivity: ActivityProps = {
-  name: "Introdução ao Arduino",
-  classId: 1,
-  attributes: {
-    name: "Introdução ao Arduino",
-    questions: {
-      data: [
-        {
-          id: 1,
-          attributes: {
-            description: "O que é o Arduino?",
-            answerA: "Um software de edição de imagens",
-            answerB: "Uma plataforma de prototipagem eletrônica de hardware e software livre",
-            answerC: "Um tipo de sensor utilizado em robótica",
-            answerD: "Um microcontrolador proprietário da Intel",
-            correct: "B",
-            points: 10,
-          },
-        },
-        {
-          id: 2,
-          attributes: {
-            description: "Qual é a função principal da placa Arduino Uno?",
-            answerA: "Executar sistemas operacionais complexos",
-            answerB: "Compilar programas escritos em Python",
-            answerC: "Controlar circuitos eletrônicos a partir de código carregado na placa",
-            answerD: "Fazer medições de temperatura ambiente apenas",
-            correct: "C",
-            points: 10,
-          },
-        },
-        {
-          id: 3,
-          attributes: {
-            description: "Em qual linguagem de programação o Arduino é programado?",
-            answerA: "C/C++",
-            answerB: "Java",
-            answerC: "Python",
-            answerD: "Assembly",
-            correct: "A",
-            points: 10,
-          },
-        },
-        {
-          id: 4,
-          attributes: {
-            description: "Qual pino do Arduino é geralmente usado para enviar sinais PWM?",
-            answerA: "Pinos marcados com o símbolo ~ (til)",
-            answerB: "Pino A0",
-            answerC: "Pino GND",
-            answerD: "Pino VIN",
-            correct: "A",
-            points: 10,
-          },
-        },
-        {
-          id: 5,
-          attributes: {
-            description: "Qual componente é usado para carregar o código na placa Arduino?",
-            answerA: "Cabo de energia de 12V",
-            answerB: "Cartão SD",
-            answerC: "Cabo USB",
-            answerD: "Conexão Bluetooth",
-            correct: "C",
-            points: 10,
-          },
-        },
-      ],
-    },
-  },
-}
-
-// === COMPONENTE ===
 export function SelectActivities() {
   const t = useTranslations("SelectActivities")
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  // ❌ REMOVIDO: const { toast } = useToast() 
+  const classId = searchParams.get("classId")
+  const className = searchParams.get("className")
 
   const [activities, setActivities] = useState<ActivityProps[]>([])
   const [selectedActivity, setSelectedActivity] = useState<ActivityProps | null>(null)
   const [answers, setAnswers] = useState<Record<number, "A" | "B" | "C" | "D">>({})
+  const [isFinished, setIsFinished] = useState(false)
+  const [score, setScore] = useState({ correctCount: 0, totalPoints: 0 })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
-    setActivities([mockActivity])
-  }, [])
+    const fetchActivities = async () => {
+      const loadedActivities = await loadActivities(classId || "")
+      setActivities(loadedActivities)
+    }
+    fetchActivities()
+  }, [classId])
 
   const getQuestionCount = (activity: ActivityProps): number => {
-    return activity.attributes.questions?.data?.length || 0
+    return activity.questions?.length || 0
   }
 
-  // Seleciona a resposta para uma pergunta
   const selectAnswer = (questionId: number, option: "A" | "B" | "C" | "D") => {
     setAnswers((prev) => ({ ...prev, [questionId]: option }))
   }
 
+  const allAnswered =
+    selectedActivity &&
+    selectedActivity.questions.every((q) => answers[q.id] !== undefined)
+
+  const finishActivity = () => {
+    if (!selectedActivity) return
+
+    let correctCount = 0
+    let totalPoints = 0
+
+    selectedActivity.questions.forEach((q) => {
+      if (answers[q.id] === q.correct) {
+        correctCount++
+        totalPoints += q.points
+      }
+    })
+
+    setScore({ correctCount, totalPoints })
+    setIsFinished(true)
+  }
+
+  const resetActivity = () => {
+    setIsFinished(false)
+    setAnswers({})
+    setScore({ correctCount: 0, totalPoints: 0 })
+    setIsSubmitted(false)
+  }
+
+  // ✅ Função que envia a pontuação usando o Sonner
+  const submmitActivityPoints = async () => {
+    try {
+      setIsSubmitting(true)
+      const success = await submitPoints(score.totalPoints)
+      setIsSubmitting(false)
+      setIsSubmitted(success)
+
+      if (success) {
+        // Sonner para sucesso: mensagem simples e opcionalmente um título
+        toast.success("Pontuação enviada!", {
+          description: `Você ganhou ${score.totalPoints} pontos nesta atividade.`,
+        })
+      } else {
+        // Sonner para erro: usa toast.error() para estilo destrutivo
+        toast.error("Erro ao enviar pontuação", {
+          description: "Tente novamente mais tarde.",
+        })
+      }
+    } catch (error) {
+      console.error("Erro ao enviar pontuação:", error)
+      setIsSubmitting(false)
+      // Sonner para erro inesperado
+      toast.error("Erro inesperado", {
+        description: "Ocorreu um erro ao enviar sua pontuação.",
+      })
+    }
+  }
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Turma Arduino</CardTitle>
-        <CardDescription>Selecione uma atividade</CardDescription>
+      <CardHeader className="flex flex-col-2 gap-2 justify-between items-center">
+        <div>
+          <CardTitle>Turma {className}</CardTitle>
+          <CardDescription>Selecione uma atividade</CardDescription>
+        </div>
+        <div>
+          <Button
+            className="bg-transparent border text-gray-100 hover:text-gray-700"
+            onClick={() => router.push("/student-dashboard")}
+          >
+            <Home />
+            Home
+          </Button>
+        </div>
       </CardHeader>
 
       <CardContent>
@@ -113,59 +126,61 @@ export function SelectActivities() {
           <div className="text-center py-8 text-muted-foreground">
             <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
             <p>{t("noActivities")}</p>
-            <p className="text-sm">{t("joinWithCode")}</p>
           </div>
         ) : (
           <>
-            {/* TABELA DE ATIVIDADES */}
-            <div className="overflow-x-auto mb-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nome da Atividade</TableHead>
-                    <TableHead className="text-right">Questões</TableHead>
-                  </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                  {activities.map((activity) => (
-                    <TableRow
-                      key={activity.classId}
-                      className="cursor-pointer hover:bg-muted"
-                      onClick={() => {
-                        setSelectedActivity(activity)
-                        setAnswers({}) // limpa respostas anteriores
-                      }}
-                    >
-                      <TableCell className="font-medium">{activity.attributes.name}</TableCell>
-                      <TableCell className="text-right">
-                        {getQuestionCount(activity)}
-                      </TableCell>
+            {/* LISTA DE ATIVIDADES */}
+            {!selectedActivity && (
+              <div className="overflow-x-auto mb-6">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nome da Atividade</TableHead>
+                      <TableHead className="text-right">Questões</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
 
-            {/* SEÇÃO DE QUESTÕES */}
-            {selectedActivity && (
+                  <TableBody>
+                    {activities.map((activity) => (
+                      <TableRow
+                        key={activity.id}
+                        className="cursor-pointer hover:bg-muted"
+                        onClick={() => {
+                          setSelectedActivity(activity)
+                          setAnswers({})
+                          setIsFinished(false)
+                        }}
+                      >
+                        <TableCell className="font-medium">{activity.name}</TableCell>
+                        <TableCell className="text-right">
+                          {getQuestionCount(activity)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+
+            {/* QUESTÕES */}
+            {selectedActivity && !isFinished && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">
-                  Perguntas de: {selectedActivity.attributes.name}
+                  Perguntas de: {selectedActivity.name}
                 </h3>
 
-                {selectedActivity.attributes.questions.data.map((q) => (
+                {selectedActivity.questions.map((q) => (
                   <Card key={q.id} className="bg-muted">
                     <CardContent>
-                      <p className="font-medium mb-2">{q.attributes.description}</p>
+                      <p className="font-medium mb-2">{q.description}</p>
                       <ul className="list-none space-y-2">
                         {(["A", "B", "C", "D"] as const).map((option) => {
-                          const text = q.attributes[`answer${option}`]
+                          const text = q[`answer${option}`]
                           const isSelected = answers[q.id] === option
                           return (
                             <li
                               key={option}
-                              className={`p-2 border rounded cursor-pointer hover:bg-primary/10 ${
+                              className={`p-2 border rounded cursor-pointer hover:bg-primary/10 transition-colors ${
                                 isSelected ? "bg-primary/20 border-primary" : "border-transparent"
                               }`}
                               onClick={() => selectAnswer(q.id, option)}
@@ -178,6 +193,46 @@ export function SelectActivities() {
                     </CardContent>
                   </Card>
                 ))}
+
+                {allAnswered && (
+                  <div className="text-center mt-6">
+                    <Button onClick={finishActivity}>Finalizar Atividade</Button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* RESULTADO */}
+            {isFinished && selectedActivity && (
+              <div className="text-center space-y-4">
+                <Trophy className="mx-auto h-10 w-10 text-yellow-500" />
+                <h3 className="text-xl font-semibold">Resultado</h3>
+                <p>
+                  Você acertou{" "}
+                  <strong>{score.correctCount}</strong> de{" "}
+                  <strong>{selectedActivity.questions.length}</strong> questões!
+                </p>
+                <p>
+                  Pontuação total:{" "}
+                  <strong>{score.totalPoints}</strong> pontos
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
+                  <Button variant="outline" onClick={resetActivity}>
+                    Refazer Atividade
+                  </Button>
+
+                  <Button
+                    onClick={submmitActivityPoints}
+                    disabled={isSubmitting || isSubmitted}
+                  >
+                    {isSubmitting
+                      ? "Enviando..."
+                      : isSubmitted
+                      ? "Pontuação Enviada ✅"
+                      : "Enviar Pontuação"}
+                  </Button>
+                </div>
               </div>
             )}
           </>

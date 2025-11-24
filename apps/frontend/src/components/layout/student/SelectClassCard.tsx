@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { set, z } from "zod"
 import { useTranslations } from "next-intl"
 import { loadClasses } from "@/lib/api/loadClasses"
 
@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, BookOpen } from "lucide-react"
+
+import { useRouter } from "@/i18n/navigation"
 
 const joinClassSchema = z.object({
   code: z.string()
@@ -41,11 +43,13 @@ interface Class {
 
 export function JoinClassForm() {
   const t = useTranslations("StudentDashboardPage.JoinClassForm")
+  const router = useRouter()
 
   const [message, setMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [classes, setClasses] = useState<Class[]>([])
   const [isLoadingClasses, setIsLoadingClasses] = useState(true)
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
 
   const form = useForm<JoinClassFormValues>({
     resolver: zodResolver(joinClassSchema),
@@ -95,8 +99,9 @@ export function JoinClassForm() {
     }
   }
 
-  const handleClassClick = (classId: string) => {
-    alert(t("navigate", { id: classId }))
+  const handleClassClick = (classId: string, className: string) => {
+    router.push(`/select-activities?classId=${classId}&className=${className}`)
+    
   }
 
   return (
@@ -177,12 +182,11 @@ export function JoinClassForm() {
                   <TableRow
                     key={classItem.id}
                     className="cursor-pointer hover:bg-muted/50"
-                    onClick={() => handleClassClick(classItem.id)}
+                    onClick={() => handleClassClick(classItem.id, classItem.name)}
                   >
                     <TableCell>{classItem.subject}</TableCell>
                     <TableCell>
                       <div>{classItem.name}</div>
-                      <div className="text-sm text-muted-foreground">{classItem.code}</div>
                     </TableCell>
                     <TableCell>{classItem.teacher}</TableCell>
                     <TableCell className="text-center">

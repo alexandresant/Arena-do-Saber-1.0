@@ -525,6 +525,7 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
     nickName: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    points: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     strength: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;

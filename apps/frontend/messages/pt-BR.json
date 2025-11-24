@@ -57,7 +57,7 @@
     "topCards": {
       "nivel": "Nível",
       "coins": "Moedas",
-      "content": "Conteúdo",
+      "content": "Pontos",
       "victory": "Vitórias"
     },
     "characters": {
@@ -76,7 +76,8 @@
       "defense": "Defesa",
       "physicalAttack": "Ataque físico",
       "magicAttack": "Ataque mágico",
-      "evasion": "Evasão"
+      "evasion": "Evasão",
+      "points": "Pontos"
     },
     "availableDiscipline": {
       "title": "Matéiras disponíveis",
@@ -196,11 +197,12 @@
     "StudentQtdCard": {
       "CardTitle": "Quantidade de alunos na turma",
       "StudentsInClass": "Alunos nesta turma"
-    },
-    "SelectActivities": {
-      "title": "Selecione uma atividade",
-      "loadingActivities": "Carregando atividades...",
-      "noActivities": "Nenhuma atividade disponível nesta turma."
     }
+  },
+  "SelectActivities": {
+    "title": "Selecione uma atividade",
+    "loadingActivities": "Carregando atividades...",
+    "noActivities": "Nenhuma atividade disponível nesta turma.",
+    "joinWithCode": "Entre em uma atividade usando o código fornecido pelo seu professor."
   }
 }
