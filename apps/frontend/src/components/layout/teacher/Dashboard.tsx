@@ -10,7 +10,9 @@ import type { ClassProps } from "@/types/types"
 import { ActivtyClass } from "./ActivityClass"
 import { loadClass } from "@/lib/api/createClass"
 import { useTranslations } from "next-intl"
-
+import { Button } from "@/components/ui/button"
+import { LogOut } from "lucide-react"
+import { signOut } from "next-auth/react"
 export function TeacherDashboard() {
     const t = useTranslations("TeacherDashboardPage.TeacherDashboard")
     const [turmaSelecionada, setTurmaSelecionada] = useState<ClassProps | null>(null)
@@ -33,9 +35,19 @@ export function TeacherDashboard() {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>{t("CardTitle")}</CardTitle>
-                <CardDescription>{t("CardDescription", { teacher })}</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div className="flex flex-col space-y-2">
+                    <CardTitle>{t("CardTitle")}</CardTitle>
+                    <CardDescription>{t("CardDescription", { teacher })}</CardDescription>
+                </div>
+
+                <Button
+                    className="bg-transparent border text-gray-100 hover:text-gray-700"
+                    onClick={() => signOut()}
+                >
+                    <LogOut className="h-8 w-8" />
+                    Sair
+                </Button>
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
