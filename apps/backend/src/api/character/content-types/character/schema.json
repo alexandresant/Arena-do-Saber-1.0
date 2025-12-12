@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "characters",
+  "info": {
+    "singularName": "character",
+    "pluralName": "characters",
+    "displayName": "Character"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nickName": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "level": {
+      "type": "integer",
+      "default": 1,
+      "max": 99
+    },
+    "experience": {
+      "type": "integer",
+      "default": 0
+    },
+    "strength": {
+      "type": "integer"
+    },
+    "agility": {
+      "type": "integer"
+    },
+    "intelligence": {
+      "type": "integer"
+    },
+    "constitution": {
+      "type": "integer"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "character"
+    },
+    "character_template": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::character-template.character-template"
+    },
+    "name": {
+      "type": "string"
+    },
+    "experienceToNextLevel": {
+      "type": "integer"
+    },
+    "defense": {
+      "type": "integer"
+    },
+    "attack": {
+      "type": "integer"
+    },
+    "hp": {
+      "type": "integer"
+    },
+    "mana": {
+      "type": "integer"
+    },
+    "magicAttack": {
+      "type": "integer"
+    },
+    "evasion": {
+      "type": "integer"
+    },
+    "points": {
+      "type": "integer"
+    },
+    "victories": {
+      "type": "integer"
+    }
+  }
+}

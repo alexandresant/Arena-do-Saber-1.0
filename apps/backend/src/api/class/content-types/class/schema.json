@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "classes",
+  "info": {
+    "singularName": "class",
+    "pluralName": "classes",
+    "displayName": "Class"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string",
+      "unique": true
+    },
+    "student": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "classes"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "activities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "classId"
+    },
+    "teacher": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
