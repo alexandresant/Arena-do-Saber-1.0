@@ -31,7 +31,7 @@ export function StudentDashboard() {
     const [userPoints, setUserPoints] = useState<number | null>(null)
 
     const coins = 50
-    const victory = 54
+    const victory = 32  
 
     useEffect(() => {
         const fetchCharacterStatus = async () => {
@@ -40,7 +40,7 @@ export function StudentDashboard() {
                 const characterData = await getCharacterStatus(session?.data.jwt, Number(session.data.user.id))
                 if (characterData.character) {
                     setCharacterStatus(characterData.character)
-                    console.log("Dados carregados: ", characterData.character)
+                   //console.log("Dados carregados: ", characterData.character)
                 }
             }
             catch (error) {
@@ -56,10 +56,10 @@ export function StudentDashboard() {
                 const userPointsValue = await getUserPoints()
                 if (userPointsValue !== null && userPointsValue !== undefined) {
                     setUserPoints(userPointsValue)
-                    console.log("Pontos do usuário carregados:", userPointsValue)
+                    //console.log("Pontos do usuário carregados:", userPointsValue)
                 }
             } catch (error) {
-                console.error("Erro ao buscar pontos do usuário.", error)
+                //console.error("Erro ao buscar pontos do usuário.", error)
             }
         }
         fetchUserData()

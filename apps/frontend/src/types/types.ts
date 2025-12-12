@@ -123,3 +123,20 @@ export interface QuestionProps {
   points: number
   activityId: number
 }
+
+export interface ranckingUserProps {
+  id: number
+  username: string
+  points: number
+  characterName: string
+  characterLevel: number
+}
+
+export interface FighterProps {
+  id: number
+  nickName: string
+  points: number
+  level: number
+  victories: number
+}
+

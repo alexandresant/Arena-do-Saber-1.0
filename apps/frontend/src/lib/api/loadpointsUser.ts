@@ -20,7 +20,7 @@ export async function getUserPoints() {
   })
 
   const user = res.data
-  console.log("Pontos do usuário:", user.points)
+  //console.log("Pontos do usuário:", user.points)
 
   return user.points
 }
