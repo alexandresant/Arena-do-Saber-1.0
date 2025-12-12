@@ -535,6 +535,7 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    victories: Schema.Attribute.Integer;
   };
 }
 

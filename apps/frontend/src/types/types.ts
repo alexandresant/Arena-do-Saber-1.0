@@ -132,3 +132,11 @@ export interface ranckingUserProps {
   characterLevel: number
 }
 
+export interface FighterProps {
+  id: number
+  nickName: string
+  points: number
+  level: number
+  victories: number
+}
+

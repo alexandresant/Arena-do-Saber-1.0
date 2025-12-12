@@ -52,11 +52,11 @@ export async function getCharacterStatus(jwt: string, userId: number) {
         },
       }
     );
-    console.log("Dados do personagem" , response.data)
+    //console.log("Dados do personagem" , response.data)
     return response.data;
   } catch (error) {
-    console.error("Erro ao carregar status do personagem.", error);
-    throw new Error("Erro ao carregar dados do personagem.");
+    //console.error("Erro ao carregar status do personagem.", error);
+    //throw new Error("Erro ao carregar dados do personagem.");
   }
 }
 

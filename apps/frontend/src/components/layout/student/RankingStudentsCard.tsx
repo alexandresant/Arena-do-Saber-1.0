@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl"
 import { TrendingUp } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useEffect, useState } from "react"
-import { loadRanking } from "@/lib/api/loadRanking"
+import { loadRankingUser } from "@/lib/api/loadRanking"
 import type { ranckingUserProps } from "@/types/types"
 
 export function RankingStudentsCard() {
@@ -13,7 +13,7 @@ export function RankingStudentsCard() {
 
     useEffect(() => {
         async function fetchRanking() {
-            const data = await loadRanking()
+            const data = await loadRankingUser()
             setRankingData(data)
         }
         fetchRanking()

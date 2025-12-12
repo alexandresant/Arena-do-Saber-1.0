@@ -132,6 +132,26 @@ export default factories.createCoreController('api::character.character', ({ str
         return ctx.internalServerError("Erro ao verificar personagem.");
       }
     },
-    
+
+    async ranking(ctx) {
+    try {
+        const ranking = await strapi.entityService.findMany(
+            "api::character.character",
+            {
+                populate: "*",
+                //sort: { points: "DESC" },
+                //pagination: { pageSize: 1000 },
+            }
+        );
+
+        return ranking;
+
+    } catch (error) {
+        console.error("Erro ao carregar ranking:", error);
+        return ctx.internalServerError("Erro ao carregar ranking.");
+    }
+}
+
 }));
+
 
