@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
+import { Home } from "lucide-react"
 
 
 export function DisciplineCard() {
@@ -12,13 +13,25 @@ export function DisciplineCard() {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>{t('title')}</CardTitle>
-                <CardDescription>{t('description')}</CardDescription>
+            <CardHeader className="flex flex-row justify-between items-center">
+                <div>
+                    <CardTitle>{t('title')}</CardTitle>
+                    <CardDescription>{t('description')}</CardDescription>
+                </div>
+
+                <div>
+                    <Button
+                        className="bg-transparent border text-gray-100 hover:text-gray-700"
+                        onClick={() => router.push("/student-dashboard")}
+                    >
+                        <Home />
+                        Home
+                    </Button>
+                </div>
             </CardHeader>
             <CardContent className="space-y-2">
                 <div className="grid grid-cols-2 gap-2">
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/arte")}
                     >
@@ -26,7 +39,7 @@ export function DisciplineCard() {
                         <Label>{t('art')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/biologia")}
                     >
@@ -34,7 +47,7 @@ export function DisciplineCard() {
                         <Label>{t('biology')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/educacao-fisica")}
                     >
@@ -42,7 +55,7 @@ export function DisciplineCard() {
                         <Label>{t('physicalEducation')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/filosofia")}
                     >
@@ -50,7 +63,7 @@ export function DisciplineCard() {
                         <Label>{t('philosophy')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/fisica")}
                     >
@@ -58,7 +71,7 @@ export function DisciplineCard() {
                         <Label>{t('physical')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/geografia")}
                     >
@@ -66,7 +79,7 @@ export function DisciplineCard() {
                         <Label>{t('geography')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/historia")}
                     >
@@ -74,7 +87,7 @@ export function DisciplineCard() {
                         <Label>{t('history')}</Label>
                     </Card>
 
-                    <Card 
+                    <Card
                         className="text-center flex flex-col items-center gap-1 cursor-pointer transition-all duration-200 hover:scale-[1.01]"
                         onClick={() => router.replace("/ingles")}
                     >
@@ -82,7 +95,7 @@ export function DisciplineCard() {
                         <Label>{t('english')}</Label>
                     </Card>
                 </div>
-                <Button 
+                <Button
                     className="w-full bg-transparent border text-gray-100 hover:text-gray-800"
                     onClick={() => router.replace("/allDiscipline")}
                 >

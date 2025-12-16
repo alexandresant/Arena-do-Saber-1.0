@@ -90,7 +90,8 @@
       "geography": "Geografia",
       "history": "História",
       "english": "Inglês",
-      "allDisciplinesButton": "Ver todas as matérias"
+      "allDisciplinesButton": "Ver todas as matérias",
+      "arduino": "Arduino"
     },
     "ranking": {
       "topStudents": "Top Estudantes",

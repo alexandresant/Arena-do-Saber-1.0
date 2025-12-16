@@ -7,7 +7,7 @@
       "searchable": true,
       "pageSize": 10,
       "mainField": "documentId",
-      "defaultSortBy": "documentId",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -273,6 +273,20 @@
           "sortable": true
         }
       },
+      "victories": {
+        "edit": {
+          "label": "victories",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "victories",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -342,10 +356,10 @@
     },
     "layouts": {
       "list": [
+        "nickName",
         "id",
-        "createdAt",
-        "updatedAt",
-        "createdBy"
+        "experience",
+        "users_permissions_user"
       ],
       "edit": [
         [
@@ -379,10 +393,6 @@
           }
         ],
         [
-          {
-            "name": "users_permissions_user",
-            "size": 6
-          },
           {
             "name": "character_template",
             "size": 6
@@ -435,6 +445,16 @@
         [
           {
             "name": "points",
+            "size": 4
+          },
+          {
+            "name": "users_permissions_user",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "victories",
             "size": 4
           }
         ]
