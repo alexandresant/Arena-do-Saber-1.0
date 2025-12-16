@@ -6,7 +6,7 @@ export default [
     name: 'strapi::cors',
     config: {
       origin: [
-        'https://arena-do-saber-1-0.vercel.app/',
+        'https://arena-do-saber-1-0.vercel.app',
         'http://localhost:3000',
       ],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
