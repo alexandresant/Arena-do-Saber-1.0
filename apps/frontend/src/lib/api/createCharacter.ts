@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 
 
 export async function createCharacter(userId: number, id: number, nickName: string, jwt: string) {

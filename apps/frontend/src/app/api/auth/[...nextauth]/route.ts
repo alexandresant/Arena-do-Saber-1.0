@@ -5,9 +5,7 @@ import GitHubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import axios from "axios"
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-
-// Defina as suas opções de autenticação
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 export const authOptions: NextAuthOptions = {
   providers: [
     // Exemplo com o GitHub Provider

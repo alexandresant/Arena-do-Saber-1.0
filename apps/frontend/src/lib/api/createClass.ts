@@ -2,8 +2,7 @@ import axios from "axios";
 import type { CreateClassProps } from "@/types/types";
 import { getSession } from "next-auth/react";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
-
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 const session = await getSession()
     const jwt = session?.jwt;
     const idTeacher = session?.user.id
