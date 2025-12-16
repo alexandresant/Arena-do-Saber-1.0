@@ -140,3 +140,37 @@ export interface FighterProps {
   victories: number
 }
 
+// Define o formato de link que seu componente React irá consumir
+export interface PdfLink {
+    id: number;
+    name: string; // O nome da matéria (ex: "Arduino Básico")
+    url: string;  // A URL COMPLETA para download/visualização do PDF
+}
+
+// Interfaces internas para mapear a resposta bruta do Strapi
+export interface StrapiFileAttributes {
+    url: string; // Ex: /uploads/arquivo_xyz.pdf (URL relativa)
+    name: string;
+}
+
+export interface StrapiSubjectAttributes {
+    name: string; // Assumindo que o campo com o nome da matéria se chama 'name'
+    pdf: {
+        data: {
+            id: number;
+            attributes: StrapiFileAttributes;
+        } | null; // Pode ser null se não houver PDF anexado
+    };
+    // ... outros atributos da matéria
+}
+
+export interface StrapiItem {
+  id: number
+  name: string
+  description?: string
+  pdf?: {
+    id: number
+    url: string
+    name: string
+  }[]
+}

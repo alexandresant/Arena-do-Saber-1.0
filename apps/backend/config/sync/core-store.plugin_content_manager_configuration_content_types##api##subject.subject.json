@@ -61,6 +61,20 @@
           "sortable": false
         }
       },
+      "pdf": {
+        "edit": {
+          "label": "pdf",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "pdf",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -149,6 +163,10 @@
         [
           {
             "name": "icone",
+            "size": 6
+          },
+          {
+            "name": "pdf",
             "size": 6
           }
         ]

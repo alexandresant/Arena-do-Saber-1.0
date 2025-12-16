@@ -106,6 +106,31 @@
       "locale": null
     },
     {
+      "documentId": "cuamllrtx300xe36oghkgnu6",
+      "action": "api::subject.subject.create",
+      "locale": null
+    },
+    {
+      "documentId": "wmvq21eilkp1dwmysj9xpftx",
+      "action": "api::subject.subject.delete",
+      "locale": null
+    },
+    {
+      "documentId": "rct1zc3167x2io8evy8ru6rg",
+      "action": "api::subject.subject.find",
+      "locale": null
+    },
+    {
+      "documentId": "h1y66rrl6nqd7pif9e9csij7",
+      "action": "api::subject.subject.findOne",
+      "locale": null
+    },
+    {
+      "documentId": "rq5zv0ffaz6q0dqzcjaysle2",
+      "action": "api::subject.subject.update",
+      "locale": null
+    },
+    {
       "documentId": "t1w6azgntz5iee8e0jve1nxe",
       "action": "plugin::content-type-builder.components.getComponent",
       "locale": null

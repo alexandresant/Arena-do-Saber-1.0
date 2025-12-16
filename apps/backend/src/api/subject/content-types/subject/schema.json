@@ -31,14 +31,14 @@
         }
       }
     },
-    "icone": {
+    "pdf": {
       "type": "media",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "multiple": false,
+      "multiple": true,
       "allowedTypes": [
         "images",
         "files",

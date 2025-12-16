@@ -8,6 +8,7 @@ import { CoinsCard } from "./CoinsCard"
 import { ContentsCard } from "./ContentsCards"
 import { VictoryCard } from "./VictoryCard"
 import { CharacterCard } from "./CharacterCard"
+import { SubjectCard } from "./SubjectCard"
 
 import { useTranslations } from "next-intl"
 import { useSession, signOut } from "next-auth/react"
@@ -122,7 +123,7 @@ export function StudentDashboard() {
                         />
                     </div>
                     <div>
-                        {/*<DisciplineCard />*/}
+                        <SubjectCard />
                         <JoinClassForm />
                     </div>
                     <div className="flex flex-col">
