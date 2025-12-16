@@ -6,6 +6,21 @@
   "locale": null,
   "permissions": [
     {
+      "documentId": "f7koaciyufiyu521ewsujyrz",
+      "action": "api::character.character.checkCharacter",
+      "locale": null
+    },
+    {
+      "documentId": "jiljizvms4i7m56bi04zlgh8",
+      "action": "api::character.character.createCharacter",
+      "locale": null
+    },
+    {
+      "documentId": "snorkhg0ug5m8iee9518z0ei",
+      "action": "api::character.character.findCharacter",
+      "locale": null
+    },
+    {
       "documentId": "fo8vcg6yqt11yz7sp288a92u",
       "action": "plugin::users-permissions.auth.callback",
       "locale": null

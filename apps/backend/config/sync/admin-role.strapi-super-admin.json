@@ -153,7 +153,7 @@
       "locale": null
     },
     {
-      "documentId": "du4fwlciz4wks8vqos23vfln",
+      "documentId": "v5nc3x491ycgvt9scnkfdvb0",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -176,7 +176,8 @@
           "mana",
           "magicAttack",
           "evasion",
-          "points"
+          "points",
+          "victories"
         ]
       },
       "conditions": [],
@@ -201,7 +202,7 @@
       "locale": null
     },
     {
-      "documentId": "bwro8ntt3fh6918hs5vv2vjl",
+      "documentId": "vjjn5bgfe2khzgla9eykdj4a",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -224,14 +225,15 @@
           "mana",
           "magicAttack",
           "evasion",
-          "points"
+          "points",
+          "victories"
         ]
       },
       "conditions": [],
       "locale": null
     },
     {
-      "documentId": "skc940ek8w7my3ilrp8vmrqp",
+      "documentId": "jk560tfpfklaoqdotm57b5w0",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::character.character",
@@ -254,7 +256,8 @@
           "mana",
           "magicAttack",
           "evasion",
-          "points"
+          "points",
+          "victories"
         ]
       },
       "conditions": [],
@@ -411,7 +414,7 @@
       "locale": null
     },
     {
-      "documentId": "m7u0gey76sip9nvykl32ecba",
+      "documentId": "hcj3y0c4c6uhltm5iwkld7ha",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -419,7 +422,8 @@
         "fields": [
           "name",
           "description",
-          "icone"
+          "icone",
+          "pdf"
         ],
         "locales": [
           "en"
@@ -455,7 +459,7 @@
       "locale": null
     },
     {
-      "documentId": "tju0jfc4fbt4mxtwct6nkn9d",
+      "documentId": "av632jzo8pfmnu5yo8qll82n",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -463,7 +467,8 @@
         "fields": [
           "name",
           "description",
-          "icone"
+          "icone",
+          "pdf"
         ],
         "locales": [
           "en"
@@ -473,7 +478,7 @@
       "locale": null
     },
     {
-      "documentId": "zu3luz34765zjf5wzgt6xnzu",
+      "documentId": "xrvc9ywnzb4vgkxt3p3wt2fs",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -481,7 +486,8 @@
         "fields": [
           "name",
           "description",
-          "icone"
+          "icone",
+          "pdf"
         ],
         "locales": [
           "en"
