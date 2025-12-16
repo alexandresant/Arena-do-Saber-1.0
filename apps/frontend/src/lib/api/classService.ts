@@ -2,7 +2,7 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 
 export async function getClasses(code: string) {
   const session = await getSession();
