@@ -56,7 +56,7 @@ export function TeacherDashboard() {
                         turmaSelecionada={turmaSelecionada}
                         onClassSelect={setTurmaSelecionada}
                     />
-                    <StudentQtdCard qtdAlunos={turmaSelecionada?.student.length} />
+                    <StudentQtdCard qtdAlunos={turmaSelecionada?.student.length ?? 0} />
                     <CreateClassCard />
                     <CreateActivityCard />
                 </div>
