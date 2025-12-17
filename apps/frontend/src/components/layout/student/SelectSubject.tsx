@@ -21,6 +21,7 @@ const DISCIPLINE_MAP = [
     { slug: "geografia", icon: "🌍", tKey: "geography" },
     { slug: "historia", icon: "📜", tKey: "history" },
     { slug: "ingles", icon: "🇬🇧", tKey: "english" },
+    {slug: "matematica", icon: "🧮", tKey: "math"}
 ];
 
 export function DisciplineCard() {
