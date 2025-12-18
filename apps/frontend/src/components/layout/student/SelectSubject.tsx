@@ -19,8 +19,11 @@ const DISCIPLINE_MAP = [
     { slug: "filosofia", icon: "🏛️", tKey: "philosophy" },
     { slug: "fisica", icon: "⚡", tKey: "physical" },
     { slug: "geografia", icon: "🌍", tKey: "geography" },
-    { slug: "historia", icon: "📜", tKey: "history" },
+    { slug: "história", icon: "📜", tKey: "history" },
     { slug: "ingles", icon: "🇬🇧", tKey: "english" },
+    {slug: "matematica", icon: "➗", tKey: "math" },
+    { slug: "portugues", icon: "📚", tKey: "portuguese" },
+    { slug: "quimica", icon: "⚗️", tKey: "chemistry" },
 ];
 
 export function DisciplineCard() {

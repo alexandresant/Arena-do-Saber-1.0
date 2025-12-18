@@ -29,7 +29,7 @@ export interface Character {
   name: string
   nickName: string
   description?: string
-  image?: string
+  image: string
   strength: number
   intelligence: number
   constitution: number
@@ -37,13 +37,14 @@ export interface Character {
   experience: number
   level: number
   experienceToNextLevel?: number
-  defense?: number
-  attack?: number
-  hp?: number
-  mana?: number
-  magicAttack?: number
-  evasion?: number,
-  points?: number
+  defense: number
+  attack: number
+  maxHp: number
+  maxMana: number
+  magicAttack: number
+  evasion: number,
+  points: number
+  victories?: number
 }
 export interface CharacterTemplate {
   id: number
@@ -59,8 +60,8 @@ export interface CharacterTemplate {
 export interface CombatentStats {
   totalHp: number
   totalMana: number
-  mana: number
-  hp: number
+  mana?: number
+  hp?: number
   phisicalAttack: number
   magicAttack: number
   evasion: number
@@ -135,9 +136,17 @@ export interface ranckingUserProps {
 export interface FighterProps {
   id: number
   nickName: string
+  name: string
   points: number
   level: number
   victories: number
+  mana?: number
+  hp?: number
+  attack?: number
+  image?: string
+  magicAttack?: number
+  defense?: number
+  evasion?: number
 }
 
 // Define o formato de link que seu componente React irá consumir

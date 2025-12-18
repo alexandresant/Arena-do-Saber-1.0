@@ -73,10 +73,18 @@ export async function loadRankingFighters(): Promise<FighterProps[]> {
 
     const normalized: FighterProps[] = fighters.map((fighter: any) => ({
       id: fighter.id,
-      nickName: fighter.nickName ?? fighter.name ?? "Sem Nome",
+      nickName: fighter.nickName,
+      name: fighter.name,
       points: Number(fighter.points ?? 0),
       level: Number(fighter.level ?? 1),
       victories: Number(fighter.victories ?? 0),
+      hp: Number(fighter.hp ?? 100),
+      mana: Number(fighter.mana ?? 50),
+      attack: Number(fighter.attack ?? 10),
+      //image: fighter.image ?? "https://via.placeholder.com/150", 
+      magicAttack: Number(fighter.magicAttack ?? 0),
+      defense: Number(fighter.defense ?? 0),
+      evasion: Number(fighter.evasion ?? 0),
     }));
 
     //console.log("Ranking de lutadores (sem filtragem):", normalized);
