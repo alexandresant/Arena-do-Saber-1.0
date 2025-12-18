@@ -2,10 +2,9 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import type { Character, GameUser } from "@/lib/CharacterData"
-import { characters, gameUsers } from "@/lib/CharacterData"
+import type { Character } from "@/lib/CharacterData"
+import { useCharacters } from "@/lib/hooks/useCharacters"
 import { Shield, Swords, Zap, Heart, Droplet, Target } from "lucide-react"
-import { useEffect, useState } from "react"
 
 interface CharacterSelectProps {
   selectedCharacter: Character | null
@@ -13,8 +12,17 @@ interface CharacterSelectProps {
   disabled?: string
 }
 
-export default function CharacterSelect({ selectedCharacter, onSelectCharacter, disabled }: CharacterSelectProps) {
+export default function CharacterSelect({
+  selectedCharacter,
+  onSelectCharacter,
+  disabled,
+}: CharacterSelectProps) {
 
+  const { characters, isLoading } = useCharacters()
+
+  if (isLoading) {
+    return <div className="text-muted-foreground">Carregando personagens...</div>
+  }
 
   return (
     <div className="space-y-4">
@@ -25,60 +33,35 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
         return (
           <Card
             key={character.id}
-            className={`p-4 cursor-pointer transition-all border-2 ${isSelected
+            className={`p-4 cursor-pointer transition-all border-2 ${
+              isSelected
                 ? "border-primary bg-primary/10 scale-105"
                 : isDisabled
-                  ? "border-muted opacity-50 cursor-not-allowed"
-                  : "border-border hover:border-primary/50 hover:bg-card/80"
-              }`}
+                ? "border-muted opacity-50 cursor-not-allowed"
+                : "border-border hover:border-primary/50 hover:bg-card/80"
+            }`}
             onClick={() => !isDisabled && onSelectCharacter(character)}
           >
             <div className="flex items-start gap-4">
-              <div className="text-6xl flex-shrink-0 float">{character.image}</div>
+              <div className="text-6xl flex-shrink-0">{character.image}</div>
 
               <div className="flex-1 space-y-3">
                 <div>
-                  <h3 className="text-xl font-bold font-mono">{character.nickName}</h3>
-                  <p className="text-sm text-muted-foreground">{character.name}</p>
+                  <h3 className="text-xl font-bold font-mono">
+                    {character.nickName}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {character.name}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className="flex items-center gap-1">
-                    <Heart className="h-3 w-3 text-destructive" />
-                    <span className="font-mono">
-                      {"HP:"} {character.maxHp}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Droplet className="h-3 w-3 text-accent" />
-                    <span className="font-mono">
-                      {"Mana:"} {character.maxMana}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Swords className="h-3 w-3 text-primary" />
-                    <span className="font-mono">
-                      {"Atq. Fís:"} {character.attack}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Zap className="h-3 w-3 text-secondary" />
-                    <span className="font-mono">
-                      {"Atq. Mág:"} {character.magicAttack}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Shield className="h-3 w-3 text-chart-3" />
-                    <span className="font-mono">
-                      {"Defesa:"} {character.defense}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Target className="h-3 w-3 text-chart-4" />
-                    <span className="font-mono">
-                      {"Destreza:"} {character.dexterity}
-                    </span>
-                  </div>
+                  <Stat icon={<Heart className="h-3 w-3 text-destructive" />} label="HP" value={character.maxHp} />
+                  <Stat icon={<Droplet className="h-3 w-3 text-accent" />} label="Mana" value={character.maxMana} />
+                  <Stat icon={<Swords className="h-3 w-3 text-primary" />} label="Atq. Fís" value={character.attack} />
+                  <Stat icon={<Zap className="h-3 w-3 text-secondary" />} label="Atq. Mág" value={character.magicAttack} />
+                  <Stat icon={<Shield className="h-3 w-3 text-chart-3" />} label="Defesa" value={character.defense} />
+                  <Stat icon={<Target className="h-3 w-3 text-chart-4" />} label="Destreza" value={character.dexterity} />
                 </div>
               </div>
             </div>
@@ -93,12 +76,23 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
                   onSelectCharacter(null as any)
                 }}
               >
-                {"Desselecionar"}
+                Desselecionar
               </Button>
             )}
           </Card>
         )
       })}
+    </div>
+  )
+}
+
+function Stat({ icon, label, value }: any) {
+  return (
+    <div className="flex items-center gap-1">
+      {icon}
+      <span className="font-mono">
+        {label}: {value}
+      </span>
     </div>
   )
 }
