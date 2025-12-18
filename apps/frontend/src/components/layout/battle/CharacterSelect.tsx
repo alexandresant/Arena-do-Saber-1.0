@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
-import { useCharacters } from "@/lib/hooks/useCharacters"
+import { useCharacters } from "@/lib/useCharacters"
 import { Shield, Swords, Zap, Heart, Droplet, Target } from "lucide-react"
 
 interface CharacterSelectProps {
