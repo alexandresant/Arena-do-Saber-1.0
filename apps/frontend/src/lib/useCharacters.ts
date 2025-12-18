@@ -1,26 +1,54 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { characters as charactersSource } from "@/lib/CharacterData"
-import type { Character } from "@/lib/CharacterData"
+import {
+  characters,
+  gameUsers,
+  hydrateAllCharacters,
+  type Character,
+  type GameUser,
+} from "@/lib/CharacterData"
 
-export function useCharacters() {
-  const [characters, setCharacters] = useState<Character[]>([])
+interface UseCharactersResult {
+  characters: Character[]
+  gameUsers: GameUser[]
+  isLoading: boolean
+}
+
+export function useCharacters(): UseCharactersResult {
+  const [, forceRender] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // snapshot inicial
-    setCharacters([...charactersSource])
+    let mounted = true
 
-    const update = () => {
-      setCharacters([...charactersSource])
+    async function load() {
+      try {
+        await hydrateAllCharacters()
+      } finally {
+        if (mounted) {
+          setIsLoading(false)
+        }
+      }
     }
 
-    window.addEventListener("characters:update", update)
+    load()
+
+    function handleUpdate() {
+      forceRender((v) => v + 1)
+    }
+
+    window.addEventListener("characters:update", handleUpdate)
 
     return () => {
-      window.removeEventListener("characters:update", update)
+      mounted = false
+      window.removeEventListener("characters:update", handleUpdate)
     }
   }, [])
 
-  return characters
+  return {
+    characters,
+    gameUsers,
+    isLoading,
+  }
 }
