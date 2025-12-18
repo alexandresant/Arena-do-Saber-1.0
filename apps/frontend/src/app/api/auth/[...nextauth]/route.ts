@@ -5,9 +5,7 @@ import GitHubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import axios from "axios"
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-
-// Defina as suas opções de autenticação
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 export const authOptions: NextAuthOptions = {
   providers: [
     // Exemplo com o GitHub Provider
@@ -38,7 +36,7 @@ export const authOptions: NextAuthOptions = {
               null
             )
           }
-          
+
           const resUser = await axios.get(`${STRAPI_URL}/api/users/me?populate=role`, {
             headers: {
               Authorization: `Bearer ${jwt}`
@@ -47,7 +45,7 @@ export const authOptions: NextAuthOptions = {
           console.log("Dados completos do usuário:", resUser.data)
           const role = resUser.data.role?.name
 
-          
+
           return {
             id: user.user.id,
             name: user.user.username,
@@ -66,23 +64,35 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt", // usar JWT em vez de salvar em banco
   },
   callbacks: {
-  async jwt({ token, user, }) {
-    if (user) {
-      token.id = user.id
-      token.jwt = (user as any).jwt
-      token.role = user.role // 🔹 salva a role no token
-    }
-    return token
+    async jwt({ token, user, }) {
+      if (user) {
+        token.id = user.id
+        token.jwt = (user as any).jwt
+        token.role = user.role // 🔹 salva a role no token
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id as string
+        session.user.role = (token as any).role // 🔹 salva a role na session
+          ; (session as any).jwt = token.jwt
+      }
+      return session
+    },
   },
-  async session({ session, token }) {
-    if (token) {
-      session.user.id = token.id as string
-      session.user.role = (token as any).role // 🔹 salva a role na session
-      ;(session as any).jwt = token.jwt
-    }
-    return session
+
+cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax', // Importante para cross-site entre Vercel e Render
+        path: '/',
+        secure: true // Vercel sempre usa HTTPS
+      },
+    },
   },
-}
 }
 
 // Crie o handler com base nas opções

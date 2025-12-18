@@ -3,7 +3,7 @@ import type { RegisterProps, UserProps } from "@/types/types"
 import { User } from "next-auth"
 import type { AuthResponse } from "@/types/types"
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 
 export async function loginUser({ email, password }: UserProps): Promise<AuthResponse> {
   try {

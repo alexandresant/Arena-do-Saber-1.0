@@ -38,7 +38,7 @@ export function StudentDashboard() {
         const fetchCharacterStatus = async () => {
             if (!session?.data?.jwt) return
             try {
-                const characterData = await getCharacterStatus(session?.data.jwt, Number(session.data.user.id))
+                const characterData = await getCharacterStatus(Number(session.data.user.id))
                 if (characterData.character) {
                     setCharacterStatus(characterData.character)
                    //console.log("Dados carregados: ", characterData.character)
@@ -109,13 +109,18 @@ export function StudentDashboard() {
                             experience={characterStatus?.experience ?? 0}
                             level={characterStatus?.level ?? 1}
                             points={characterStatus?.points ?? 0}
+                            image={characterStatus?.image ?? "N/A"}
+                            defense={characterStatus?.defense ?? 0}     
+                            magicAttack={characterStatus?.magicAttack ?? 0}
+                            attack={characterStatus?.attack ?? 0}
+                            evasion={characterStatus?.evasion ?? 0}
+                            maxHp={characterStatus?.maxHp ?? 0}
+                            maxMana={characterStatus?.maxMana ?? 0}
                         />
 
                         <StatsCombatentCard
-                            totalHp={characterStatus?.hp ?? 0}
-                            totalMana={characterStatus?.mana ?? 0}
-                            mana={(characterStatus?.mana ?? 0)}
-                            hp={(characterStatus?.hp ?? 0)}
+                            totalHp={characterStatus?.maxHp ?? 0}
+                            totalMana={characterStatus?.maxMana ?? 0}
                             phisicalAttack={characterStatus?.attack ?? 0}
                             magicAttack={characterStatus?.magicAttack ?? 0}
                             evasion={characterStatus?.evasion ?? 0}

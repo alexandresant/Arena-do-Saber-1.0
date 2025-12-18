@@ -6,7 +6,7 @@ import type { CombatentStats } from "@/types/types"
 import { Badge } from "@/components/ui/badge"
 import { Wand, Sword, Shield, Rabbit } from "lucide-react"
 
-export function StatsCombatentCard({ totalHp, totalMana, mana, hp, phisicalAttack, magicAttack, evasion, defense }: CombatentStats) {
+export function StatsCombatentCard({ totalHp, totalMana, phisicalAttack, magicAttack, evasion, defense }: CombatentStats) {
     const t = useTranslations('StudentDashboardPage.characters')
 
     return (
@@ -19,17 +19,17 @@ export function StatsCombatentCard({ totalHp, totalMana, mana, hp, phisicalAttac
                     <div className="w-[45%] space-y-1">
                         <div className="flex flex-row items-center justify-between">
                             <Label>{t('hp')}</Label>
-                            <Label>{hp} / {totalHp}</Label>
+                            <Label>{totalHp}</Label>
                         </div>
-                        <Progress value={(hp / totalHp) * 100} className="[&>div]:bg-red-600" />
+                        <Progress value={totalHp} className="[&>div]:bg-red-600" />
                     </div>
 
                     <div className="w-[45%] space-y-1">
                         <div className="flex flex-row items-center justify-between">
                             <Label>{t('mana')}</Label>
-                            <Label>{mana} / {totalMana}</Label>
+                            <Label>{totalMana}</Label>
                         </div>
-                        <Progress value={(mana / totalMana) * 100} className="[&>div]:bg-blue-600" />
+                        <Progress value={totalMana} className="[&>div]:bg-blue-600" />
                     </div>
                 </div>
 

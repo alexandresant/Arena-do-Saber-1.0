@@ -1,7 +1,7 @@
 import axios from "axios"
+import { getSession } from "next-auth/react"
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 
 export async function createCharacter(userId: number, id: number, nickName: string, jwt: string) {
     const response = await axios.post(`${STRAPI_URL}/api/characters/create-character`, {
@@ -42,23 +42,27 @@ export async function getCharacterTemplates(jwt: string) {
     return response.data
 }
 
-export async function getCharacterStatus(jwt: string, userId: number) {
-  try {
-    const response = await axios.get(
-      `${STRAPI_URL}/api/characters?filters[users_permissions_user][id][$eq]=${userId}&populate=*`,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    );
-    //console.log("Dados do personagem" , response.data)
-    return response.data;
-  } catch (error) {
-    //console.error("Erro ao carregar status do personagem.", error);
-    //throw new Error("Erro ao carregar dados do personagem.");
-  }
+export async function getCharacterStatus(userId: number) {
+    const session = await getSession()
+    //const userId = session?.user?.id
+    const jwt = session?.jwt
+    try {
+        const response = await axios.get(
+            `${STRAPI_URL}/api/characters?filters[users_permissions_user][id][$eq]=${userId}&populate=*`,
+            {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            }
+        );
+        //console.log("Dados do personagem" , response.data)
+        return response.data;
+    } catch (error) {
+        //console.error("Erro ao carregar status do personagem.", error);
+        //throw new Error("Erro ao carregar dados do personagem.");
+    }
 }
+
 
 
 
