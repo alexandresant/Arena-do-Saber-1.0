@@ -182,11 +182,11 @@ async function hydrateGameUsers() {
 }
 
 /* =========================
-   DISPARO AUTOMÁTICO (ORDEM CORRETA)
+   API DE HIDRATAÇÃO
 ========================= */
 
-;(async () => {
+export async function hydrateAllCharacters() {
   await hydrateFallbackCharacter()
   await hydrateCharacters()
   await hydrateGameUsers()
-})()
+}
