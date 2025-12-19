@@ -1,3 +1,4 @@
+// @/lib/CharacterData
 import { loadRankingFighters, loadRankingUser } from "./api/loadRanking"
 import { getCharacterStatus } from "@/lib/api/createCharacter"
 import { getSession } from "next-auth/react"
@@ -12,16 +13,17 @@ export interface GameUser {
   id: string; username: string; level: number; character: Character;
 }
 
-// Armazenamento volátil
 export let mainPlayer: Character | null = null;
-export const allCharacters: Character[] = [];
+export const characters: Character[] = []; // Mudei de allCharacters para characters
 export const gameUsers: GameUser[] = [];
 
 let isHydrated = false;
 
+// Função para notificar o Hook da mudança
 export function notifyUpdate() {
   if (typeof window !== "undefined") {
-    window.dispatchEvent(new CustomEvent("gameData:updated"));
+    // Mudei para characters:update para bater com o Hook
+    window.dispatchEvent(new CustomEvent("characters:update"));
   }
 }
 
@@ -32,6 +34,7 @@ function mapImage(className: string) {
   return images[className] || "❓";
 }
 
+// Mudei o nome para hydrateAllCharacters para bater com o Hook
 export async function hydrateAll() {
   if (isHydrated) return;
   
@@ -39,7 +42,6 @@ export async function hydrateAll() {
     const session = await getSession();
     const userId = session?.user?.id;
 
-    // 1. Carrega o Player Principal (Não entra na lista geral)
     if (userId) {
       const resp = await getCharacterStatus(Number(userId));
       if (resp?.character) {
@@ -59,10 +61,10 @@ export async function hydrateAll() {
       }
     }
 
-    // 2. Carrega Lutadores (Fighters)
     const fighters = await loadRankingFighters();
-    allCharacters.splice(0, allCharacters.length, ...fighters
-      .filter(f => String(f.id) !== mainPlayer?.id) // Remove o player da lista
+    // Atualiza a lista 'characters'
+    characters.splice(0, characters.length, ...fighters
+      .filter(f => String(f.id) !== mainPlayer?.id)
       .map(f => ({
         id: String(f.id),
         nickName: f.nickName || "Inimigo",
@@ -76,13 +78,12 @@ export async function hydrateAll() {
         dexterity: f.evasion || 0
       })));
 
-    // 3. Carrega Usuários
     const users = await loadRankingUser();
     gameUsers.splice(0, gameUsers.length, ...users.map((u, i) => ({
       id: String(u.id),
       username: u.username,
       level: Math.max(1, Math.floor((u.points ?? 0) / 100)),
-      character: allCharacters[i % allCharacters.length] || mainPlayer
+      character: characters[i % characters.length] || mainPlayer
     })));
 
     isHydrated = true;
