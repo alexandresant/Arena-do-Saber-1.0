@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
-import { Home, RotateCcw } from "lucide-react"
+import { Home, RotateCcw, Sparkles, Coins } from "lucide-react"
 import { calculateDamage, calculateHitChance } from "@/lib/BattleLogic"
 import AnimatedSprite from "@/components/layout/battle/AnimatedSprite"
 
@@ -27,7 +27,7 @@ interface BattleState {
   showDamage: { player1: boolean; player2: boolean }
   player1Animation: "idle" | "attack" | "hit"
   player2Animation: "idle" | "attack" | "hit"
-  isCriticalHit: boolean // Nova propriedade para o efeito visual
+  isCriticalHit: boolean
 }
 
 export default function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
@@ -49,73 +49,55 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
 
   useEffect(() => {
     if (battleState.winner || battleState.isAnimating) return
-
-    const timer = setTimeout(() => {
-      executeTurn()
-    }, 2000)
-
+    const timer = setTimeout(() => executeTurn(), 2000)
     return () => clearTimeout(timer)
   }, [battleState.currentTurn, battleState.winner, battleState.isAnimating])
 
   const executeTurn = () => {
     const attacker = battleState.currentTurn === "player1" ? player1 : player2
     const defender = battleState.currentTurn === "player1" ? player2 : player1
-    const attackerState =
-      battleState.currentTurn === "player1"
-        ? { hp: battleState.player1Hp, mana: battleState.player1Mana }
-        : { hp: battleState.player2Hp, mana: battleState.player2Mana }
+    const currentMana = battleState.currentTurn === "player1" ? battleState.player1Mana : battleState.player2Mana
 
-    const useMagic = attackerState.mana >= 20 && attacker.magicAttack > attacker.attack
+    const useMagic = currentMana >= 20 && attacker.magicAttack > attacker.attack
     const manaCost = useMagic ? 20 : 0
 
-    // Destruturação da nova lógica de acerto
     const { didHit, isCritical } = calculateHitChance(attacker, defender)
     const damage = didHit ? calculateDamage(attacker, defender, useMagic, isCritical) : 0
-
-    const xpGained = Math.floor(defender.maxHp * 0.5 + Math.random() * 50);
-    const coinsGained = Math.floor(defender.maxHp * 0.2 + Math.random() * 20);
 
     setBattleState((prev) => ({
       ...prev,
       player1Animation: prev.currentTurn === "player1" ? "attack" : prev.player1Animation,
       player2Animation: prev.currentTurn === "player2" ? "attack" : prev.player2Animation,
       isAnimating: true,
-      isCriticalHit: isCritical, // Define se o ataque atual é crítico
+      isCriticalHit: isCritical,
     }))
 
     setTimeout(() => {
       setBattleState((prev) => {
-        const isPlayer1Attacker = prev.currentTurn === "player1"
-        const newDefenderHp = isPlayer1Attacker
-          ? Math.max(0, prev.player2Hp - damage)
-          : Math.max(0, prev.player1Hp - damage)
-
-        const newAttackerMana = isPlayer1Attacker ? prev.player1Mana - manaCost : prev.player2Mana - manaCost
+        const isP1 = prev.currentTurn === "player1"
+        const newDefHp = Math.max(0, (isP1 ? prev.player2Hp : prev.player1Hp) - damage)
+        const newAtkMana = (isP1 ? prev.player1Mana : prev.player2Mana) - manaCost
 
         const critText = isCritical ? " 🔥 CRÍTICO!" : ""
         const newLog = didHit
           ? [`${attacker.nickName} causou ${damage}${critText} de dano!`, ...prev.battleLog]
-          : [`${attacker.nickName} atacou mas ${defender.nickName} desviou! MISS!`, ...prev.battleLog]
+          : [`${attacker.nickName} errou o golpe!`, ...prev.battleLog]
 
-        const winner = newDefenderHp === 0 ? (isPlayer1Attacker ? "player1" : "player2") : null
-
-        if (winner) {
-          newLog.unshift(`${isPlayer1Attacker ? player1.nickName : player2.nickName} venceu a batalha!`)
-        }
+        const winner = newDefHp === 0 ? (isP1 ? "player1" : "player2") : null
 
         return {
           ...prev,
-          player1Hp: isPlayer1Attacker ? prev.player1Hp : newDefenderHp,
-          player2Hp: isPlayer1Attacker ? newDefenderHp : prev.player2Hp,
-          player1Mana: isPlayer1Attacker ? newAttackerMana : prev.player1Mana,
-          player2Mana: isPlayer1Attacker ? prev.player2Mana : newAttackerMana,
+          player1Hp: isP1 ? prev.player1Hp : newDefHp,
+          player2Hp: isP1 ? newDefHp : prev.player2Hp,
+          player1Mana: isP1 ? newAtkMana : prev.player1Mana,
+          player2Mana: isP1 ? prev.player2Mana : newAtkMana,
           battleLog: newLog.slice(0, 8),
           winner,
-          currentTurn: winner ? prev.currentTurn : isPlayer1Attacker ? "player2" : "player1",
-          lastDamage: isPlayer1Attacker ? { player1: 0, player2: damage } : { player1: damage, player2: 0 },
-          showDamage: isPlayer1Attacker ? { player1: false, player2: true } : { player1: true, player2: false },
-          player1Animation: isPlayer1Attacker ? "attack" : didHit ? "hit" : "idle",
-          player2Animation: isPlayer1Attacker ? (didHit ? "hit" : "idle") : "attack",
+          currentTurn: winner ? prev.currentTurn : isP1 ? "player2" : "player1",
+          lastDamage: isP1 ? { player1: 0, player2: damage } : { player1: damage, player2: 0 },
+          showDamage: isP1 ? { player1: false, player2: true } : { player1: true, player2: false },
+          player1Animation: isP1 ? "attack" : didHit ? "hit" : "idle",
+          player2Animation: isP1 ? (didHit ? "hit" : "idle") : "attack",
         }
       })
     }, 500)
@@ -124,179 +106,175 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
       setBattleState((prev) => ({
         ...prev,
         isAnimating: false,
-        isCriticalHit: false, // Reseta o estado de crítico
         showDamage: { player1: false, player2: false },
         player1Animation: "idle",
         player2Animation: "idle",
+        isCriticalHit: false,
       }))
     }, 1200)
   }
 
-  const player1HpPercent = (battleState.player1Hp / player1.maxHp) * 100
-  const player2HpPercent = (battleState.player2Hp / player2.maxHp) * 100
-  const player1ManaPercent = (battleState.player1Mana / player1.maxMana) * 100
-  const player2ManaPercent = (battleState.player2Mana / player2.maxMana) * 100
+  // Cálculos de Percentual
+  const p1HpPerc = (battleState.player1Hp / player1.maxHp) * 100
+  const p2HpPerc = (battleState.player2Hp / player2.maxHp) * 100
+  const p1ManaPerc = (battleState.player1Mana / player1.maxMana) * 100
+  const p2ManaPerc = (battleState.player2Mana / player2.maxMana) * 100
 
   return (
-    <div className="min-h-screen flex flex-col p-4 relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      {/* Background Dinâmico (Mantido igual) */}
-      <div className="absolute inset-0 z-0 opacity-50">
-        <div className="absolute inset-0 bg-gradient-to-b from-orange-900/30 via-purple-900/20 to-transparent" />
+    <div className="min-h-screen flex flex-col p-4 relative overflow-hidden bg-[#0a0f1e]">
+      {/* CENÁRIO (ESTILO IMAGEM GERADA) */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-transparent to-black/60" />
+
+        {/* CHÃO VERDE MUSGO COM CONTRASTE */}
+        <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-b from-[#1a2e1a] via-[#101a10] to-[#050505]">
+          <div className="w-full h-1.5 bg-green-500/40 shadow-[0_0_20px_rgba(34,197,94,0.5)]" />
+          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#4ade80 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        </div>
       </div>
 
       <div className="max-w-7xl w-full mx-auto space-y-6 flex-1 flex flex-col relative z-10">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-primary font-mono drop-shadow-lg">ARENA DE BATALHA</h1>
-          <Button variant="outline" size="sm" onClick={onReset} className="font-mono bg-background/80 backdrop-blur">
-            <Home className="h-4 w-4 mr-2" />
-            Voltar
+          <h1 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+            BATTLE <span className="text-primary">ARENA</span>
+          </h1>
+          <Button variant="outline" size="sm" onClick={onReset} className="bg-background/80 backdrop-blur border-primary/50">
+            <Home className="h-4 w-4 mr-2" /> Voltar
           </Button>
         </div>
 
-        <div className="flex-1 flex flex-col justify-center relative">
-          {/* HUD de Status (Mantido igual) */}
-          <div className="grid grid-cols-2 gap-8 mb-8">
-            {/* Player 1 Stats */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm font-mono text-red-500">
-                <span className="font-bold text-white uppercase">{player1.nickName}</span>
-                <span>HP: {battleState.player1Hp}/{player1.maxHp}</span>
-              </div>
-              <div className="h-4 bg-background/50 rounded-full border-2 border-foreground/20 overflow-hidden">
-                <div className="h-full bg-red-600 transition-all duration-500" style={{ width: `${player1HpPercent}%` }} />
+        {/* HUD DE STATUS (HP E MANA COM VALORES NUMÉRICOS) */}
+        <div className="grid grid-cols-2 gap-8 mb-4">
+          {/* Player 1 HUD */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-end">
+              <span className="font-black text-white text-xl italic tracking-tighter">{player1.nickName}</span>
+              <span className="text-red-400 font-mono text-xs font-bold">HP {battleState.player1Hp}/{player1.maxHp}</span>
+            </div>
+            {/* Barra de HP */}
+            <div className="h-5 bg-black/60 rounded-sm border border-white/10 overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] relative">
+              <div
+                className="h-full bg-gradient-to-r from-red-700 via-red-500 to-red-400 transition-all duration-500"
+                style={{ width: `${p1HpPerc}%` }}
+              />
+              <div className="absolute inset-0 flex justify-center items-center text-[10px] font-black text-white drop-shadow-md">
+                {Math.round(p1HpPerc)}%
               </div>
             </div>
-            {/* Player 2 Stats */}
-            <div className="space-y-2 text-right">
-              <div className="flex justify-between text-sm font-mono text-red-500">
-                <span>HP: {battleState.player2Hp}/{player2.maxHp}</span>
-                <span className="font-bold text-white uppercase">{player2.nickName}</span>
+            {/* Barra de Mana e Valor */}
+            <div className="flex items-center gap-2">
+              <div className="h-2.5 bg-black/60 rounded-sm border border-white/5 overflow-hidden flex-1 relative">
+                <div
+                  className="h-full bg-gradient-to-r from-blue-700 to-cyan-400 transition-all duration-500"
+                  style={{ width: `${p1ManaPerc}%` }}
+                />
               </div>
-              <div className="h-4 bg-background/50 rounded-full border-2 border-foreground/20 overflow-hidden">
-                <div className="h-full bg-red-600 transition-all duration-500" style={{ width: `${player2HpPercent}%` }} />
-              </div>
+              <span className="text-blue-400 font-mono text-[10px] font-bold min-w-[60px] text-right">
+                MP {battleState.player1Mana}
+              </span>
             </div>
           </div>
 
-          <div className="relative flex items-end justify-between px-8 py-16 min-h-[500px]">
-            {/* FUNDO E CHÃO MELHORADOS */}
-            <div className="absolute inset-0 z-0">
-              <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-transparent to-black/40" />
-
-              {/* O NOVO CHÃO (ESTILO IMAGEM) */}
-              <div className="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-b from-[#1a2e1a] to-[#050505]">
-                {/* Linha de horizonte brilhante para dar contraste */}
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-green-500/50 to-transparent shadow-[0_0_15px_rgba(34,197,94,0.4)]" />
-
-                {/* Grama/Textura pontilhada */}
-                <div className="absolute inset-0 opacity-20"
-                  style={{ backgroundImage: 'radial-gradient(#22c55e 1px, transparent 1px)', size: '20px 20px' }} />
-              </div>
+          {/* Player 2 HUD */}
+          <div className="space-y-2 text-right">
+            <div className="flex justify-between items-end flex-row-reverse">
+              <span className="font-black text-white text-xl italic tracking-tighter">{player2.nickName}</span>
+              <span className="text-red-400 font-mono text-xs font-bold">HP {battleState.player2Hp}/{player2.maxHp}</span>
             </div>
-            {/* Personagem 1 */}
-            <div className="relative flex-1 flex justify-center items-end">
+            {/* Barra de HP */}
+            <div className="h-5 bg-black/60 rounded-sm border border-white/10 overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] relative">
               <div
-                className={`relative transition-all duration-300 ${battleState.showDamage.player1 ? (battleState.isCriticalHit ? "animate-[super-shake_0.4s_infinite]" : "animate-shake") : ""
-                  }`}
-              >
-                <AnimatedSprite
-                  characterClass={player1.name}
-                  animation={battleState.player1Animation}
-                  position="left"
-                  isLoser={battleState.winner === "player2"}
-                  isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"} // Atacante brilha
-                />
-                {battleState.showDamage.player1 && (
-                  <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 font-bold animate-float-up drop-shadow-lg ${battleState.isCriticalHit ? "text-5xl text-yellow-400" : "text-3xl text-red-500"}`}>
-                    {battleState.lastDamage.player1 === 0 ? "MISS!" : `-${battleState.lastDamage.player1}${battleState.isCriticalHit ? "!" : ""}`}
-                  </div>
-                )}
+                className="h-full bg-gradient-to-l from-red-700 via-red-500 to-red-400 transition-all duration-500"
+                style={{ width: `${p2HpPerc}%` }}
+              />
+              <div className="absolute inset-0 flex justify-center items-center text-[10px] font-black text-white drop-shadow-md">
+                {Math.round(p2HpPerc)}%
               </div>
             </div>
-
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20">
-              <div className="text-8xl font-black italic text-primary font-mono">VS</div>
-            </div>
-
-            {/* Personagem 2 */}
-            <div className="relative flex-1 flex justify-center items-end">
-              <div
-                className={`relative transition-all duration-300 ${battleState.showDamage.player2 ? (battleState.isCriticalHit ? "animate-[super-shake_0.4s_infinite]" : "animate-shake") : ""
-                  }`}
-              >
-                <AnimatedSprite
-                  characterClass={player2.name}
-                  animation={battleState.player2Animation}
-                  position="right"
-                  isLoser={battleState.winner === "player1"}
-                  isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"} // Atacante brilha
+            {/* Barra de Mana e Valor */}
+            <div className="flex items-center gap-2 flex-row-reverse">
+              <div className="h-2.5 bg-black/60 rounded-sm border border-white/5 overflow-hidden flex-1 relative">
+                <div
+                  className="h-full bg-gradient-to-l from-blue-700 to-cyan-400 transition-all duration-500"
+                  style={{ width: `${p2ManaPerc}%` }}
                 />
-                {battleState.showDamage.player2 && (
-                  <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 font-bold animate-float-up drop-shadow-lg ${battleState.isCriticalHit ? "text-5xl text-yellow-400" : "text-3xl text-red-500"}`}>
-                    {battleState.lastDamage.player2 === 0 ? "MISS!" : `-${battleState.lastDamage.player2}${battleState.isCriticalHit ? "!" : ""}`}
-                  </div>
-                )}
               </div>
+              <span className="text-blue-400 font-mono text-[10px] font-bold min-w-[60px] text-left">
+                MP {battleState.player2Mana}
+              </span>
             </div>
           </div>
         </div>
+        {/* ARENA DE PERSONAGENS */}
+        <div className="relative flex-1 flex items-end justify-between px-12 py-20">
+          {/* Player 1 */}
+          <div className={`relative ${battleState.showDamage.player1 ? "animate-shake" : ""}`}>
+            <AnimatedSprite
+              characterClass={player1.name}
+              animation={battleState.player1Animation}
+              position="left"
+              isLoser={battleState.winner === "player2"}
+              isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
+            />
+            {battleState.showDamage.player1 && (
+              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 text-4xl font-black animate-bounce ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-500"}`}>
+                {battleState.lastDamage.player1 || "MISS"}
+              </div>
+            )}
+          </div>
 
-        {/* Log de Batalha */}
-        <Card className="p-4 bg-slate-900/80 backdrop-blur border-2 border-primary/30">
-          <h3 className="text-sm font-bold mb-2 font-mono text-primary uppercase tracking-tighter">Histórico de Combate</h3>
-          <div className="space-y-1 max-h-28 overflow-y-auto">
-            {battleState.battleLog.map((log, index) => (
-              <p key={index} className={`text-xs font-mono animate-in fade-in slide-in-from-left-2 ${log.includes("CRÍTICO") ? "text-yellow-400 font-bold" : "text-slate-400"}`}>
+          {/* Player 2 */}
+          <div className={`relative ${battleState.showDamage.player2 ? "animate-shake" : ""}`}>
+            <AnimatedSprite
+              characterClass={player2.name}
+              animation={battleState.player2Animation}
+              position="right"
+              isLoser={battleState.winner === "player1"}
+              isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
+            />
+            {battleState.showDamage.player2 && (
+              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 text-4xl font-black animate-bounce ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-500"}`}>
+                {battleState.lastDamage.player2 || "MISS"}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* LOG DE BATALHA */}
+        <Card className="p-4 bg-black/60 backdrop-blur border-primary/20">
+          <div className="font-mono text-xs space-y-1">
+            {battleState.battleLog.map((log, i) => (
+              <div key={i} className={i === 0 ? "text-white" : "text-slate-500"}>
                 {`> ${log}`}
-              </p>
+              </div>
             ))}
           </div>
         </Card>
 
-        {/* MODAL DE VITÓRIA ESTILO IMAGEM */}
+        {/* MODAL DE VITÓRIA (ESTILO IMAGEM) */}
         {battleState.winner && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 animate-in fade-in">
-            <Card className="p-8 w-full max-w-md bg-[#1e293b] border-2 border-purple-500/50 shadow-[0_0_40px_rgba(168,85,247,0.3)] text-center">
-              <div className="space-y-6">
-                <h2 className="text-5xl font-black text-purple-400 italic tracking-tighter drop-shadow-sm">
-                  VITÓRIA!
-                </h2>
+          <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 animate-in zoom-in duration-300">
+            <Card className="p-10 w-full max-w-md bg-[#161b22] border-t-4 border-primary shadow-2xl text-center space-y-8">
+              <h2 className="text-6xl font-black text-white italic tracking-tighter drop-shadow-lg">VITÓRIA!</h2>
 
-                <p className="text-slate-300 font-mono">
-                  {battleState.winner === "player1" ? player1.nickName : player2.nickName} dominou o campo!
-                </p>
-
-                {/* GRIDS DE RECOMPENSA (IGUAL A IMAGEM) */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-900/50 p-4 rounded-xl border border-yellow-500/30 flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                      <span className="text-yellow-500 text-2xl">✨</span>
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-slate-500 uppercase font-bold">XP Ganho</p>
-                      <p className="text-xl font-mono text-yellow-500">+{Math.floor(player2.maxHp * 0.8)}</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-900/50 p-4 rounded-xl border border-amber-600/30 flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 bg-amber-600/20 rounded-lg flex items-center justify-center">
-                      <span className="text-amber-500 text-2xl">💰</span>
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-slate-500 uppercase font-bold">Gold</p>
-                      <p className="text-xl font-mono text-amber-500">+{Math.floor(player2.maxHp * 0.3)}</p>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
+                  <Sparkles className="mx-auto text-yellow-400 mb-2" />
+                  <p className="text-[10px] uppercase text-slate-500 font-bold">Experiência</p>
+                  <p className="text-2xl font-mono text-yellow-400">+{Math.floor(player2.maxHp * 0.7)}</p>
                 </div>
-
-                <div className="flex flex-col gap-3">
-                  <Button onClick={onReset} className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold h-12 rounded-xl">
-                    <RotateCcw className="mr-2 h-5 w-5" /> REVANCHE
-                  </Button>
-                  <Button onClick={onReset} variant="ghost" className="text-slate-400 hover:text-white">
-                    Voltar para o Menu
-                  </Button>
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
+                  <Coins className="mx-auto text-amber-500 mb-2" />
+                  <p className="text-[10px] uppercase text-slate-500 font-bold">Gold</p>
+                  <p className="text-2xl font-mono text-amber-500">+{Math.floor(player2.maxHp * 0.4)}</p>
                 </div>
+              </div>
+
+              <div className="space-y-3">
+                <Button onClick={onReset} size="lg" className="w-full bg-primary hover:bg-primary/80 text-primary-foreground font-black text-lg h-14 rounded-2xl">
+                  <RotateCcw className="mr-2" /> REVANCHE
+                </Button>
+                <Button onClick={onReset} variant="ghost" className="w-full text-slate-400 hover:text-white">Voltar ao Menu</Button>
               </div>
             </Card>
           </div>
