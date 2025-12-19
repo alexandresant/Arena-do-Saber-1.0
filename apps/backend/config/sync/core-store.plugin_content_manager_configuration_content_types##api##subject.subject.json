@@ -47,20 +47,6 @@
           "sortable": true
         }
       },
-      "icone": {
-        "edit": {
-          "label": "icone",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "icone",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "pdf": {
         "edit": {
           "label": "pdf",
@@ -146,8 +132,7 @@
       "list": [
         "id",
         "name",
-        "description",
-        "icone"
+        "description"
       ],
       "edit": [
         [
@@ -161,10 +146,6 @@
           }
         ],
         [
-          {
-            "name": "icone",
-            "size": 6
-          },
           {
             "name": "pdf",
             "size": 6

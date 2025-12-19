@@ -4,13 +4,16 @@ import { Progress } from "@/components/ui/progress"
 import { useTranslations } from "next-intl"
 import type { CombatentStats } from "@/types/types"
 import { Badge } from "@/components/ui/badge"
-import { Wand, Sword, Shield, Rabbit } from "lucide-react"
+import { Wand, Sword, Shield, Rabbit, ForkKnife, Swords } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 export function StatsCombatentCard({ totalHp, totalMana, phisicalAttack, magicAttack, evasion, defense }: CombatentStats) {
     const t = useTranslations('StudentDashboardPage.characters')
+    const router = useRouter()
 
     return (
-        <Card>
+        <Card className="gap-4">
             <CardHeader>
                 <CardTitle>{t('combatentStats')}</CardTitle>
             </CardHeader>
@@ -66,6 +69,13 @@ export function StatsCombatentCard({ totalHp, totalMana, phisicalAttack, magicAt
                         <Badge>{defense}</Badge>
                     </div>
                 </div>
+                <Button
+                    className="w-full mt-4"
+                    onClick={() => router.push("/battle-arena")}
+                >
+                    <Swords />
+                    Batalhar
+                </Button>
             </CardContent>
         </Card>
     )

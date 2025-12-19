@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState } from "react"
 
 interface AnimatedSpriteProps {
@@ -7,9 +6,16 @@ interface AnimatedSpriteProps {
   animation: "idle" | "attack" | "hit"
   position: "left" | "right"
   isLoser: boolean
+  isCritical?: boolean // Adicionado para suportar o estado de crítico
 }
 
-export default function AnimatedSprite({ characterClass, animation, position, isLoser }: AnimatedSpriteProps) {
+export default function AnimatedSprite({ 
+  characterClass, 
+  animation, 
+  position, 
+  isLoser, 
+  isCritical // Recebendo a nova prop
+}: AnimatedSpriteProps) {
   const [frame, setFrame] = useState(0)
 
   useEffect(() => {
@@ -23,51 +29,43 @@ export default function AnimatedSprite({ characterClass, animation, position, is
     return () => clearInterval(interval)
   }, [animation])
 
+  // Cores originais mantidas...
   const colors = {
-    Maga: {
-      primary: "#7c3aed",
-      secondary: "#a78bfa",
-      accent: "#ddd6fe",
-      dark: "#5b21b6",
-      light: "#ede9fe",
-      glow: "#c4b5fd",
-    },
-    "Mestre das Feras": {
-      primary: "#059669",
-      secondary: "#10b981",
-      accent: "#6ee7b7",
-      dark: "#065f46",
-      light: "#d1fae5",
-      glow: "#34d399",
-    },
-    Guerreiro: {
-      primary: "#dc2626",
-      secondary: "#ef4444",
-      accent: "#fca5a5",
-      dark: "#991b1b",
-      light: "#fee2e2",
-      glow: "#f87171",
-    },
-    Arqueira: {
-      primary: "#2563eb",
-      secondary: "#3b82f6",
-      accent: "#93c5fd",
-      dark: "#1e40af",
-      light: "#dbeafe",
-      glow: "#60a5fa",
-    },
+    Maga: { primary: "#7c3aed", secondary: "#a78bfa", accent: "#ddd6fe", dark: "#5b21b6", light: "#ede9fe", glow: "#c4b5fd" },
+    "Mestre das Feras": { primary: "#059669", secondary: "#10b981", accent: "#6ee7b7", dark: "#065f46", light: "#d1fae5", glow: "#34d399" },
+    Guerreiro: { primary: "#dc2626", secondary: "#ef4444", accent: "#fca5a5", dark: "#991b1b", light: "#fee2e2", glow: "#f87171" },
+    Arqueira: { primary: "#2563eb", secondary: "#3b82f6", accent: "#93c5fd", dark: "#1e40af", light: "#dbeafe", glow: "#60a5fa" },
   }
 
   const color = colors[characterClass as keyof typeof colors] || colors.Guerreiro
 
+  // Determina se deve aplicar a animação de flash de crítico (apenas para o atacante)
+  const isAttackingCrit = isCritical && animation === "attack";
+  // Determina se deve aplicar o tremor de crítico (apenas para quem recebe o hit)
+  const isTakingCritHit = isCritical && animation === "hit";
+
   return (
-    <div className={`relative w-64 h-64 mx-auto ${isLoser ? "grayscale opacity-40" : ""}`}>
+    <div 
+      className={`relative w-64 h-64 mx-auto transition-all duration-300
+        ${isLoser ? "grayscale opacity-40" : ""}
+        ${isAttackingCrit ? "animate-critical-flash" : ""}
+        ${isTakingCritHit ? "animate-super-shake" : ""}
+      `}
+    >
+      {/* Efeito de aura dourada quando desfere um crítico */}
+      {isAttackingCrit && (
+        <div className="absolute inset-0 bg-yellow-400/30 blur-[60px] animate-pulse rounded-full z-0" />
+      )}
+
       <svg
         viewBox="0 0 128 128"
-        className="w-full h-full drop-shadow-2xl"
+        className="w-full h-full drop-shadow-2xl relative z-10"
         style={{
           transform: position === "right" ? "scaleX(-1)" : "none",
-          filter: animation === "attack" ? `drop-shadow(0 0 20px ${color.glow})` : "",
+          // Se for crítico, o drop-shadow fica dourado e mais forte
+          filter: isAttackingCrit 
+            ? `drop-shadow(0 0 25px gold)` 
+            : animation === "attack" ? `drop-shadow(0 0 20px ${color.glow})` : "",
         }}
       >
         {characterClass === "Maga" && (

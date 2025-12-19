@@ -1,55 +1,34 @@
-import BattleArena from "@/components/layout/battle/BattleArena"
-import type { Character, GameUser } from "@/lib/CharacterData"
-import { characters, gameUsers } from "@/lib/CharacterData"
+import type { Character } from "@/lib/CharacterData"
 
-export function calculateHitChance(attacker: Character, defender: Character): boolean {
-  // Chance base de acerto: 75%
-  const baseHitChance = 75
+export function calculateHitChance(attacker: Character, defender: Character): { didHit: boolean; isCritical: boolean } {
+  const baseHitChance = 80
+  const hitRating = (attacker.dexterity || 0) * 1.2
+  const evasionRating = (defender.dexterity || 0) * 1.0
+  
+  const finalHitChance = Math.max(15, Math.min(98, baseHitChance + (hitRating - evasionRating)))
+  const hitRoll = Math.random() * 100
+  const didHit = hitRoll <= finalHitChance
 
-  // Cada ponto de destreza do atacante aumenta 1% de chance de acerto
-  const attackerBonus = attacker.dexterity * 1
+  // Chance de crítico: 5% base + bônus de destreza (limite de 35%)
+  const critChance = Math.min(35, 5 + (attacker.dexterity / 8))
+  const isCritical = didHit && (Math.random() * 100 <= critChance)
 
-  // Cada ponto de destreza do defensor aumenta 0.8% de chance de esquiva
-  const defenderBonus = defender.dexterity * 0.8
-
-  // Calcula a chance final (mínimo 10%, máximo 95%)
-  const finalHitChance = Math.max(10, Math.min(95, baseHitChance + attackerBonus - defenderBonus))
-
-  // Rola um número aleatório entre 0-100 e compara com a chance de acerto
-  const roll = Math.random() * 100
-
-  return roll <= finalHitChance
+  return { didHit, isCritical }
 }
 
-export function calculateDamage(attacker: Character, defender: Character, useMagic = false): number {
-  const baseAttack = useMagic ? attacker.magicAttack : attacker.attack
-  const dexterityBonus = Math.floor(attacker.dexterity * 0.2)
-  const defenseReduction = Math.floor(defender.defense * 0.5)
+export function calculateDamage(attacker: Character, defender: Character, useMagic = false, isCritical = false): number {
+  let power = useMagic ? attacker.magicAttack : attacker.attack
+  const dexterityBonus = (attacker.dexterity || 0) * 0.2
+  const rawDamage = power + dexterityBonus
+  
+  // Mitigação de defesa (máximo 65% de redução)
+  const mitigation = Math.min(rawDamage * 0.65, (defender.defense || 0) * 0.5)
+  let finalDamage = rawDamage - mitigation
 
-  // Adiciona aleatoriedade de 80% a 120% do dano base
-  const randomFactor = 0.8 + Math.random() * 0.4
-
-  const totalDamage = Math.max(10, Math.floor((baseAttack + dexterityBonus - defenseReduction) * randomFactor))
-
-  return totalDamage
-}
-
-export function determineAttackOrder(char1: Character, char2: Character): [Character, Character] {
-  // Quem tem maior destreza ataca primeiro
-  // Em caso de empate, decide aleatoriamente
-  if (char1.dexterity > char2.dexterity) {
-    return [char1, char2]
-  } else if (char2.dexterity > char1.dexterity) {
-    return [char2, char1]
-  } else {
-    return Math.random() > 0.5 ? [char1, char2] : [char2, char1]
+  if (isCritical) {
+    finalDamage *= 2.0 // Crítico no estilo WYD dói bastante
   }
-}
 
-export function shouldUseMagicAttack(character: Character, currentMana: number): boolean {
-  const manaCost = 20
-  const hasMana = currentMana >= manaCost
-  const isMagicStronger = character.magicAttack > character.attack
-
-  return hasMana && isMagicStronger
+  const variance = 0.9 + Math.random() * 0.2
+  return Math.max(1, Math.floor(finalDamage * variance))
 }
