@@ -11,11 +11,11 @@ interface AnimatedSpriteProps {
   isCritical?: boolean // Adicionado para suportar o estado de crítico
 }
 
-export default function AnimatedSprite({ 
-  characterClass, 
-  animation, 
-  position, 
-  isLoser, 
+export default function AnimatedSprite({
+  characterClass,
+  animation,
+  position,
+  isLoser,
   isCritical // Recebendo a nova prop
 }: AnimatedSpriteProps) {
   const [frame, setFrame] = useState(0)
@@ -47,7 +47,7 @@ export default function AnimatedSprite({
   const isTakingCritHit = isCritical && animation === "hit";
 
   return (
-    <div 
+    <div
       className={`relative w-64 h-64 mx-auto transition-all duration-300
         ${isLoser ? "grayscale opacity-40" : ""}
         ${isAttackingCrit ? "animate-critical-flash" : ""}
@@ -65,8 +65,8 @@ export default function AnimatedSprite({
         style={{
           transform: position === "right" ? "scaleX(-1)" : "none",
           // Se for crítico, o drop-shadow fica dourado e mais forte
-          filter: isAttackingCrit 
-            ? `drop-shadow(0 0 25px gold)` 
+          filter: isAttackingCrit
+            ? `drop-shadow(0 0 25px gold)`
             : animation === "attack" ? `drop-shadow(0 0 20px ${color.glow})` : "",
         }}
       >
@@ -774,13 +774,12 @@ export default function AnimatedSprite({
           </>
         )}
 
-        {animation === "hit" && (
-          <g opacity={frame === 0 ? "0.7" : "0.3"}>
-            <rect x="30" y="30" width="68" height="68" fill="#dc2626" opacity="0.4" rx="4" />
-            <circle cx="64" cy="64" r="30" stroke="#ef4444" strokeWidth="3" fill="none" opacity="0.6" />
-          </g>
-        )}
+
       </svg>
+
+      {animation === "hit" && (
+        <div className="absolute inset-0 bg-red-500 blur-[60px] animate-pulse rounded-full z-0" />
+      )}
 
       {animation === "attack" && (
         <div className="absolute inset-0 pointer-events-none">
