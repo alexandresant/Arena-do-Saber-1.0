@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
-import { allCharacters, hydrateAll } from "@/lib/CharacterData"
+import { characters, hydrateAll } from "@/lib/CharacterData"
 import { Shield, Swords, Zap, Heart, Droplet, Target, Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -16,12 +16,12 @@ interface CharacterSelectProps {
 
 export default function CharacterSelect({ selectedCharacter, onSelectCharacter, disabled }: CharacterSelectProps) {
   // Estado local para forçar a re-renderização quando os dados chegarem
-  const [characterList, setCharacterList] = useState<Character[]>([...allCharacters])
-  const [loading, setLoading] = useState(allCharacters.length === 0)
+  const [characterList, setCharacterList] = useState<Character[]>([...characters])
+  const [loading, setLoading] = useState(characters.length === 0)
 
   useEffect(() => {
     const handleUpdate = () => {
-      setCharacterList([...allCharacters])
+      setCharacterList([...characters])
       setLoading(false)
     }
 
@@ -29,7 +29,7 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
     window.addEventListener("gameData:updated", handleUpdate)
     
     // Tenta carregar se a lista estiver vazia
-    if (allCharacters.length === 0) {
+    if (characters.length === 0) {
       hydrateAll()
     } else {
       setLoading(false)

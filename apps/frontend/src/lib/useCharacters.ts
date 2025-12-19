@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react"
 import {
-  characters,
+  characters, // Agora exportado corretamente
   gameUsers,
-  hydrateAllCharacters,
+  hydrateAll, // Nome batendo com o CharacterData.ts
   type Character,
   type GameUser,
 } from "@/lib/CharacterData"
@@ -24,7 +24,7 @@ export function useCharacters(): UseCharactersResult {
 
     async function load() {
       try {
-        await hydrateAllCharacters()
+        await hydrateAll()
       } finally {
         if (mounted) {
           setIsLoading(false)
@@ -38,6 +38,7 @@ export function useCharacters(): UseCharactersResult {
       forceRender((v) => v + 1)
     }
 
+    // Escutando o evento que CharacterData agora dispara
     window.addEventListener("characters:update", handleUpdate)
 
     return () => {
