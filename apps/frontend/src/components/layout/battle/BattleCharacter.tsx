@@ -1,3 +1,5 @@
+// BattleCharacter.tsx
+
 "use client"
 import { Card } from "@/components/ui/card"
 import type { Character } from "@/lib/CharacterData"

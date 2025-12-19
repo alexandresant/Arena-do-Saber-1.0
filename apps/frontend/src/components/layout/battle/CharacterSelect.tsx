@@ -3,10 +3,9 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
-import { characters, hydrateAll } from "@/lib/CharacterData"
+import { characters, hydrateAll } from "@/lib/CharacterData" // Verifique se no seu arquivo o nome é hydrateAll ou hydrateAllCharacters
 import { Shield, Swords, Zap, Heart, Droplet, Target, Loader2 } from "lucide-react"
-import { useEffect, useState } from "react"
-
+import { useEffect, useState, useCallback } from "react"
 
 interface CharacterSelectProps {
   selectedCharacter: Character | null
@@ -15,28 +14,33 @@ interface CharacterSelectProps {
 }
 
 export default function CharacterSelect({ selectedCharacter, onSelectCharacter, disabled }: CharacterSelectProps) {
-  // Estado local para forçar a re-renderização quando os dados chegarem
-  const [characterList, setCharacterList] = useState<Character[]>([...characters])
-  const [loading, setLoading] = useState(characters.length === 0)
+  const [characterList, setCharacterList] = useState<Character[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Memorizamos a função de atualização para evitar re-registros desnecessários
+  const handleUpdate = useCallback(() => {
+    console.log("CharacterSelect: Dados atualizados recebidos!");
+    setCharacterList([...characters])
+    setLoading(false)
+  }, [])
 
   useEffect(() => {
-    const handleUpdate = () => {
-      setCharacterList([...characters])
-      setLoading(false)
-    }
-
-    // Escuta o evento customizado que criamos no CharacterData.ts
-    window.addEventListener("gameData:updated", handleUpdate)
+    // ⚠️ O NOME DO EVENTO DEVE SER O MESMO QUE ESTÁ NO NOTIFYUPDATE()
+    window.addEventListener("characters:update", handleUpdate)
     
-    // Tenta carregar se a lista estiver vazia
-    if (characters.length === 0) {
-      hydrateAll()
-    } else {
-      setLoading(false)
+    async function init() {
+      if (characters.length === 0) {
+        await hydrateAll()
+      } else {
+        setCharacterList([...characters])
+        setLoading(false)
+      }
     }
 
-    return () => window.removeEventListener("gameData:updated", handleUpdate)
-  }, [])
+    init()
+
+    return () => window.removeEventListener("characters:update", handleUpdate)
+  }, [handleUpdate])
 
   if (loading) {
     return (

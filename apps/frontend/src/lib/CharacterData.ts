@@ -22,8 +22,7 @@ let isHydrated = false;
 // Função para notificar o Hook da mudança
 export function notifyUpdate() {
   if (typeof window !== "undefined") {
-    // Mudei para characters:update para bater com o Hook
-    window.dispatchEvent(new CustomEvent("characters:update"));
+    window.dispatchEvent(new CustomEvent("characters:update")); // <--- MESMO NOME AQUI
   }
 }
 
@@ -34,14 +33,20 @@ function mapImage(className: string) {
   return images[className] || "❓";
 }
 
-// Mudei o nome para hydrateAllCharacters para bater com o Hook
 export async function hydrateAll() {
-  if (isHydrated) return;
-  
+  console.log("Iniciando hidratação...");
+
+  // 1. Se já tem dados, não faz nada.
+  if (isHydrated && characters.length > 0) {
+    console.log("Já estava hidratado com dados.");
+    return;
+  }
+
   try {
     const session = await getSession();
     const userId = session?.user?.id;
 
+    // Carrega o Player...
     if (userId) {
       const resp = await getCharacterStatus(Number(userId));
       if (resp?.character) {
@@ -61,23 +66,39 @@ export async function hydrateAll() {
       }
     }
 
+    // 2. Carrega Lutadores
     const fighters = await loadRankingFighters();
-    // Atualiza a lista 'characters'
-    characters.splice(0, characters.length, ...fighters
-      .filter(f => String(f.id) !== mainPlayer?.id)
+    console.log("Fighters recebidos:", fighters.length);
+
+    const mappedFighters = fighters
+      .filter(f => String(f.id) !== String(mainPlayer?.id)) // Comparação segura de String
       .map(f => ({
         id: String(f.id),
         nickName: f.nickName || "Inimigo",
-        name: f.name || "Classe",
+        name: f.name || "Guerreiro",
         image: mapImage(f.name),
-        maxHp: f.hp || 0,
-        maxMana: f.mana || 0,
-        attack: f.attack || 0,
-        magicAttack: f.magicAttack || 0,
-        defense: f.defense || 0,
-        dexterity: f.evasion || 0
-      })));
+        maxHp: f.hp || 100,
+        maxMana: f.mana || 50,
+        attack: f.attack || 10,
+        magicAttack: f.magicAttack || 10,
+        defense: f.defense || 5,
+        dexterity: f.evasion || 5
+      }));
 
+    // Caso de segurança: se não houver outros jogadores, cria um bot
+    if (mappedFighters.length === 0) {
+      mappedFighters.push({
+        id: "bot-training",
+        nickName: "Mestre de Treino",
+        name: "Guerreiro",
+        image: "⚔️",
+        maxHp: 150, maxMana: 50, attack: 12, magicAttack: 10, defense: 8, dexterity: 5
+      });
+    }
+
+    characters.splice(0, characters.length, ...mappedFighters);
+
+    // 3. Carrega Usuários
     const users = await loadRankingUser();
     gameUsers.splice(0, gameUsers.length, ...users.map((u, i) => ({
       id: String(u.id),
@@ -86,9 +107,15 @@ export async function hydrateAll() {
       character: characters[i % characters.length] || mainPlayer
     })));
 
+    // ⚠️ SÓ AGORA marcamos como hidratado e notificamos o Hook!
     isHydrated = true;
+    console.log("Hidratação concluída com sucesso. Personagens:", characters.length);
     notifyUpdate();
+
   } catch (e) {
     console.error("Erro na hidratação:", e);
+    // Mesmo em erro, paramos o loading para não travar a tela
+    isHydrated = false; 
+    notifyUpdate();
   }
 }

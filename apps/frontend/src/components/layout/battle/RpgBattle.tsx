@@ -1,15 +1,15 @@
+// RpgBattle.tsx
 "use client"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import BattleArena from "@/components/layout/battle/BattleArena"
 import { mainPlayer, gameUsers, hydrateAll, GameUser } from "@/lib/CharacterData"
-import { Swords, UserCircle, Trophy, Loader2 } from "lucide-react"
+import { Swords, UserCircle, Loader2, Home } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { Home } from "lucide-react"
 
 export default function RPGBattle() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!mainPlayer || gameUsers.length === 0);
   const [player, setPlayer] = useState(mainPlayer);
   const [opponents, setOpponents] = useState(gameUsers);
   const [selectedUser, setSelectedUser] = useState<GameUser | null>(null);
@@ -18,23 +18,31 @@ export default function RPGBattle() {
 
   useEffect(() => {
     const handleUpdate = () => {
+      console.log("RPGBattle: Dados recebidos!");
       setPlayer(mainPlayer);
       setOpponents([...gameUsers]);
       setLoading(false);
     };
 
-    window.addEventListener("gameData:updated", handleUpdate);
-    hydrateAll(); // Dispara a carga
+    // ⚠️ PADRONIZADO: Deve ser o mesmo nome usado no CharacterData.ts
+    window.addEventListener("characters:update", handleUpdate);
+    
+    // Se já temos dados, não precisamos esperar o evento
+    if (mainPlayer && gameUsers.length > 0) {
+      setLoading(false);
+    } else {
+      hydrateAll(); 
+    }
 
-    return () => window.removeEventListener("gameData:updated", handleUpdate);
+    return () => window.removeEventListener("characters:update", handleUpdate);
   }, []);
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center text-white">
+    <div className="min-h-screen bg-[#0a0f1e] flex flex-col items-center justify-center text-white space-y-4">
       <Loader2 className="animate-spin h-12 w-12 text-primary" />
+      <p className="font-mono text-primary animate-pulse">Buscando heróis na taverna...</p>
     </div>
   );
-
   if (battleStarted && player && selectedUser) {
     return <BattleArena player1={player} player2={selectedUser.character} onReset={() => setBattleStarted(false)} />;
   }
