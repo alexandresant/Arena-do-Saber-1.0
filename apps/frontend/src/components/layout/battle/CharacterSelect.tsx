@@ -3,30 +3,53 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
-import { useCharacters } from "@/lib/useCharacters"
-import { Shield, Swords, Zap, Heart, Droplet, Target } from "lucide-react"
+import { allCharacters, hydrateAll } from "@/lib/CharacterData"
+import { Shield, Swords, Zap, Heart, Droplet, Target, Loader2 } from "lucide-react"
+import { useEffect, useState } from "react"
+
 
 interface CharacterSelectProps {
   selectedCharacter: Character | null
-  onSelectCharacter: (character: Character) => void
+  onSelectCharacter: (character: Character | null) => void
   disabled?: string
 }
 
-export default function CharacterSelect({
-  selectedCharacter,
-  onSelectCharacter,
-  disabled,
-}: CharacterSelectProps) {
+export default function CharacterSelect({ selectedCharacter, onSelectCharacter, disabled }: CharacterSelectProps) {
+  // Estado local para forçar a re-renderização quando os dados chegarem
+  const [characterList, setCharacterList] = useState<Character[]>([...allCharacters])
+  const [loading, setLoading] = useState(allCharacters.length === 0)
 
-  const { characters, isLoading } = useCharacters()
+  useEffect(() => {
+    const handleUpdate = () => {
+      setCharacterList([...allCharacters])
+      setLoading(false)
+    }
 
-  if (isLoading) {
-    return <div className="text-muted-foreground">Carregando personagens...</div>
+    // Escuta o evento customizado que criamos no CharacterData.ts
+    window.addEventListener("gameData:updated", handleUpdate)
+    
+    // Tenta carregar se a lista estiver vazia
+    if (allCharacters.length === 0) {
+      hydrateAll()
+    } else {
+      setLoading(false)
+    }
+
+    return () => window.removeEventListener("gameData:updated", handleUpdate)
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-sm font-mono text-muted-foreground">Carregando classes...</p>
+      </div>
+    )
   }
 
   return (
     <div className="space-y-4">
-      {characters.map((character) => {
+      {characterList.map((character) => {
         const isSelected = selectedCharacter?.id === character.id
         const isDisabled = disabled === character.id
 
@@ -37,13 +60,13 @@ export default function CharacterSelect({
               isSelected
                 ? "border-primary bg-primary/10 scale-105"
                 : isDisabled
-                ? "border-muted opacity-50 cursor-not-allowed"
-                : "border-border hover:border-primary/50 hover:bg-card/80"
+                  ? "border-muted opacity-50 cursor-not-allowed"
+                  : "border-border hover:border-primary/50 hover:bg-card/80"
             }`}
             onClick={() => !isDisabled && onSelectCharacter(character)}
           >
             <div className="flex items-start gap-4">
-              <div className="text-6xl flex-shrink-0">{character.image}</div>
+              <div className="text-6xl flex-shrink-0 animate-float">{character.image}</div>
 
               <div className="flex-1 space-y-3">
                 <div>
@@ -56,12 +79,30 @@ export default function CharacterSelect({
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <Stat icon={<Heart className="h-3 w-3 text-destructive" />} label="HP" value={character.maxHp} />
-                  <Stat icon={<Droplet className="h-3 w-3 text-accent" />} label="Mana" value={character.maxMana} />
-                  <Stat icon={<Swords className="h-3 w-3 text-primary" />} label="Atq. Fís" value={character.attack} />
-                  <Stat icon={<Zap className="h-3 w-3 text-secondary" />} label="Atq. Mág" value={character.magicAttack} />
-                  <Stat icon={<Shield className="h-3 w-3 text-chart-3" />} label="Defesa" value={character.defense} />
-                  <Stat icon={<Target className="h-3 w-3 text-chart-4" />} label="Destreza" value={character.dexterity} />
+                  <div className="flex items-center gap-1">
+                    <Heart className="h-3 w-3 text-destructive" />
+                    <span className="font-mono">HP: {character.maxHp}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Droplet className="h-3 w-3 text-accent" />
+                    <span className="font-mono">Mana: {character.maxMana}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Swords className="h-3 w-3 text-primary" />
+                    <span className="font-mono">Atq. Fís: {character.attack}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Zap className="h-3 w-3 text-secondary" />
+                    <span className="font-mono">Atq. Mág: {character.magicAttack}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Shield className="h-3 w-3 text-chart-3" />
+                    <span className="font-mono">Defesa: {character.defense}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Target className="h-3 w-3 text-chart-4" />
+                    <span className="font-mono">Destreza: {character.dexterity}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -70,29 +111,23 @@ export default function CharacterSelect({
               <Button
                 size="sm"
                 variant="outline"
-                className="w-full mt-4 font-mono bg-transparent"
+                className="w-full mt-4 font-mono bg-transparent hover:bg-destructive/10 hover:text-destructive border-destructive/50"
                 onClick={(e) => {
                   e.stopPropagation()
-                  onSelectCharacter(null as any)
+                  onSelectCharacter(null)
                 }}
               >
-                Desselecionar
+                Remover Seleção
               </Button>
             )}
           </Card>
         )
       })}
-    </div>
-  )
-}
 
-function Stat({ icon, label, value }: any) {
-  return (
-    <div className="flex items-center gap-1">
-      {icon}
-      <span className="font-mono">
-        {label}: {value}
-      </span>
+      {characterList.length === 0 && !loading && (
+        <p className="text-center text-muted-foreground font-mono">Nenhum personagem disponível.</p>
+      )}
     </div>
   )
+
 }

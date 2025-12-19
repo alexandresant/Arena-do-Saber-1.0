@@ -22,6 +22,8 @@ import type { Character } from "@/types/types"
 import { getCharacterStatus } from "@/lib/api/createCharacter"
 import { JoinClassForm } from "./SelectClassCard"
 import { getUserPoints } from "@/lib/api/loadpointsUser"
+import { useRouter } from "next/navigation"
+import { ForkKnife } from "lucide-react"
 
 export function StudentDashboard() {
 
@@ -30,9 +32,10 @@ export function StudentDashboard() {
     const userName = session.data?.user.name || "N/A"
     const [characterStatus, setCharacterStatus] = useState<Character | null>(null)
     const [userPoints, setUserPoints] = useState<number | null>(null)
+    const router = useRouter()
 
     const coins = 50
-    const victory = 32  
+    const victory = 32
 
     useEffect(() => {
         const fetchCharacterStatus = async () => {
@@ -41,7 +44,7 @@ export function StudentDashboard() {
                 const characterData = await getCharacterStatus(Number(session.data.user.id))
                 if (characterData.character) {
                     setCharacterStatus(characterData.character)
-                   //console.log("Dados carregados: ", characterData.character)
+                    //console.log("Dados carregados: ", characterData.character)
                 }
             }
             catch (error) {
@@ -110,7 +113,7 @@ export function StudentDashboard() {
                             level={characterStatus?.level ?? 1}
                             points={characterStatus?.points ?? 0}
                             image={characterStatus?.image ?? "N/A"}
-                            defense={characterStatus?.defense ?? 0}     
+                            defense={characterStatus?.defense ?? 0}
                             magicAttack={characterStatus?.magicAttack ?? 0}
                             attack={characterStatus?.attack ?? 0}
                             evasion={characterStatus?.evasion ?? 0}
@@ -131,7 +134,8 @@ export function StudentDashboard() {
                         <SubjectCard />
                         <JoinClassForm />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col gap-4">
+                       
                         <div>
                             <Tabs defaultValue="topStudents">
                                 <TabsList className="w-full">
