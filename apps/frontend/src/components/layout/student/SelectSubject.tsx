@@ -24,6 +24,7 @@ const DISCIPLINE_MAP = [
     {slug: "matematica", icon: "➗", tKey: "math" },
     { slug: "portugues", icon: "📚", tKey: "portuguese" },
     { slug: "quimica", icon: "⚗️", tKey: "chemistry" },
+
 ];
 
 export function DisciplineCard() {

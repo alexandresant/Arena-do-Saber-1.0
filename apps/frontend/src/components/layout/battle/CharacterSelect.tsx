@@ -7,6 +7,7 @@ import { allCharacters, hydrateAll } from "@/lib/CharacterData"
 import { Shield, Swords, Zap, Heart, Droplet, Target, Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 
+
 interface CharacterSelectProps {
   selectedCharacter: Character | null
   onSelectCharacter: (character: Character | null) => void
