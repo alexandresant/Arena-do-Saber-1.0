@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import {
   characters, // Agora exportado corretamente
   gameUsers,
@@ -15,37 +15,48 @@ interface UseCharactersResult {
   isLoading: boolean
 }
 
+
+
 export function useCharacters(): UseCharactersResult {
+  // 1. Se já temos personagens na memória, não precisamos começar em loading
+  const [isLoading, setIsLoading] = useState(characters.length === 0)
   const [, forceRender] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+
+  // Usamos useCallback para manter a mesma referência de função
+  const handleUpdate = useCallback(() => {
+    console.log("Hook: Recebido evento de atualização!");
+    setIsLoading(false) // Garante que o loading pare ao receber o evento
+    forceRender((v) => v + 1)
+  }, [])
 
   useEffect(() => {
     let mounted = true
 
     async function load() {
+      // Se já houver dados, apenas desativa o loading e sai
+      if (characters.length > 0) {
+        if (mounted) setIsLoading(false)
+        return
+      }
+
       try {
         await hydrateAll()
+      } catch (error) {
+        console.error("Erro no Hook:", error)
       } finally {
-        if (mounted) {
-          setIsLoading(false)
-        }
+        if (mounted) setIsLoading(false)
       }
     }
 
     load()
 
-    function handleUpdate() {
-      forceRender((v) => v + 1)
-    }
-
-    // Escutando o evento que CharacterData agora dispara
     window.addEventListener("characters:update", handleUpdate)
-
+    
     return () => {
       mounted = false
       window.removeEventListener("characters:update", handleUpdate)
     }
-  }, [])
+  }, [handleUpdate])
 
   return {
     characters,

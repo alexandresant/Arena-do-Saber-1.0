@@ -1,3 +1,5 @@
+// BattleArena.tsx
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -207,34 +209,63 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
         </div>
         {/* ARENA DE PERSONAGENS */}
         <div className="relative flex-1 flex items-end justify-between px-12 py-20">
-          {/* Player 1 */}
-          <div className={`relative ${battleState.showDamage.player1 ? "animate-shake" : ""}`}>
-            <AnimatedSprite
-              characterClass={player1.name}
-              animation={battleState.player1Animation}
-              position="left"
-              isLoser={battleState.winner === "player2"}
-              isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
-            />
+
+          {/* PLAYER 1 CONTAINER - REMOVI A ANIMAÇÃO DA DIV PAI */}
+          <div className="relative">
+            {/* Div apenas para o Sprite que treme */}
+            <div className={battleState.showDamage.player1 ? "animate-super-shake" : ""}>
+              <AnimatedSprite
+                characterClass={player1.name}
+                animation={battleState.player1Animation}
+                position="left"
+                isLoser={battleState.winner === "player2"}
+                isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
+              />
+            </div>
+
             {battleState.showDamage.player1 && (
-              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 text-4xl font-black animate-bounce ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-500"}`}>
-                {battleState.lastDamage.player1 || "MISS"}
+              <div className="absolute -top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg !bg-transparent !border-none !shadow-none flex flex-col items-center">
+                <span className={`
+      text-7xl font-black italic tracking-tighter text-shadow-damage leading-none
+      ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}
+    `}>
+                  {battleState.lastDamage.player1 > 0 ? `-${battleState.lastDamage.player1}` : "MISS"}
+                </span>
+                {battleState.isCriticalHit && (
+                  <span className="text-yellow-500 font-mono text-sm font-bold uppercase tracking-widest text-shadow-crit animate-pulse">
+                    CRITICAL!
+                  </span>
+                )}
               </div>
             )}
           </div>
 
-          {/* Player 2 */}
-          <div className={`relative ${battleState.showDamage.player2 ? "animate-shake" : ""}`}>
-            <AnimatedSprite
-              characterClass={player2.name}
-              animation={battleState.player2Animation}
-              position="right"
-              isLoser={battleState.winner === "player1"}
-              isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
-            />
+          {/* PLAYER 2 CONTAINER */}
+          <div className="relative">
+            <div className={battleState.showDamage.player2 ? "animate-super-shake" : ""}>
+              <AnimatedSprite
+                characterClass={player2.name}
+                animation={battleState.player2Animation}
+                position="right"
+                isLoser={battleState.winner === "player1"}
+                isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
+              />
+            </div>
+
+            {/* PLAYER 2 DAMAGE RESET */}
             {battleState.showDamage.player2 && (
-              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 text-4xl font-black animate-bounce ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-500"}`}>
-                {battleState.lastDamage.player2 || "MISS"}
+              <div className="absolute -top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg !bg-transparent !border-none !shadow-none flex flex-col items-center">
+                <span className={`
+      text-7xl font-black italic tracking-tighter text-shadow-damage leading-none
+      ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}
+    `}>
+                  {battleState.lastDamage.player2 > 0 ? `-${battleState.lastDamage.player2}` : "MISS"}
+                </span>
+                {battleState.isCriticalHit && (
+                  <span className="text-yellow-500 font-mono text-sm font-bold uppercase tracking-widest text-shadow-crit animate-pulse">
+                    CRITICAL!
+                  </span>
+                )}
               </div>
             )}
           </div>
@@ -251,13 +282,28 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
           </div>
         </Card>
 
-        {/* MODAL DE VITÓRIA (ESTILO IMAGEM) */}
+        {/* MODAL DE VITÓRIA */}
         {battleState.winner && (
           <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 animate-in zoom-in duration-300">
-            <Card className="p-10 w-full max-w-md bg-[#161b22] border-t-4 border-primary shadow-2xl text-center space-y-8">
-              <h2 className="text-6xl font-black text-white italic tracking-tighter drop-shadow-lg">VITÓRIA!</h2>
+            <Card className="p-10 w-full max-w-md bg-[#161b22] border-t-4 border-primary shadow-2xl text-center space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-6xl font-black text-white italic tracking-tighter drop-shadow-lg">
+                  VITÓRIA!
+                </h2>
+                {/* EXIBE O NOME DO VENCEDOR AQUI */}
+                <p className="text-primary font-mono text-xl font-bold uppercase tracking-widest">
+                  {battleState.winner === "player1" ? player1.nickName : player2.nickName}
+                </p>
+              </div>
+
+              <div className="flex justify-center py-4">
+                <div className="text-8xl animate-bounce">
+                  {battleState.winner === "player1" ? player1.image : player2.image}
+                </div>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
+                {/* Recompensas... */}
                 <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
                   <Sparkles className="mx-auto text-yellow-400 mb-2" />
                   <p className="text-[10px] uppercase text-slate-500 font-bold">Experiência</p>
@@ -270,7 +316,7 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-3 pt-4">
                 <Button onClick={onReset} size="lg" className="w-full bg-primary hover:bg-primary/80 text-primary-foreground font-black text-lg h-14 rounded-2xl">
                   <RotateCcw className="mr-2" /> REVANCHE
                 </Button>
