@@ -39,8 +39,8 @@ export interface Character {
   experienceToNextLevel?: number
   defense: number
   attack: number
-  maxHp: number
-  maxMana: number
+  hp: number
+  mana: number
   magicAttack: number
   evasion: number,
   points: number
@@ -58,6 +58,12 @@ export interface CharacterTemplate {
   agilityBase: number
 }
 export interface CombatentStats {
+  id: number
+  points: number
+  experience?: number
+  level: number
+  name: string
+  nickName: string
   totalHp: number
   totalMana: number
   mana?: number
