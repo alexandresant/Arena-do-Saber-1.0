@@ -55,66 +55,91 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
     return () => clearTimeout(timer)
   }, [battleState.currentTurn, battleState.winner, battleState.isAnimating])
 
-  const executeTurn = () => {
-    const attacker = battleState.currentTurn === "player1" ? player1 : player2
-    const defender = battleState.currentTurn === "player1" ? player2 : player1
-    const currentMana = battleState.currentTurn === "player1" ? battleState.player1Mana : battleState.player2Mana
+const executeTurn = () => {
+  const isP1 = battleState.currentTurn === "player1";
+  const attacker = isP1 ? player1 : player2;
+  const defender = isP1 ? player2 : player1;
+  const currentMana = isP1 ? battleState.player1Mana : battleState.player2Mana;
 
-    const useMagic = currentMana >= 20 && attacker.magicAttack > attacker.attack
-    const manaCost = useMagic ? 20 : 0
+  // --- DETECÇÃO DE TIPO DE PERSONAGEM ---
+  const isMagicUser = attacker.magicAttack > attacker.attack;
+  
+  // Guerreiros não gastam mana, Magos gastam 20.
+  const MANA_COST = isMagicUser ? 20 : 0; 
 
-    const { didHit, isCritical } = calculateHitChance(attacker, defender)
-    const damage = didHit ? calculateDamage(attacker, defender, useMagic, isCritical) : 0
+  // --- LÓGICA DE MEDITAÇÃO (APENAS PARA MAGOS) ---
+  if (isMagicUser && currentMana < MANA_COST) {
+    const manaRecovered = Math.floor(attacker.maxMana * 0.30);
+    const newMana = Math.min(attacker.maxMana, currentMana + manaRecovered);
 
     setBattleState((prev) => ({
       ...prev,
-      player1Animation: prev.currentTurn === "player1" ? "attack" : prev.player1Animation,
-      player2Animation: prev.currentTurn === "player2" ? "attack" : prev.player2Animation,
-      isAnimating: true,
-      isCriticalHit: isCritical,
-    }))
-
-    setTimeout(() => {
-      setBattleState((prev) => {
-        const isP1 = prev.currentTurn === "player1"
-        const newDefHp = Math.max(0, (isP1 ? prev.player2Hp : prev.player1Hp) - damage)
-        const newAtkMana = (isP1 ? prev.player1Mana : prev.player2Mana) - manaCost
-
-        const critText = isCritical ? " 🔥 CRÍTICO!" : ""
-        const newLog = didHit
-          ? [`${attacker.nickName} causou ${damage}${critText} de dano!`, ...prev.battleLog]
-          : [`${attacker.nickName} errou o golpe!`, ...prev.battleLog]
-
-        const winner = newDefHp === 0 ? (isP1 ? "player1" : "player2") : null
-
-        return {
-          ...prev,
-          player1Hp: isP1 ? prev.player1Hp : newDefHp,
-          player2Hp: isP1 ? newDefHp : prev.player2Hp,
-          player1Mana: isP1 ? newAtkMana : prev.player1Mana,
-          player2Mana: isP1 ? prev.player2Mana : newAtkMana,
-          battleLog: newLog.slice(0, 8),
-          winner,
-          currentTurn: winner ? prev.currentTurn : isP1 ? "player2" : "player1",
-          lastDamage: isP1 ? { player1: 0, player2: damage } : { player1: damage, player2: 0 },
-          showDamage: isP1 ? { player1: false, player2: true } : { player1: true, player2: false },
-          player1Animation: isP1 ? "attack" : didHit ? "hit" : "idle",
-          player2Animation: isP1 ? (didHit ? "hit" : "idle") : "attack",
-        }
-      })
-    }, 500)
-
-    setTimeout(() => {
-      setBattleState((prev) => ({
-        ...prev,
-        isAnimating: false,
-        showDamage: { player1: false, player2: false },
-        player1Animation: "idle",
-        player2Animation: "idle",
-        isCriticalHit: false,
-      }))
-    }, 1200)
+      player1Mana: isP1 ? newMana : prev.player1Mana,
+      player2Mana: !isP1 ? newMana : prev.player2Mana,
+      battleLog: [`✨ ${attacker.nickName} focou sua energia e recuperou mana!`, ...prev.battleLog],
+      currentTurn: isP1 ? "player2" : "player1",
+      isAnimating: false
+    }));
+    return; // Encerra o turno aqui para o mago meditando
   }
+
+  // --- LOGICA DE ATAQUE (PARA TODOS) ---
+  const { didHit, isCritical } = calculateHitChance(attacker, defender);
+  
+  // O dano só leva em conta a mana se for um usuário de magia
+  const damage = didHit ? calculateDamage(attacker, defender, currentMana, isCritical) : 0;
+
+  // Inicia animação de ataque
+  setBattleState(prev => ({
+    ...prev,
+    player1Animation: isP1 ? "attack" : prev.player1Animation,
+    player2Animation: !isP1 ? "attack" : prev.player2Animation,
+    isAnimating: true,
+    isCriticalHit: isCritical
+  }));
+
+  // Aplica o resultado após o delay (500ms)
+  setTimeout(() => {
+    setBattleState((prev) => {
+      const isP1Turn = prev.currentTurn === "player1";
+      const newDefHp = Math.max(0, (isP1Turn ? prev.player2Hp : prev.player1Hp) - damage);
+      
+      // Só subtrai mana se for o custo definido (0 para guerreiros)
+      const newAtkMana = Math.max(0, (isP1Turn ? prev.player1Mana : prev.player2Mana) - MANA_COST);
+
+      const winner = newDefHp === 0 ? (isP1Turn ? "player1" : "player2") : null;
+
+      return {
+        ...prev,
+        player1Hp: isP1Turn ? prev.player1Hp : newDefHp,
+        player2Hp: isP1Turn ? newDefHp : prev.player2Hp,
+        player1Mana: isP1Turn ? newAtkMana : prev.player1Mana,
+        player2Mana: !isP1Turn ? newAtkMana : prev.player2Mana,
+        battleLog: [
+          didHit ? `${attacker.nickName} causou ${damage}${isCritical ? " 🔥" : ""}!` : `${attacker.nickName} errou!`,
+          ...prev.battleLog
+        ].slice(0, 8),
+        winner,
+        currentTurn: winner ? prev.currentTurn : (isP1Turn ? "player2" : "player1"),
+        showDamage: isP1Turn ? { player1: false, player2: true } : { player1: true, player2: false },
+        lastDamage: isP1Turn ? { player1: 0, player2: damage } : { player1: damage, player2: 0 },
+        player1Animation: isP1Turn ? "attack" : (didHit ? "hit" : "idle"),
+        player2Animation: !isP1Turn ? "attack" : (didHit ? "hit" : "idle"),
+      };
+    });
+  }, 500);
+
+  // Finaliza animação (1200ms)
+  setTimeout(() => {
+    setBattleState(prev => ({
+      ...prev,
+      isAnimating: false,
+      showDamage: { player1: false, player2: false },
+      player1Animation: "idle",
+      player2Animation: "idle"
+    }));
+  }, 1200);
+};
 
   // Cálculos de Percentual
   const p1HpPerc = (battleState.player1Hp / player1.maxHp) * 100

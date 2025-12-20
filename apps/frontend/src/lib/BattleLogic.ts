@@ -16,19 +16,36 @@ export function calculateHitChance(attacker: Character, defender: Character): { 
   return { didHit, isCritical }
 }
 
-export function calculateDamage(attacker: Character, defender: Character, useMagic = false, isCritical = false): number {
-  let power = useMagic ? attacker.magicAttack : attacker.attack
-  const dexterityBonus = (attacker.dexterity || 0) * 0.2
-  const rawDamage = power + dexterityBonus
+export function calculateDamage(
+  attacker: Character, 
+  defender: Character, 
+  currentMana: number, // Agora aceita o número corretamente
+  isCritical = false
+): number {
+  // 1. Detecta se é um personagem mágico
+  const isMagicUser = (attacker.magicAttack || 0) > (attacker.attack || 0);
   
-  // Mitigação de defesa (máximo 65% de redução)
-  const mitigation = Math.min(rawDamage * 0.65, (defender.defense || 0) * 0.5)
-  let finalDamage = rawDamage - mitigation
-
-  if (isCritical) {
-    finalDamage *= 2.0 // Crítico no estilo WYD dói bastante
+  // 2. Define o poder base
+  let power = isMagicUser ? attacker.magicAttack : attacker.attack;
+  
+  // 3. Apenas aplica o bônus de Mana se for Mágico (Protege Guerreiros)
+  if (isMagicUser) {
+    // Bônus proporcional: Mana cheia = +50% de dano.
+    const manaBonus = 1 + (currentMana / attacker.maxMana) * 0.5;
+    power = power * manaBonus;
   }
 
-  const variance = 0.9 + Math.random() * 0.2
-  return Math.max(1, Math.floor(finalDamage * variance))
+  const dexterityBonus = (attacker.dexterity || 0) * 0.2;
+  const rawDamage = power + dexterityBonus;
+  
+  // Mitigação de defesa (máximo 65% de redução)
+  const mitigation = Math.min(rawDamage * 0.65, (defender.defense || 0) * 0.5);
+  let finalDamage = rawDamage - mitigation;
+
+  if (isCritical) {
+    finalDamage *= 2.0; 
+  }
+
+  const variance = 0.9 + Math.random() * 0.2;
+  return Math.max(1, Math.floor(finalDamage * variance));
 }
