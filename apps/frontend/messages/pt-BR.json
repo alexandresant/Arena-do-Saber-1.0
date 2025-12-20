@@ -74,7 +74,7 @@
       "hp": "HP",
       "mana": "Mana",
       "defense": "Defesa",
-      "physicalAttack": "Ataque físico",
+      "phisicalAttack": "Ataque físico",
       "magicAttack": "Ataque mágico",
       "evasion": "Evasão",
       "points": "Pontos"

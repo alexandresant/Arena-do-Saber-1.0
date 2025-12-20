@@ -33,6 +33,7 @@ export function StudentDashboard() {
     const [characterStatus, setCharacterStatus] = useState<Character | null>(null)
     const [userPoints, setUserPoints] = useState<number | null>(null)
     const router = useRouter()
+    const [showDashboard, setShowDashboard] = useState(false)
 
     const coins = 50
     const victory = 32
@@ -69,6 +70,15 @@ export function StudentDashboard() {
         fetchUserData()
     }, [session])
 
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id)
+        element?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        })
+    }
+
+
     return (
         <Card>
             <CardHeader className="flex flex-row justify-between items-center">
@@ -86,6 +96,47 @@ export function StudentDashboard() {
                 </Button>
             </CardHeader>
             <CardContent>
+                {/* MENU MOBILE – SEMPRE VISÍVEL NO TOPO */}
+                <div className="md:hidden mb-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-center text-xl">
+                                Menu
+                            </CardTitle>
+                        </CardHeader>
+
+                        <CardContent className="grid grid-cols-2 gap-4">
+                            <Card
+                                onClick={() => scrollToSection("status-cards")}
+                                className="cursor-pointer hover:bg-muted transition flex items-center justify-center h-28"
+                            >
+                                <CardTitle>Status</CardTitle>
+                            </Card>
+
+                            <Card
+                                onClick={() => scrollToSection("character-card")}
+                                className="cursor-pointer hover:bg-muted transition flex items-center justify-center h-28"
+                            >
+                                <CardTitle>Personagem</CardTitle>
+                            </Card>
+
+                            <Card
+                                onClick={() => scrollToSection("subjects-card")}
+                                className="cursor-pointer hover:bg-muted transition flex items-center justify-center h-28"
+                            >
+                                <CardTitle>Disciplinas</CardTitle>
+                            </Card>
+
+                            <Card
+                                onClick={() => scrollToSection("ranking-card")}
+                                className="cursor-pointer hover:bg-muted transition flex items-center justify-center h-28"
+                            >
+                                <CardTitle>Ranking</CardTitle>
+                            </Card>
+                        </CardContent>
+                    </Card>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                     <NivelCard
                         nivel={characterStatus?.level ?? 1}
@@ -100,43 +151,43 @@ export function StudentDashboard() {
                         victory={victory}
                     />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
-                    <div className="flex flex-col gap-2 ">
-                        <CharacterCard
+                <div
+                    id="status-cards"
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"
+                >
+                    <div
+                        id="character-card"
+                        className="flex flex-col gap-2 mt-2"
+                    >
+                        
+                        <StatsCombatentCard
+                            id={characterStatus?.id ?? 0}
+                            points={characterStatus?.points ?? 0}
+                            level={characterStatus?.level ?? 1}
                             name={characterStatus?.name ?? "N/A"}
                             nickName={characterStatus?.nickName ?? "N/A"}
-                            strength={characterStatus?.strength ?? 0}
-                            agility={characterStatus?.agility ?? 0}
-                            constitution={characterStatus?.constitution ?? 0}
-                            intelligence={characterStatus?.intelligence ?? 0}
-                            experience={characterStatus?.experience ?? 0}
-                            level={characterStatus?.level ?? 1}
-                            points={characterStatus?.points ?? 0}
-                            image={characterStatus?.image ?? "N/A"}
-                            defense={characterStatus?.defense ?? 0}
-                            magicAttack={characterStatus?.magicAttack ?? 0}
-                            attack={characterStatus?.attack ?? 0}
-                            evasion={characterStatus?.evasion ?? 0}
-                            maxHp={characterStatus?.maxHp ?? 0}
-                            maxMana={characterStatus?.maxMana ?? 0}
-                        />
-
-                        <StatsCombatentCard
-                            totalHp={characterStatus?.maxHp ?? 0}
-                            totalMana={characterStatus?.maxMana ?? 0}
+                            totalHp={characterStatus?.hp ?? 0}
+                            totalMana={characterStatus?.mana ?? 0}
                             phisicalAttack={characterStatus?.attack ?? 0}
                             magicAttack={characterStatus?.magicAttack ?? 0}
                             evasion={characterStatus?.evasion ?? 0}
                             defense={characterStatus?.defense ?? 0}
+                            experience={characterStatus?.experience ?? 0}
                         />
                     </div>
-                    <div>
+
+                    <div id="subjects-card" className="flex flex-col gap-2 mt-2">
                         <SubjectCard />
                         <JoinClassForm />
                     </div>
-                    <div className="flex flex-col gap-4">
-                       
-                        <div>
+
+                    <div
+                        id="ranking-card"
+                        className="flex flex-col gap-4"
+                    >
+
+
+                        <div className="mt-2">
                             <Tabs defaultValue="topStudents">
                                 <TabsList className="w-full">
                                     <TabsTrigger value="topStudents">{t('topStudents')}</TabsTrigger>
