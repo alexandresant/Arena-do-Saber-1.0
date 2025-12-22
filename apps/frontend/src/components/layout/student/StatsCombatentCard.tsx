@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation"
 import { useMemo, useState, useEffect, useRef } from "react"
 import type { LucideIcon } from "lucide-react"
 import { updateBuild } from "@/lib/api/updateBuild"
+import { Loader2, Check, Save } from "lucide-react"
 
 
 export function StatsCombatentCard({
-    id, 
+    id,
     points,
     experience,
     name,
@@ -147,20 +148,39 @@ export function StatsCombatentCard({
         return Math.max(spent * 10, 0)
     }
 
-    const handleSaveBuild = async () => {
-        const success = await updateBuild({
-            id: id,
-            totalHp: stats.totalHp,
-            totalMana: stats.totalMana,
-            phisicalAttack: stats.phisicalAttack,
-            magicAttack: stats.magicAttack,
-            evasion: stats.evasion,
-            defense: stats.defense,
-            points: availablePoints,
-        })
+    // Adicione estes estados no topo do componente
+    const [isSaving, setIsSaving] = useState(false)
+    const [hasSaved, setHasSaved] = useState(false)
 
-        if (!success) {
-            console.error("Erro ao salvar build")
+    const handleSaveBuild = async () => {
+        setIsSaving(true) // Inicia animação de loading
+        setHasSaved(false)
+
+        try {
+            const success = await updateBuild({
+                id: id,
+                totalHp: stats.totalHp,
+                totalMana: stats.totalMana,
+                phisicalAttack: stats.phisicalAttack,
+                magicAttack: stats.magicAttack,
+                evasion: stats.evasion,
+                defense: stats.defense,
+                points: availablePoints,
+            })
+
+            if (success) {
+                setHasSaved(true)
+                router.refresh()
+                // Remove o check verde após 3 segundos
+                setTimeout(() => setHasSaved(false), 3000)
+                
+            } else {
+                alert("Erro ao salvar build") // Ou use um Toast
+            }
+        } catch (error) {
+            console.error("Erro ao salvar:", error)
+        } finally {
+            setIsSaving(false) // Para o loading
         }
     }
 
@@ -201,7 +221,11 @@ export function StatsCombatentCard({
                                 </Button>
                             </div>
                         </div>
-                        <Progress value={stats.totalHp} className="[&>div]:bg-red-600" />
+                        {/* HP */}
+                        <Progress
+                            value={100} // No dashboard de build, a barra deve estar cheia ou representar o progresso até um teto
+                            className="[&>div]:bg-red-600"
+                        />
                     </div>
 
                     <div className="w-[45%] space-y-1">
@@ -219,7 +243,9 @@ export function StatsCombatentCard({
                                 </Button>
                             </div>
                         </div>
-                        <Progress value={stats.totalMana} className="[&>div]:bg-blue-600" />
+                        <Progress value={100} className="[&>div]:bg-blue-600" />
+
+                        
                     </div>
                 </div>
 
@@ -253,8 +279,27 @@ export function StatsCombatentCard({
                     Resetar Build
                 </Button>
 
-                <Button className="w-full mt-2" onClick={handleSaveBuild}>
-                    Salvar Build
+                <Button
+                    className={`w-full mt-2 transition-all ${hasSaved ? "bg-green-600 hover:bg-green-700" : ""}`}
+                    onClick={handleSaveBuild}
+                    disabled={isSaving}
+                >
+                    {isSaving ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Salvando...
+                        </>
+                    ) : hasSaved ? (
+                        <>
+                            <Check className="mr-2 h-4 w-4" />
+                            Build Salva!
+                        </>
+                    ) : (
+                        <>
+                            <Save className="mr-2 h-4 w-4" />
+                            Salvar Build
+                        </>
+                    )}
                 </Button>
 
                 <Button className="w-full mt-4" onClick={() => router.push("/battle-arena")}>
