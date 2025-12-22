@@ -2,13 +2,14 @@
 
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
 import { Home, RotateCcw, Sparkles, Coins } from "lucide-react"
 import { calculateDamage, calculateHitChance } from "@/lib/BattleLogic"
 import AnimatedSprite from "@/components/layout/battle/AnimatedSprite"
+import { updateBattleResults } from "@/lib/api/CharacteService"
 
 interface BattleArenaProps {
   player1: Character
@@ -33,13 +34,13 @@ interface BattleState {
 }
 
 const determineFirstTurn = (p1: Character, p2: Character): "player1" | "player2" => {
-  const p1Evasion = p1.dexterity || 0;
-  const p2Evasion = p2.dexterity || 0;
+  const p1Evasion = p1.dexterity || 0
+  const p2Evasion = p2.dexterity || 0
 
   if (p1Evasion === p2Evasion) {
-    return Math.random() > 0.5 ? "player1" : "player2";
+    return Math.random() > 0.5 ? "player1" : "player2"
   }
-  return p1Evasion > p2Evasion ? "player1" : "player2";
+  return p1Evasion > p2Evasion ? "player1" : "player2"
 };
 
 export default function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
@@ -60,6 +61,32 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
     player2Animation: "idle",
     isCriticalHit: false,
   })
+
+  const hasSaved = useRef(false)
+
+  // Dentro do useEffect do BattleArena.tsx
+  useEffect(() => {
+    if (battleState.winner && !hasSaved.current) {
+      const isPlayer1Winner = battleState.winner === "player1";
+
+      // Defina as recompensas aqui e use as mesmas no Modal
+      const rewards = {
+        // Recomendo usar a mesma lógica que está no visual do Modal:
+        exp: isPlayer1Winner ? Math.floor(player2.maxHp * 0.7) : 10,
+        gold: isPlayer1Winner ? Math.floor(player2.maxHp * 0.4) : 5,
+        isVictory: isPlayer1Winner
+      };
+
+      const processResults = async () => {
+        hasSaved.current = true;
+        await updateBattleResults(player1, rewards)
+        window.dispatchEvent(new CustomEvent("characters:update"))
+
+      };
+
+      processResults();
+    }
+  }, [battleState.winner]);
 
   useEffect(() => {
     if (battleState.winner || battleState.isAnimating) return

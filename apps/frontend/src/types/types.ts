@@ -45,6 +45,7 @@ export interface Character {
   evasion: number,
   points: number
   victories?: number
+  gold: number
 }
 export interface CharacterTemplate {
   id: number
@@ -60,7 +61,7 @@ export interface CharacterTemplate {
 export interface CombatentStats {
   id: number
   points: number
-  experience?: number
+  experience: number
   level: number
   name: string
   nickName: string
@@ -188,4 +189,11 @@ export interface StrapiItem {
     url: string
     name: string
   }[]
+}
+
+export interface EvolutionResults{
+  newLevel: number
+  newExperience: number
+  pointsToAssign: number
+  levelUp: boolean
 }
