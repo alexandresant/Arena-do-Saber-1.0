@@ -642,6 +642,12 @@ export interface ApiSubjectSubject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    googleDriveId: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -653,16 +659,13 @@ export interface ApiSubjectSubject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    pdf: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    > &
+    publishedAt: Schema.Attribute.DateTime;
+    subject: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

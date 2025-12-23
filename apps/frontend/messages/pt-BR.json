@@ -92,7 +92,10 @@
       "english": "Inglês",
       "allDisciplinesButton": "Ver todas as matérias",
       "arduino": "Arduino",
-      "math": "Matemática"
+      "math": "Matemática", 
+      "portuguese": "Português",
+      "chemistry": "Química"
+
     },
     "ranking": {
       "topStudents": "Top Estudantes",
