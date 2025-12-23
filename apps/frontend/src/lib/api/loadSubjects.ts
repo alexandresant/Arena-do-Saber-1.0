@@ -5,53 +5,39 @@ import { PdfLink, StrapiItem } from "@/types/types"
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 
 export const loadSubjects = async (): Promise<PdfLink[]> => {
-    const session = await getSession();
-    const jwt = session?.jwt;
+  const session = await getSession()
+  const jwt = session?.jwt
 
-    if (!jwt) {
-        console.warn("Usuário não autenticado ou JWT ausente")
-        return [];
-    }
+  if (!jwt || !STRAPI_URL) return []
 
-    if (!STRAPI_URL) {
-        console.error("Variável de ambiente NEXT_PUBLIC_STRAPI_URL não definida.")
-        return [];
-    }
+  try {
+    const response = await axios.get<any>(`${STRAPI_URL}/api/subjects`, {
+      headers: { Authorization: `Bearer ${jwt}` }
+    })
 
-    try {
-        const response = await axios.get<any>(`${STRAPI_URL}/api/subjects?populate=pdf`, {
-            headers: {
-                Authorization: `Bearer ${jwt}`,
-            },
-        });
-        console.log("RESPOSTA BRUTA DO STRAPI:", JSON.stringify(response.data, null, 2));
+    const subjects: StrapiItem[] = response.data.data
 
-        const subjects: StrapiItem[] = response.data.data;
+    return subjects
+      .map(item => {
+        if (!item.googleDriveId) return null
 
-        const pdfLinks: PdfLink[] = subjects
-  .map(item => {
-    const fileObject = item.pdf?.[0];
+        // Extrai apenas o ID, caso tenha sido colado o link inteiro
+        const driveIdMatch = item.googleDriveId.match(/\/d\/([a-zA-Z0-9_-]+)/)
+        const cleanId = driveIdMatch ? driveIdMatch[1] : item.googleDriveId.trim()
 
-    const fileName = item.name;
-    const fileUrl = fileObject?.url;
-
-    if (fileUrl && fileName && item.id) {
-      return {
-        id: item.id,
-        name: fileName,
-        url: `${STRAPI_URL}${fileUrl}`,
-      };
-    }
-
-    return null;
-  })
-  .filter((link): link is PdfLink => link !== null);
-
-        console.log("Links de PDF carregados: ", pdfLinks)
-        return pdfLinks;
-    }
-    catch (error) {
-        console.error("Erro ao carregar as matérias: ", error)
-        return [];
-    }
-};
+        return {
+          id: item.id,
+          name: item.name,
+          subject: item.subject,
+          description: item.description,
+          googleDriveId: cleanId,
+          // Link oficial de visualização do Google Drive (evita download automático)
+          url: `https://drive.google.com/file/d/${cleanId}/view`
+        }
+      })
+      .filter((link): link is PdfLink => link !== null)
+  } catch (error) {
+    console.error("Erro ao carregar matérias:", error)
+    return []
+  }
+}

@@ -161,6 +161,9 @@ export interface PdfLink {
     id: number;
     name: string; // O nome da matéria (ex: "Arduino Básico")
     url: string;  // A URL COMPLETA para download/visualização do PDF
+    googleDriveId: string
+    subject: string
+    description: string
 }
 
 // Interfaces internas para mapear a resposta bruta do Strapi
@@ -183,13 +186,11 @@ export interface StrapiSubjectAttributes {
 export interface StrapiItem {
   id: number
   name: string
+  subject: string
   description?: string
-  pdf?: {
-    id: number
-    url: string
-    name: string
-  }[]
+  googleDriveId: string
 }
+
 
 export interface EvolutionResults{
   newLevel: number

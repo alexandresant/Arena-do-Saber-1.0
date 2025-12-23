@@ -13,7 +13,7 @@ import { SubjectCard } from "./SubjectCard"
 import { useTranslations } from "next-intl"
 import { useSession, signOut } from "next-auth/react"
 import { StatsCombatentCard } from "./StatsCombatentCard"
-import { DisciplineCard } from "./DisciplineCard"
+//import { DisciplineCard } from "./DisciplineCard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RankingStudentsCard } from "./RankingStudentsCard"
 import { RankingFightersCard } from "./RankingFightersCard"
@@ -42,7 +42,7 @@ export function StudentDashboard() {
         const fetchCharacterStatus = async () => {
             if (!session?.data?.jwt) return
             try {
-                const characterData = await getCharacterStatus(Number(session.data.user.id))
+                const characterData = await getCharacterStatus(session.data.user.id)
                 if (characterData.character) {
                     setCharacterStatus(characterData.character)
                     //console.log("Dados carregados: ", characterData.character)
