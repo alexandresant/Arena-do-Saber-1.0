@@ -42,7 +42,7 @@ export function StudentDashboard() {
         const fetchCharacterStatus = async () => {
             if (!session?.data?.jwt) return
             try {
-                const characterData = await getCharacterStatus(Number(session.data.user.id))
+                const characterData = await getCharacterStatus(session.data.user.id)
                 if (characterData.character) {
                     setCharacterStatus(characterData.character)
                     //console.log("Dados carregados: ", characterData.character)
