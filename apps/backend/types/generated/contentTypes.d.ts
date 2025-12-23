@@ -503,6 +503,7 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
     evasion: Schema.Attribute.Integer;
     experience: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     experienceToNextLevel: Schema.Attribute.Integer;
+    gold: Schema.Attribute.Integer;
     hp: Schema.Attribute.Integer;
     intelligence: Schema.Attribute.Integer;
     level: Schema.Attribute.Integer &

@@ -173,7 +173,7 @@ export function StatsCombatentCard({
                 router.refresh()
                 // Remove o check verde após 3 segundos
                 setTimeout(() => setHasSaved(false), 3000)
-                
+
             } else {
                 alert("Erro ao salvar build") // Ou use um Toast
             }
@@ -201,7 +201,10 @@ export function StatsCombatentCard({
                         <Label>{t('experience')}</Label>
                         <Label>{experience}</Label>
                     </div>
-                    <Progress value={experience} />
+                    <Progress
+                        value={(experience / (level * 100)) * 100}
+                        className="h-2"
+                    />
                 </div>
 
                 {/* HP / MANA */}
@@ -245,7 +248,7 @@ export function StatsCombatentCard({
                         </div>
                         <Progress value={100} className="[&>div]:bg-blue-600" />
 
-                        
+
                     </div>
                 </div>
 

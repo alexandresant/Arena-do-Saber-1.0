@@ -4,9 +4,22 @@ import { getCharacterStatus } from "@/lib/api/createCharacter"
 import { getSession } from "next-auth/react"
 
 export interface Character {
-  id: string; nickName: string; name: string; image: string;
-  maxHp: number; maxMana: number; attack: number;
-  magicAttack: number; defense: number; dexterity: number;
+  id: string;
+  nickName: string;
+  name: string;
+  image: string;
+  maxHp: number;
+  maxMana: number;
+  attack: number;
+  magicAttack: number;
+  defense: number;
+  dexterity: number;
+  // 🔹 NOVOS CAMPOS ADICIONADOS AQUI:
+  level?: number;
+  experience?: number;
+  gold?: number;
+  points?: number;
+  victories?: number;
 }
 
 export interface GameUser {
@@ -46,9 +59,12 @@ export async function hydrateAll() {
     const session = await getSession();
     const userId = session?.user?.id;
 
-    // Carrega o Player...
     if (userId) {
-      const resp = await getCharacterStatus(Number(userId));
+      const resp = await getCharacterStatus((userId));
+
+      // ⚠️ LOG PARA DEBUG: Veja se o 'resp' traz os campos de vitoria
+      console.log("Dados brutos do CharacterStatus:", resp);
+
       if (resp?.character) {
         const c = resp.character;
         mainPlayer = {
@@ -61,7 +77,13 @@ export async function hydrateAll() {
           attack: c.attack || 10,
           magicAttack: c.magicAttack || 10,
           defense: c.defense || 5,
-          dexterity: c.evasion || 5
+          dexterity: c.evasion || 5,
+          // 🔹 MAPEANDO OS DADOS DE PROGRESSO:
+          level: Number(c.level || 1),
+          experience: Number(c.experience || 0),
+          gold: Number(c.gold || 0),
+          points: Number(c.points || 0),
+          victories: Number(c.victories || 0) // <--- CRUCIAL
         };
       }
     }
@@ -111,11 +133,12 @@ export async function hydrateAll() {
     isHydrated = true;
     console.log("Hidratação concluída com sucesso. Personagens:", characters.length);
     notifyUpdate();
+    isHydrated = true;
+    notifyUpdate();
 
   } catch (e) {
     console.error("Erro na hidratação:", e);
-    // Mesmo em erro, paramos o loading para não travar a tela
-    isHydrated = false; 
+    isHydrated = false;
     notifyUpdate();
   }
 }
