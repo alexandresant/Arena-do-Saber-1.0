@@ -48,7 +48,7 @@ export default function AnimatedSprite({
 
   return (
     <div
-      className={`relative w-64 h-64 mx-auto transition-all duration-300
+      className={`relative w-64 h-64 mx-auto duration-300
         ${isLoser ? "grayscale opacity-40" : ""}
         ${isAttackingCrit ? "animate-critical-flash" : ""}
         ${isTakingCritHit ? "animate-super-shake" : ""}

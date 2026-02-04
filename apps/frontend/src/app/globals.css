@@ -209,3 +209,43 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Animação de ataque para quem está na esquerda (vai para direita e sobe) */
+  .animate-attack-move-right {
+    animation: attack-right 0.6s ease-in-out;
+  }
+
+  /* Animação de ataque para quem está na direita (vai para esquerda e sobe) */
+  .animate-attack-move-left {
+    animation: attack-left 0.6s ease-in-out;
+  }
+
+  /* Flutuação suave para o estado Idle (opcional, mas fica bonito) */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes attack-right {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(50px) translateY(-30px); }
+  100% { transform: translateX(0) translateY(0) !important; } /* Força a volta ao zero */
+}
+
+@keyframes attack-left {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-50px) translateY(-30px); }
+  100% { transform: translateX(0) translateY(0) !important; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
