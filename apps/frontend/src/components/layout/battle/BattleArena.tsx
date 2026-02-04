@@ -334,17 +334,7 @@ export default function BattleArena({ player1, player2, onReset }: BattleArenaPr
             )}
           </div>
         </div>
-
-        {/* LOG DE BATALHA */}
-        <Card className="p-4 bg-black/60 backdrop-blur border-primary/20">
-          <div className="font-mono text-xs space-y-1">
-            {battleState.battleLog.map((log, i) => (
-              <div key={i} className={i === 0 ? "text-white" : "text-slate-500"}>
-                {`> ${log}`}
-              </div>
-            ))}
-          </div>
-        </Card>
+       
 
         {/* MODAL DE VITÓRIA */}
         {battleState.winner && (
