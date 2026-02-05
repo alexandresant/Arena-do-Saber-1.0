@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from "react"
+import React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -20,7 +20,7 @@ import { getUserCharacters } from "@/lib/api/createCharacter"
 import logo from "../../../../public/logo.png"
 
 const formSchema = z.object({
-  email: z.email().min(1, "Digite um email válido"),
+  email: z.string().email("Digite um email válido").min(1, "Email é obrigatório"),
   password: z.string().min(6, "A senha deve ter no mínimo 6 digitos"),
   rememberme: z.boolean().optional()
 })
@@ -41,7 +41,7 @@ export function Login() {
 
   async function onSubmit(data: FormLogin) {
     try {
-      // Faz login com credentials
+      // 1. Faz o login sem redirecionamento automático
       const response = await signIn("credentials", {
         redirect: false,
         email: data.email,
@@ -53,41 +53,44 @@ export function Login() {
         return
       }
 
+      // 2. Aguarda a sessão ser escrita e sincronizada
       const session = await getSession()
-      if (!session || !session.user || !session.jwt) {
-        alert("Erro ao obter a sessão do usuário. Por favor, tente novamente.")
+      
+      if (!session || !session.user) {
+        // Se a sessão falhar na primeira tentativa, forçamos um refresh e paramos
+        router.refresh()
         return
       }
 
-      const jwt = session?.jwt
-      //console.log("JWT: " + jwt)
-
+      const jwt = (session as any).jwt
       const userRole = session.user.role
+
+      // 3. Busca dados adicionais do Strapi usando o JWT da sessão
       const { hasCharacter } = await getUserCharacters(jwt)
-      //console.log("hasCharacter do back-end:", hasCharacter);
-      console.log("User is: ", userRole)
-      // Redireciona conforme a role
+      
+      // 4. Determina a rota de destino
+      let targetPath = "/login"
 
       if (userRole === "Authenticated") {
-        // student flow
-        if (hasCharacter) {
-          router.replace("/student-dashboard")
-        } else {
-          router.replace("/create-character")
-        }
+        targetPath = hasCharacter ? "/student-dashboard" : "/create-character"
       } else if (userRole === "Teacher") {
-        router.replace("/teacher-dashboard")
+        targetPath = "/teacher-dashboard"
       } else if (userRole === "Admin") {
-        router.replace("/admin-dashboard")
-      } else {
-        router.replace("/login")
+        targetPath = "/admin-dashboard"
       }
+
+      // 5. O SEGREDO PARA VERCEL: Refresh limpa o cache do roteador e o Middleware
+      // garante que o próximo request verá o cookie do NextAuth
+      router.refresh()
+
+      // 6. Pequeno delay para garantir que o cookie foi persistido antes da navegação
+      setTimeout(() => {
+        router.replace(targetPath)
+      }, 150)
 
     } catch (error) {
       if (error instanceof Error) alert(error.message)
       else alert("Erro desconhecido")
-    } finally {
-      form.reset()
     }
   }
 
@@ -163,10 +166,12 @@ export function Login() {
                   />
                   <Label>{t('checkbox')}</Label>
                 </div>
-                <Link href="/forgot-password" className="hover:text-muted-foreground">{t('forgotPassword')}</Link>
+                <Link href="/forgot-password" size="sm" className="hover:text-muted-foreground">{t('forgotPassword')}</Link>
               </div>
 
-              <Button className="w-full mt-2">{t('loginButton')}</Button>
+              <Button type="submit" className="w-full mt-2" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "..." : t('loginButton')}
+              </Button>
             </form>
           </Form>
           <div className="mt-4 hover:text-muted-foreground">
