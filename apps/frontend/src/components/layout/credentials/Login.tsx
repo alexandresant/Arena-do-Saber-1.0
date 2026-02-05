@@ -79,11 +79,10 @@ export function Login() {
         targetPath = "/admin-dashboard"
       }
 
-      // 5. O SEGREDO PARA VERCEL: Refresh limpa o cache do roteador e o Middleware
-      // garante que o próximo request verá o cookie do NextAuth
+      // 5. Refresh limpa o cache do roteador para que o Middleware veja o novo cookie
       router.refresh()
 
-      // 6. Pequeno delay para garantir que o cookie foi persistido antes da navegação
+      // 6. Pequeno delay para garantir persistência do cookie antes da navegação
       setTimeout(() => {
         router.replace(targetPath)
       }, 150)
@@ -166,7 +165,7 @@ export function Login() {
                   />
                   <Label>{t('checkbox')}</Label>
                 </div>
-                <Link href="/forgot-password" size="sm" className="hover:text-muted-foreground">{t('forgotPassword')}</Link>
+                <Link href="/forgot-password" className="text-sm hover:text-muted-foreground">{t('forgotPassword')}</Link>
               </div>
 
               <Button type="submit" className="w-full mt-2" disabled={form.formState.isSubmitting}>
