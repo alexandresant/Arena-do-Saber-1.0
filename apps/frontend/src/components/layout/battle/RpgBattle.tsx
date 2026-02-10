@@ -1,16 +1,16 @@
-// RpgBattle.tsx
+// RPGBattle.tsx - Correção
 "use client"
 import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import  {BattleArena}  from "@/components/layout/battle/BattleArena"
+import BattleArena from "@/components/layout/battle/BattleArena"
 import { 
   mainPlayer, 
   gameUsers, 
   hydrateAll, 
+  characters, // ← IMPORTANTE: Importe characters também!
   GameUser, 
-  Character,
-  characters
+  Character
 } from "@/lib/CharacterData"
 import { Swords, UserCircle, Loader2, Home, AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -37,19 +37,33 @@ export default function RPGBattle() {
 
   const router = useRouter();
 
+  // Função para converter characters para GameUsers
+  const convertCharactersToGameUsers = useCallback((chars: Character[]): GameUser[] => {
+    return chars.map((character, index) => ({
+      id: character.id,
+      username: `Adversário ${index + 1}`,
+      level: character.level || 1,
+      character: character
+    }));
+  }, []);
+
   // Função para verificar e carregar dados
   const loadData = useCallback(async () => {
     console.log("RPGBattle: Verificando dados...");
     
-    // Primeiro verifica se já temos dados em cache
-    if (mainPlayer && characters.length > 0) {
+    // 🔥 CORREÇÃO: Usa characters se gameUsers estiver vazio
+    const availableOpponents = gameUsers.length > 0 
+      ? gameUsers 
+      : convertCharactersToGameUsers(characters);
+    
+    if (mainPlayer && availableOpponents.length > 0) {
       console.log("RPGBattle: Dados já disponíveis em cache");
       setState(prev => ({
         ...prev,
         loading: false,
         error: null,
         player: mainPlayer,
-        opponents: [...gameUsers],
+        opponents: [...availableOpponents],
       }));
       return true;
     }
@@ -57,22 +71,29 @@ export default function RPGBattle() {
     console.log("RPGBattle: Buscando dados via hydrateAll...");
     
     try {
-      // Chama hydrateAll que deve atualizar as variáveis globais
       const result = await hydrateAll();
       
-      // Verifica se agora temos dados
-      if (mainPlayer && gameUsers.length > 0) {
+      // 🔥 CORREÇÃO: Verifica novamente após hydrateAll
+      const updatedOpponents = gameUsers.length > 0 
+        ? gameUsers 
+        : convertCharactersToGameUsers(characters);
+      
+      if (mainPlayer && updatedOpponents.length > 0) {
         console.log("RPGBattle: Dados carregados com sucesso");
         setState(prev => ({
           ...prev,
           loading: false,
           error: null,
           player: mainPlayer,
-          opponents: [...gameUsers],
+          opponents: [...updatedOpponents],
         }));
         return true;
       } else {
-        console.warn("RPGBattle: hydrateAll não retornou dados suficientes");
+        console.warn("RPGBattle: hydrateAll não retornou dados suficientes", {
+          hasMainPlayer: !!mainPlayer,
+          gameUsersCount: gameUsers.length,
+          charactersCount: characters.length
+        });
         setState(prev => ({
           ...prev,
           loading: false,
@@ -89,20 +110,25 @@ export default function RPGBattle() {
       }));
       return false;
     }
-  }, []);
+  }, [convertCharactersToGameUsers]);
 
   // Função para escutar atualizações
   const setupUpdateListener = useCallback(() => {
     const handleUpdate = () => {
       console.log("RPGBattle: Evento characters:update recebido!");
       
-      if (mainPlayer && gameUsers.length > 0) {
+      // 🔥 CORREÇÃO: Atualiza com os dados disponíveis
+      const availableOpponents = gameUsers.length > 0 
+        ? gameUsers 
+        : convertCharactersToGameUsers(characters);
+      
+      if (mainPlayer && availableOpponents.length > 0) {
         setState(prev => ({
           ...prev,
           loading: false,
           error: null,
           player: mainPlayer,
-          opponents: [...gameUsers],
+          opponents: [...availableOpponents],
         }));
       }
     };
@@ -112,30 +138,26 @@ export default function RPGBattle() {
     return () => {
       window.removeEventListener("characters:update", handleUpdate);
     };
-  }, []);
+  }, [convertCharactersToGameUsers]);
 
   useEffect(() => {
     console.log("RPGBattle: useEffect rodando");
     
-    // Configura listener para atualizações futuras
     const cleanupListener = setupUpdateListener();
-    
-    // Tenta carregar dados
     loadData();
     
-    // Timeout de fallback para evitar loading infinito
     const timeoutId = setTimeout(() => {
       if (state.loading) {
         console.warn("RPGBattle: Timeout - forçando fim do loading");
         setState(prev => ({
           ...prev,
           loading: false,
-          error: mainPlayer && gameUsers.length === 0 
+          error: mainPlayer && characters.length === 0 
             ? "Não há adversários disponíveis no momento. Tente novamente mais tarde." 
             : "Não foi possível carregar todos os dados. Algumas funcionalidades podem estar limitadas.",
         }));
       }
-    }, 5000); // 5 segundos é suficiente
+    }, 5000);
 
     return () => {
       console.log("RPGBattle: Cleanup");
@@ -143,6 +165,7 @@ export default function RPGBattle() {
       clearTimeout(timeoutId);
     };
   }, [loadData, setupUpdateListener, state.loading]);
+
 
   // Handler para tentar recarregar dados
   const handleRetry = useCallback(() => {
