@@ -16,26 +16,22 @@ export default function RPGBattle() {
   const [battleStarted, setBattleStarted] = useState(false);
   const router = useRouter()
 
-  useEffect(() => {
-    const handleUpdate = () => {
-      console.log("RPGBattle: Dados recebidos!");
-      setPlayer(mainPlayer);
-      setOpponents([...gameUsers]);
-      setLoading(false);
-    };
+    useEffect(() => {
+  const init = async () => {
+    await hydrateAll()
 
-    // ⚠️ PADRONIZADO: Deve ser o mesmo nome usado no CharacterData.ts
-    window.addEventListener("characters:update", handleUpdate);
-    
-    // Se já temos dados, não precisamos esperar o evento
-    if (mainPlayer && gameUsers.length > 0) {
-      setLoading(false);
-    } else {
-      hydrateAll(); 
-    }
+    console.log("AFTER HYDRATE:", {
+      mainPlayer,
+      gameUsersLen: gameUsers.length
+    })
 
-    return () => window.removeEventListener("characters:update", handleUpdate);
-  }, []);
+    setPlayer({ ...mainPlayer! })
+    setOpponents([...gameUsers])
+    setLoading(false)
+  }
+
+  init()
+}, [])
 
   if (loading) return (
     <div className="min-h-screen bg-[#0a0f1e] flex flex-col items-center justify-center text-white space-y-4">
