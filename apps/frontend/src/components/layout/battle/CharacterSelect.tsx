@@ -5,44 +5,49 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
-import { characters, hydrateAll } from "@/lib/CharacterData" // Verifique se no seu arquivo o nome é hydrateAll ou hydrateAllCharacters
+import { characters, hydrateAll } from "@/lib/CharacterData"
 import { Shield, Swords, Zap, Heart, Droplet, Target, Loader2 } from "lucide-react"
 import { useEffect, useState, useCallback } from "react"
 
 interface CharacterSelectProps {
   selectedCharacter: Character | null
   onSelectCharacter: (character: Character | null) => void
-  disabled?: string
+  disabled?: string | number // Aceitar ambos para evitar erro de tipagem
 }
 
 export default function CharacterSelect({ selectedCharacter, onSelectCharacter, disabled }: CharacterSelectProps) {
   const [characterList, setCharacterList] = useState<Character[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Memorizamos a função de atualização para evitar re-registros desnecessários
-  const handleUpdate = useCallback(() => {
-    console.log("CharacterSelect: Dados atualizados recebidos!");
+  // Função para sincronizar o estado local com a fonte de dados
+  const syncCharacters = useCallback(() => {
+    // Fazemos um clone do array para garantir que o React perceba a mudança
+    // E já filtramos ou tratamos os dados aqui se necessário
     setCharacterList([...characters])
     setLoading(false)
   }, [])
 
   useEffect(() => {
-    // ⚠️ O NOME DO EVENTO DEVE SER O MESMO QUE ESTÁ NO NOTIFYUPDATE()
-    window.addEventListener("characters:update", handleUpdate)
+    // Registra o evento para futuras atualizações
+    window.addEventListener("characters:update", syncCharacters)
     
     async function init() {
-      if (characters.length === 0) {
-        await hydrateAll()
-      } else {
-        setCharacterList([...characters])
+      try {
+        if (characters.length === 0) {
+          await hydrateAll()
+        }
+        // GARANTIA: Sincroniza logo após o hydrate, independente do evento
+        syncCharacters()
+      } catch (error) {
+        console.error("Erro ao carregar personagens:", error)
         setLoading(false)
       }
     }
 
     init()
 
-    return () => window.removeEventListener("characters:update", handleUpdate)
-  }, [handleUpdate])
+    return () => window.removeEventListener("characters:update", syncCharacters)
+  }, [syncCharacters])
 
   if (loading) {
     return (
@@ -57,7 +62,12 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
     <div className="space-y-4">
       {characterList.map((character) => {
         const isSelected = selectedCharacter?.id === character.id
-        const isDisabled = disabled === character.id
+        
+        // Coerção para String garante que "1" === 1 funcione em produção
+        const isDisabled = String(disabled) === String(character.id)
+
+        // Se você não quer nem MOSTRAR o personagem logado na lista de adversários:
+        if (isDisabled && !isSelected) return null
 
         return (
           <Card
@@ -65,11 +75,9 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
             className={`p-4 cursor-pointer transition-all border-2 ${
               isSelected
                 ? "border-primary bg-primary/10 scale-105"
-                : isDisabled
-                  ? "border-muted opacity-50 cursor-not-allowed"
-                  : "border-border hover:border-primary/50 hover:bg-card/80"
+                : "border-border hover:border-primary/50 hover:bg-card/80"
             }`}
-            onClick={() => !isDisabled && onSelectCharacter(character)}
+            onClick={() => onSelectCharacter(character)}
           >
             <div className="flex items-start gap-4">
               <div className="text-6xl flex-shrink-0 animate-float">{character.image}</div>
@@ -130,8 +138,8 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
         )
       })}
 
-      {characterList.length === 0 && !loading && (
-        <p className="text-center text-muted-foreground font-mono">Nenhum personagem disponível.</p>
+      {characterList.filter(c => String(c.id) !== String(disabled)).length === 0 && (
+        <p className="text-center text-muted-foreground font-mono">Nenhum adversário disponível.</p>
       )}
     </div>
   )
