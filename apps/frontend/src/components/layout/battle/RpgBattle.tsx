@@ -9,7 +9,8 @@ import {
   gameUsers, 
   hydrateAll, 
   GameUser, 
-  Character
+  Character,
+  characters
 } from "@/lib/CharacterData"
 import { Swords, UserCircle, Loader2, Home, AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -41,7 +42,7 @@ export default function RPGBattle() {
     console.log("RPGBattle: Verificando dados...");
     
     // Primeiro verifica se já temos dados em cache
-    if (mainPlayer && gameUsers.length > 0) {
+    if (mainPlayer && characters.length > 0) {
       console.log("RPGBattle: Dados já disponíveis em cache");
       setState(prev => ({
         ...prev,
@@ -172,7 +173,6 @@ export default function RPGBattle() {
 
     return true;
   }, [state.player, state.selectedUser]);
-
 
   // Handler para iniciar batalha com validação
   const handleStartBattle = () => {
