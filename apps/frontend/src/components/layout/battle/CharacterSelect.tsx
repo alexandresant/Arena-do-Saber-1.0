@@ -27,28 +27,44 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
     setLoading(false)
   }, [])
 
-  useEffect(() => {
-    // Registra o evento para futuras atualizações
-    window.addEventListener("characters:update", syncCharacters)
-    
-    async function init() {
-      try {
-        if (characters.length === 0) {
-          await hydrateAll()
-        }
-        // GARANTIA: Sincroniza logo após o hydrate, independente do evento
-        syncCharacters()
-      } catch (error) {
-        console.error("Erro ao carregar personagens:", error)
-        setLoading(false)
-      }
+useEffect(() => {
+  let isMounted = true
+
+  const sync = () => {
+    if (isMounted) {
+      setCharacterList([...characters])
+      setLoading(false)
     }
+  }
 
-    init()
+  window.addEventListener("characters:update", sync)
+  
+  async function init() {
+    try {
+      // 1. Chamamos o hydrate e PEGUALOS o retorno
+      const data = await hydrateAll()
+      
+      // 2. Se a função retornou dados, usamos eles imediatamente
+      if (isMounted && data && data.length > 0) {
+        setCharacterList([...data])
+        setLoading(false)
+      } else {
+        // Fallback caso a variável global tenha sido populada mas o retorno falhou
+        sync()
+      }
+    } catch (err) {
+      console.error(err)
+      if (isMounted) setLoading(false)
+    }
+  }
 
-    return () => window.removeEventListener("characters:update", syncCharacters)
-  }, [syncCharacters])
+  init()
 
+  return () => {
+    isMounted = false
+    window.removeEventListener("characters:update", sync)
+  }
+}, [])
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-8 space-y-4">
