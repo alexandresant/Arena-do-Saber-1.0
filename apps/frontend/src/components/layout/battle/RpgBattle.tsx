@@ -173,6 +173,7 @@ export default function RPGBattle() {
     return true;
   }, [state.player, state.selectedUser]);
 
+
   // Handler para iniciar batalha com validação
   const handleStartBattle = () => {
     if (!canStartBattle()) {
