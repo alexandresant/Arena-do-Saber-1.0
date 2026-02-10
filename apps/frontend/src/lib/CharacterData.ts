@@ -47,26 +47,22 @@ function mapImage(className: string) {
 }
 
 export async function hydrateAll() {
-  console.log("Iniciando hidratação...");
+  console.log("Iniciando hidratação...")
 
-  // 1. Se já tem dados, não faz nada.
+  // Se já tem dados, retorna logo os dados existentes
   if (isHydrated && characters.length > 0) {
-    console.log("Já estava hidratado com dados.");
-    return;
+    console.log("Já estava hidratado com dados.")
+    return characters
   }
 
   try {
-    const session = await getSession();
-    const userId = session?.user?.id;
+    const session = await getSession()
+    const userId = session?.user?.id
 
     if (userId) {
-      const resp = await getCharacterStatus((userId));
-
-      // ⚠️ LOG PARA DEBUG: Veja se o 'resp' traz os campos de vitoria
-      console.log("Dados brutos do CharacterStatus:", resp);
-
+      const resp = await getCharacterStatus(userId)
       if (resp?.character) {
-        const c = resp.character;
+        const c = resp.character
         mainPlayer = {
           id: String(c.id),
           nickName: c.nickName || "Herói",
@@ -78,22 +74,20 @@ export async function hydrateAll() {
           magicAttack: c.magicAttack || 10,
           defense: c.defense || 5,
           dexterity: c.evasion || 5,
-          // 🔹 MAPEANDO OS DADOS DE PROGRESSO:
           level: Number(c.level || 1),
           experience: Number(c.experience || 0),
           gold: Number(c.gold || 0),
           points: Number(c.points || 0),
-          victories: Number(c.victories || 0) // <--- CRUCIAL
-        };
+          victories: Number(c.victories || 0)
+        }
       }
     }
 
-    // 2. Carrega Lutadores
-    const fighters = await loadRankingFighters();
-    console.log("Fighters recebidos:", fighters.length);
+    const fighters = await loadRankingFighters()
+    console.log("Fighters recebidos da API:", fighters.length)
 
     const mappedFighters = fighters
-      .filter(f => String(f.id) !== String(mainPlayer?.id)) // Comparação segura de String
+      .filter(f => String(f.id) !== String(mainPlayer?.id))
       .map(f => ({
         id: String(f.id),
         nickName: f.nickName || "Inimigo",
@@ -105,9 +99,8 @@ export async function hydrateAll() {
         magicAttack: f.magicAttack || 10,
         defense: f.defense || 5,
         dexterity: f.evasion || 5
-      }));
+      }))
 
-    // Caso de segurança: se não houver outros jogadores, cria um bot
     if (mappedFighters.length === 0) {
       mappedFighters.push({
         id: "bot-training",
@@ -115,30 +108,21 @@ export async function hydrateAll() {
         name: "Guerreiro",
         image: "⚔️",
         maxHp: 150, maxMana: 50, attack: 12, magicAttack: 10, defense: 8, dexterity: 5
-      });
+      })
     }
 
-    characters.splice(0, characters.length, ...mappedFighters);
+    // Atualiza a global
+    characters.splice(0, characters.length, ...mappedFighters)
 
-    // 3. Carrega Usuários
-    const users = await loadRankingUser();
-    gameUsers.splice(0, gameUsers.length, ...users.map((u, i) => ({
-      id: String(u.id),
-      username: u.username,
-      level: Math.max(1, Math.floor((u.points ?? 0) / 100)),
-      character: characters[i % characters.length] || mainPlayer
-    })));
-
-    // ⚠️ SÓ AGORA marcamos como hidratado e notificamos o Hook!
-    isHydrated = true;
-    console.log("Hidratação concluída com sucesso. Personagens:", characters.length);
-    notifyUpdate();
-    isHydrated = true;
-    notifyUpdate();
-
+    isHydrated = true
+    console.log("Hidratação concluída. Total:", characters.length)
+    
+    notifyUpdate()
+    
+    return characters // <--- RETORNE O ARRAY AQUI
   } catch (e) {
-    console.error("Erro na hidratação:", e);
-    isHydrated = false;
-    notifyUpdate();
+    console.error("Erro na hidratação:", e)
+    isHydrated = false
+    return []
   }
 }
