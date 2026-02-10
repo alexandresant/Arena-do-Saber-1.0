@@ -108,18 +108,26 @@ export async function hydrateAll() {
         name: "Guerreiro",
         image: "⚔️",
         maxHp: 150, maxMana: 50, attack: 12, magicAttack: 10, defense: 8, dexterity: 5
-      })
+      });
     }
 
-    // Atualiza a global
-    characters.splice(0, characters.length, ...mappedFighters)
+    characters.splice(0, characters.length, ...mappedFighters);
 
-    isHydrated = true
-    console.log("Hidratação concluída. Total:", characters.length)
-    
-    notifyUpdate()
-    
-    return characters // <--- RETORNE O ARRAY AQUI
+    // 3. Carrega Usuários
+    const users = await loadRankingUser();
+    gameUsers.splice(0, gameUsers.length, ...users.map((u, i) => ({
+      id: String(u.id),
+      username: u.username,
+      level: Math.max(1, Math.floor((u.points ?? 0) / 100)),
+      character: characters[i % characters.length] || mainPlayer
+    })));
+
+    // ⚠️ SÓ AGORA marcamos como hidratado e notificamos o Hook!
+    isHydrated = true;
+    console.log("Hidratação concluída com sucesso. Personagens:", characters.length);
+    notifyUpdate();
+   
+
   } catch (e) {
     console.error("Erro na hidratação:", e)
     isHydrated = false

@@ -24,6 +24,7 @@ interface BattleState {
   battleStarted: boolean;
 }
 
+
 export default function RPGBattle() {
   const [state, setState] = useState<BattleState>({
     loading: true,
@@ -52,6 +53,56 @@ export default function RPGBattle() {
       }));
       return true;
     }
+const determineFirstTurn = (p1: Character, p2: Character): "player1" | "player2" => {
+  const p1Evasion = p1.dexterity || 0
+  const p2Evasion = p2.dexterity || 0
+
+  if (p1Evasion === p2Evasion) {
+    return Math.random() > 0.5 ? "player1" : "player2"
+  }
+  return p1Evasion > p2Evasion ? "player1" : "player2"
+};
+
+export  function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
+  // Dentro do export default function BattleArena...
+  const [battleState, setBattleState] = useState<BattleState>({
+    player1Hp: player1.maxHp,
+    player2Hp: player2.maxHp,
+    player1Mana: player1.maxMana,
+    player2Mana: player2.maxMana,
+    // ALTERAÇÃO AQUI:
+    currentTurn: determineFirstTurn(player1, player2),
+    battleLog: ["A batalha começou!"],
+    winner: null,
+    isAnimating: false,
+    lastDamage: { player1: 0, player2: 0 },
+    showDamage: { player1: false, player2: false },
+    player1Animation: "idle",
+    player2Animation: "idle",
+    isCriticalHit: false,
+  })
+
+  const hasSaved = useRef(false)
+
+  // Dentro do useEffect do BattleArena.tsx
+  useEffect(() => {
+    if (battleState.winner && !hasSaved.current) {
+      const isPlayer1Winner = battleState.winner === "player1";
+
+      // Defina as recompensas aqui e use as mesmas no Modal
+      const rewards = {
+        // Recomendo usar a mesma lógica que está no visual do Modal:
+        exp: isPlayer1Winner ? Math.floor(player2.maxHp * 0.7) : 10,
+        gold: isPlayer1Winner ? Math.floor(player2.maxHp * 0.4) : 5,
+        isVictory: isPlayer1Winner
+      };
+
+      const processResults = async () => {
+        hasSaved.current = true;
+        await updateBattleResults(player1, rewards)
+        window.dispatchEvent(new CustomEvent("characters:update"))
+
+      };
 
     console.log("RPGBattle: Buscando dados via hydrateAll...");
     
