@@ -43,7 +43,7 @@ const determineFirstTurn = (p1: Character, p2: Character): "player1" | "player2"
   return p1Evasion > p2Evasion ? "player1" : "player2"
 };
 
-export default function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
+export  function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
   // Dentro do export default function BattleArena...
   const [battleState, setBattleState] = useState<BattleState>({
     player1Hp: player1.maxHp,
