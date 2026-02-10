@@ -1,5 +1,3 @@
-// CharacterSelect.tsx
-
 "use client"
 
 import { Card } from "@/components/ui/card"
@@ -7,64 +5,68 @@ import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
 import { characters, hydrateAll } from "@/lib/CharacterData"
 import { Shield, Swords, Zap, Heart, Droplet, Target, Loader2 } from "lucide-react"
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 
 interface CharacterSelectProps {
   selectedCharacter: Character | null
   onSelectCharacter: (character: Character | null) => void
-  disabled?: string | number // Aceitar ambos para evitar erro de tipagem
+  disabled?: string | number
 }
 
 export default function CharacterSelect({ selectedCharacter, onSelectCharacter, disabled }: CharacterSelectProps) {
   const [characterList, setCharacterList] = useState<Character[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Função para sincronizar o estado local com a fonte de dados
-  const syncCharacters = useCallback(() => {
-    // Fazemos um clone do array para garantir que o React perceba a mudança
-    // E já filtramos ou tratamos os dados aqui se necessário
-    setCharacterList([...characters])
+  // 1. Memorizamos a lista filtrada para evitar que o cálculo no return falhe por delay de prop
+  const adversaries = useMemo(() => {
+    return characterList.filter(c => String(c.id) !== String(disabled))
+  }, [characterList, disabled])
+
+  const sync = useCallback(() => {
+    // Forçamos a criação de uma nova referência de array
+    const data = [...characters]
+    console.log("Sync executado. Itens na global:", data.length)
+    setCharacterList(data)
     setLoading(false)
   }, [])
 
-useEffect(() => {
-  let isMounted = true
+  useEffect(() => {
+    let isMounted = true
 
-  const sync = () => {
-    if (isMounted) {
-      setCharacterList([...characters])
-      setLoading(false)
+    // Ouvinte para atualizações externas
+    const handleUpdate = () => {
+      if (isMounted) sync()
     }
-  }
 
-  window.addEventListener("characters:update", sync)
-  
-  async function init() {
-    try {
-      // 1. Chamamos o hydrate e PEGUALOS o retorno
-      const data = await hydrateAll()
-      
-      // 2. Se a função retornou dados, usamos eles imediatamente
-      if (isMounted && data && data.length > 0) {
-        setCharacterList([...data])
-        setLoading(false)
-      } else {
-        // Fallback caso a variável global tenha sido populada mas o retorno falhou
-        sync()
+    window.addEventListener("characters:update", handleUpdate)
+    
+    async function init() {
+      try {
+        // Se já temos dados na global (conforme seus logs indicam), sync imediato
+        if (characters.length > 0) {
+          sync()
+        }
+
+        // Independente de ter dados, rodamos o hydrate para garantir atualização
+        await hydrateAll()
+        
+        if (isMounted) {
+          sync()
+        }
+      } catch (err) {
+        console.error("Erro no init:", err)
+        if (isMounted) setLoading(false)
       }
-    } catch (err) {
-      console.error(err)
-      if (isMounted) setLoading(false)
     }
-  }
 
-  init()
+    init()
 
-  return () => {
-    isMounted = false
-    window.removeEventListener("characters:update", sync)
-  }
-}, [])
+    return () => {
+      isMounted = false
+      window.removeEventListener("characters:update", handleUpdate)
+    }
+  }, [sync])
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-8 space-y-4">
@@ -76,14 +78,9 @@ useEffect(() => {
 
   return (
     <div className="space-y-4">
-      {characterList.map((character) => {
+      {/* Usamos a lista memorizada 'adversaries' para garantir consistência */}
+      {adversaries.map((character) => {
         const isSelected = selectedCharacter?.id === character.id
-        
-        // Coerção para String garante que "1" === 1 funcione em produção
-        const isDisabled = String(disabled) === String(character.id)
-
-        // Se você não quer nem MOSTRAR o personagem logado na lista de adversários:
-        if (isDisabled && !isSelected) return null
 
         return (
           <Card
@@ -97,15 +94,10 @@ useEffect(() => {
           >
             <div className="flex items-start gap-4">
               <div className="text-6xl flex-shrink-0 animate-float">{character.image}</div>
-
               <div className="flex-1 space-y-3">
                 <div>
-                  <h3 className="text-xl font-bold font-mono">
-                    {character.nickName}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {character.name}
-                  </p>
+                  <h3 className="text-xl font-bold font-mono">{character.nickName}</h3>
+                  <p className="text-sm text-muted-foreground">{character.name}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -154,10 +146,12 @@ useEffect(() => {
         )
       })}
 
-      {characterList.filter(c => String(c.id) !== String(disabled)).length === 0 && (
-        <p className="text-center text-muted-foreground font-mono">Nenhum adversário disponível.</p>
+      {adversaries.length === 0 && (
+        <div className="p-8 border-2 border-dashed border-muted rounded-lg text-center">
+          <p className="text-muted-foreground font-mono">Nenhum adversário disponível.</p>
+          <p className="text-[10px] text-muted-foreground/50 mt-2">ID Logado: {disabled || 'null'}</p>
+        </div>
       )}
     </div>
   )
-
 }
