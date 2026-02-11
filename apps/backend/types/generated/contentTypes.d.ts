@@ -1157,6 +1157,7 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     points: Schema.Attribute.Integer;
+    pointsCharacter: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;

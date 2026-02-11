@@ -80,6 +80,10 @@
       "relation": "manyToMany",
       "target": "api::class.class",
       "inversedBy": "student"
+    },
+    "pointsCharacter": {
+      "type": "integer",
+      "default": 0
     }
   }
 }
