@@ -57,8 +57,8 @@
     "topCards": {
       "nivel": "Nível",
       "coins": "Moedas",
-      "content": "Pontos",
-      "victory": "Vitórias"
+      "content": "Pontos de Estudo",
+      "victory": "Vitórias em batalha"
     },
     "characters": {
       "charcter": "{character}",
