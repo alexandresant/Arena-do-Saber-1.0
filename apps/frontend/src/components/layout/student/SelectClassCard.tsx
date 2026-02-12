@@ -155,6 +155,7 @@ export function JoinClassForm() {
         <CardHeader>
           <CardTitle>{t("myClassesTitle")}</CardTitle>
           <CardDescription>{t("myClassesDescription")}</CardDescription>
+          <CardDescription>{t("description2")}</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoadingClasses ? (
