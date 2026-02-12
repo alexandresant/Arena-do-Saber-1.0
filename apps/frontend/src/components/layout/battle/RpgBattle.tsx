@@ -1,28 +1,27 @@
-// RPGBattle.tsx - Correção
 "use client"
+
 import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import {BattleArena} from "@/components/layout/battle/BattleArena"
+import { BattleArena } from "@/components/layout/battle/BattleArena"
 import { 
   mainPlayer, 
   gameUsers, 
   hydrateAll, 
-  characters, // ← IMPORTANTE: Importe characters também!
+  characters, 
   GameUser, 
   Character
 } from "@/lib/CharacterData"
-import { Swords, UserCircle, Loader2, Home, AlertCircle } from "lucide-react"
+import { Swords, UserCircle, Loader2, Home, AlertCircle, Trophy } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-// Interface para estado da batalha
 interface BattleState {
-  loading: boolean;
-  error: string | null;
-  player: Character | null;
-  opponents: GameUser[];
-  selectedUser: GameUser | null;
-  battleStarted: boolean;
+  loading: boolean
+  error: string | null
+  player: Character | null
+  opponents: GameUser[]
+  selectedUser: GameUser | null
+  battleStarted: boolean
 }
 
 export default function RPGBattle() {
@@ -33,447 +32,282 @@ export default function RPGBattle() {
     opponents: [],
     selectedUser: null,
     battleStarted: false,
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
 
-  // Função para converter characters para GameUsers
   const convertCharactersToGameUsers = useCallback((chars: Character[]): GameUser[] => {
     return chars.map((character, index) => ({
       id: character.id,
-      username: `Adversário ${index + 1}`,
+      nickName: `Adversário ${index + 1}`,
       level: character.level || 1,
       character: character
-    }));
-  }, []);
+    }))
+  }, [])
 
-  // Função para verificar e carregar dados
   const loadData = useCallback(async () => {
-    console.log("RPGBattle: Verificando dados...");
-    
-    // 🔥 CORREÇÃO: Usa characters se gameUsers estiver vazio
     const availableOpponents = gameUsers.length > 0 
       ? gameUsers 
-      : convertCharactersToGameUsers(characters);
+      : convertCharactersToGameUsers(characters)
     
     if (mainPlayer && availableOpponents.length > 0) {
-      console.log("RPGBattle: Dados já disponíveis em cache");
       setState(prev => ({
         ...prev,
         loading: false,
         error: null,
         player: mainPlayer,
         opponents: [...availableOpponents],
-      }));
-      return true;
+      }))
+      return true
     }
 
-    console.log("RPGBattle: Buscando dados via hydrateAll...");
-    
     try {
-      const result = await hydrateAll();
-      
-      // 🔥 CORREÇÃO: Verifica novamente após hydrateAll
+      await hydrateAll()
       const updatedOpponents = gameUsers.length > 0 
         ? gameUsers 
-        : convertCharactersToGameUsers(characters);
+        : convertCharactersToGameUsers(characters)
       
       if (mainPlayer && updatedOpponents.length > 0) {
-        console.log("RPGBattle: Dados carregados com sucesso");
         setState(prev => ({
           ...prev,
           loading: false,
           error: null,
           player: mainPlayer,
           opponents: [...updatedOpponents],
-        }));
-        return true;
+        }))
+        return true
       } else {
-        console.warn("RPGBattle: hydrateAll não retornou dados suficientes", {
-          hasMainPlayer: !!mainPlayer,
-          gameUsersCount: gameUsers.length,
-          charactersCount: characters.length
-        });
         setState(prev => ({
           ...prev,
           loading: false,
           error: "Não foi possível carregar os personagens. Tente novamente.",
-        }));
-        return false;
+        }))
+        return false
       }
     } catch (error) {
-      console.error("RPGBattle: Erro ao carregar dados:", error);
       setState(prev => ({
         ...prev,
         loading: false,
         error: `Erro ao carregar dados: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
-      }));
-      return false;
+      }))
+      return false
     }
-  }, [convertCharactersToGameUsers]);
+  }, [convertCharactersToGameUsers])
 
-  // Função para escutar atualizações
-  const setupUpdateListener = useCallback(() => {
+  useEffect(() => {
+    loadData()
     const handleUpdate = () => {
-      console.log("RPGBattle: Evento characters:update recebido!");
-      
-      // 🔥 CORREÇÃO: Atualiza com os dados disponíveis
       const availableOpponents = gameUsers.length > 0 
         ? gameUsers 
-        : convertCharactersToGameUsers(characters);
-      
+        : convertCharactersToGameUsers(characters)
       if (mainPlayer && availableOpponents.length > 0) {
         setState(prev => ({
           ...prev,
-          loading: false,
-          error: null,
           player: mainPlayer,
           opponents: [...availableOpponents],
-        }));
+        }))
       }
-    };
-
-    window.addEventListener("characters:update", handleUpdate);
-    
-    return () => {
-      window.removeEventListener("characters:update", handleUpdate);
-    };
-  }, [convertCharactersToGameUsers]);
-
-  useEffect(() => {
-    console.log("RPGBattle: useEffect rodando");
-    
-    const cleanupListener = setupUpdateListener();
-    loadData();
-    
-    const timeoutId = setTimeout(() => {
-      if (state.loading) {
-        console.warn("RPGBattle: Timeout - forçando fim do loading");
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: mainPlayer && characters.length === 0 
-            ? "Não há adversários disponíveis no momento. Tente novamente mais tarde." 
-            : "Não foi possível carregar todos os dados. Algumas funcionalidades podem estar limitadas.",
-        }));
-      }
-    }, 5000);
-
-    return () => {
-      console.log("RPGBattle: Cleanup");
-      cleanupListener();
-      clearTimeout(timeoutId);
-    };
-  }, [loadData, setupUpdateListener, state.loading]);
-
-
-  // Handler para tentar recarregar dados
-  const handleRetry = useCallback(() => {
-    console.log("RPGBattle: Recarregando dados...");
-    setState(prev => ({
-      ...prev,
-      loading: true,
-      error: null,
-    }));
-    
-    // Pequeno delay para mostrar o loading state
-    setTimeout(() => {
-      loadData();
-    }, 300);
-  }, [loadData]);
-
-  // Valida se a batalha pode ser iniciada
-  const canStartBattle = useCallback(() => {
-    if (!state.player) {
-      console.error("Player não definido");
-      return false;
     }
-    
-    if (!state.selectedUser?.character) {
-      console.error("Character do adversário não definido");
-      return false;
-    }
+    window.addEventListener("characters:update", handleUpdate)
+    return () => window.removeEventListener("characters:update", handleUpdate)
+  }, [loadData, convertCharactersToGameUsers])
 
-    return true;
-  }, [state.player, state.selectedUser]);
-
-  // Handler para iniciar batalha com validação
   const handleStartBattle = () => {
-    if (!canStartBattle()) {
-      setState(prev => ({
-        ...prev,
-        error: "Não é possível iniciar a batalha. Dados incompletos."
-      }));
-      return;
+    if (state.player && state.selectedUser?.character) {
+      setState(prev => ({ ...prev, battleStarted: true, error: null }))
+    } else {
+      setState(prev => ({ ...prev, error: "Não é possível iniciar a batalha. Dados incompletos." }))
     }
+  }
 
-    console.log("Iniciando batalha entre:", 
-      state.player?.nickName, 
-      "vs", 
-      state.selectedUser?.character.nickName
-    );
-    
-    setState(prev => ({
-      ...prev,
-      battleStarted: true,
-      error: null,
-    }));
-  };
-
-  // Handler para resetar batalha
   const handleResetBattle = () => {
-    setState(prev => ({
-      ...prev,
-      battleStarted: false,
-    }));
-  };
+    setState(prev => ({ ...prev, battleStarted: false, selectedUser: null }))
+  }
 
-  // Redireciona para home com fallback
   const handleGoHome = () => {
     try {
-      router.push("/student-dashboard");
+      router.push("/student-dashboard")
     } catch (error) {
-      console.error("Falha ao navegar para home:", error);
-      window.location.href = "/student-dashboard";
+      window.location.href = "/student-dashboard"
     }
-  };
+  }
 
-  // Renderiza estado de carregamento
   if (state.loading) {
     return (
       <div className="min-h-screen bg-[#0a0f1e] flex flex-col items-center justify-center text-white space-y-4 p-4">
         <Loader2 className="animate-spin h-12 w-12 text-primary" />
-        <p className="font-mono text-primary animate-pulse text-center">
-          Buscando heróis na taverna...
-        </p>
-        <p className="text-sm text-gray-400">
-          Aguarde um momento
-        </p>
+        <p className="font-mono text-primary animate-pulse">Buscando heróis na taverna...</p>
       </div>
-    );
+    )
   }
 
-  // Renderiza estado de erro
-  if (state.error) {
+  if (state.error && !state.battleStarted) {
     return (
       <div className="min-h-screen bg-[#0a0f1e] flex flex-col items-center justify-center text-white space-y-6 p-6">
         <AlertCircle className="h-16 w-16 text-red-500" />
         <h2 className="text-2xl font-bold text-red-400">Erro ao Carregar</h2>
         <p className="text-gray-300 text-center max-w-md">{state.error}</p>
         <div className="flex gap-4 mt-4">
-          <Button 
-            onClick={handleRetry}
-            variant="outline"
-            className="text-white"
-          >
-            Tentar Novamente
-          </Button>
-          <Button onClick={handleGoHome}>
-            <Home className="mr-2" />
-            Voltar para Home
-          </Button>
+          <Button onClick={loadData} variant="outline" className="text-white">Tentar Novamente</Button>
+          <Button onClick={handleGoHome}><Home className="mr-2" /> Voltar para Home</Button>
         </div>
       </div>
-    );
+    )
   }
 
-  // Renderiza arena de batalha se tudo estiver válido
-  if (state.battleStarted && canStartBattle() && state.player && state.selectedUser) {
+  if (state.battleStarted && state.player && state.selectedUser) {
     return (
       <BattleArena 
         player1={state.player} 
         player2={state.selectedUser.character} 
         onReset={handleResetBattle}
       />
-    );
-  }
-
-  // Se não tem personagem principal mesmo após o loading
-  if (!state.player) {
-    return (
-      <div className="min-h-screen bg-[#0a0f1e] flex flex-col items-center justify-center text-white space-y-6 p-6">
-        <UserCircle className="h-16 w-16 text-yellow-500" />
-        <h2 className="text-2xl font-bold text-yellow-400">Personagem Não Encontrado</h2>
-        <p className="text-gray-300 text-center max-w-md">
-          Você precisa criar um personagem antes de entrar na arena.
-        </p>
-        <div className="flex gap-4 mt-4">
-          <Button 
-            onClick={handleRetry}
-            variant="outline"
-            className="text-white"
-          >
-            Verificar Novamente
-          </Button>
-          <Button onClick={handleGoHome}>
-            <Home className="mr-2" />
-            Voltar para Home
-          </Button>
-        </div>
-      </div>
-    );
+    )
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-[#0a0f1e]">
-      <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:justify-between items-center gap-4 mb-8">
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary font-mono">
-              ARENA RPG
-            </h1>
-            <p className="text-gray-400 mt-2">Escolha seu adversário e inicie a batalha</p>
-          </div>
-          
-          <Button
-            variant="outline"
-            onClick={handleGoHome}
-            className="border-gray-700 text-gray-200 hover:bg-gray-800"
+    <div className="min-h-[100dvh] bg-[#0a0f1e] flex flex-col items-center justify-start md:justify-center p-3 md:p-8 overflow-y-auto">
+      <div className="max-w-7xl w-full space-y-4 md:space-y-8">
+        {/* HEADER ADAPTADO DO SEGUNDO CÓDIGO */}
+        <div className="text-center space-y-2 md:space-y-4 pt-2 md:pt-0 relative">
+          <Button 
+            variant="ghost" 
+            onClick={handleGoHome} 
+            className="absolute right-0 top-0 text-gray-400 hover:text-white hidden md:flex"
           >
-            <Home className="mr-2 h-4 w-4" />
-            Home
+            <Home className="mr-2 h-4 w-4" /> Home
           </Button>
+          <h1 className="text-3xl md:text-7xl font-bold text-primary pixel-pulse font-mono tracking-wider">
+            {"ARENA RPG"}
+          </h1>
+          <p className="text-sm md:text-xl text-muted-foreground font-mono">
+            {"Escolha seu adversário e inicie a batalha!"}
+          </p>
         </div>
 
-        {/* Mensagem de erro (se houver) */}
-        {state.error && (
-          <div className="bg-red-900/20 border border-red-700 rounded-lg p-4 flex items-center gap-3">
-            <AlertCircle className="h-5 w-5 text-red-400" />
-            <p className="text-red-300 text-sm">{state.error}</p>
-          </div>
-        )}
-
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-          {/* PLAYER CARD */}
-          <Card className="p-6 border-2 border-primary bg-gray-900/50">
-            <h2 className="text-xl font-mono mb-4 flex items-center gap-2 text-white">
-              <UserCircle className="text-primary" /> 
-              SEU HERÓI
-            </h2>
-            
-            <div className="text-center space-y-4">
-              <div className="text-7xl mb-2">{state.player.image}</div>
-              <h3 className="text-2xl font-bold text-white">{state.player.nickName}</h3>
-              <p className="text-gray-300">{state.player.name}</p>
-              
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
-                <div className="bg-gray-800/50 p-2 rounded">
-                  <p className="text-gray-400">Level</p>
-                  <p className="text-white font-bold">{state.player.level || 1}</p>
-                </div>
-                <div className="bg-gray-800/50 p-2 rounded">
-                  <p className="text-gray-400">HP</p>
-                  <p className="text-white font-bold">{state.player.maxHp || 100}</p>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          {/* SEU PERSONAGEM - ESTILO CÓDIGO 2 */}
+          <Card className="p-4 md:p-6 bg-[#111827] border-2 border-primary/30">
+            <div className="flex items-center justify-center gap-2 mb-3 md:mb-6">
+              <UserCircle className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+              <h2 className="text-lg md:text-2xl font-bold text-center text-primary font-mono">{"SEU PERSONAGEM"}</h2>
             </div>
-          </Card>
 
-          {/* OPPONENT LIST */}
-          <Card className="p-6 border-2 border-gray-700 bg-gray-900/50">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-mono flex items-center gap-2 text-white">
-                <Swords className="text-secondary" /> 
-                ADVERSÁRIOS
-              </h2>
-              <span className="text-sm text-gray-400">
-                {state.opponents.length} disponíveis
-              </span>
-            </div>
-            
-            {state.opponents.length > 0 ? (
-              <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
-                {state.opponents.map(user => (
-                  <div
-                    key={user.id}
-                    onClick={() => {
-                      if (!user.character) {
-                        console.warn(`Usuário ${user.username} não tem personagem definido`);
-                        return;
-                      }
-                      setState(prev => ({
-                        ...prev,
-                        selectedUser: user,
-                        error: null,
-                      }));
-                    }}
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all hover:bg-gray-800/30 ${
-                      state.selectedUser?.id === user.id 
-                        ? 'border-secondary bg-secondary/10' 
-                        : 'border-gray-700'
-                    } ${!user.character ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    title={!user.character ? "Personagem não disponível" : ""}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="text-4xl">
-                        {user.character?.image || "❓"}
-                      </span>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-bold text-white">
-                              {user.username} (Nível {user.level})
-                            </p>
-                            <p className="text-sm text-gray-300">
-                              {user.character?.nickName || "Sem personagem"}
-                            </p>
-                          </div>
-                          {!user.character && (
-                            <span className="text-xs text-red-400 px-2 py-1 bg-red-900/30 rounded">
-                              Indisponível
-                            </span>
-                          )}
+            {state.player && (
+              <Card className="p-4 md:p-6 bg-primary/5 border-2 border-primary">
+                <div className="flex items-center md:flex-col gap-4">
+                  <div className="text-5xl md:text-7xl animate-bounce flex-shrink-0">{state.player.image}</div>
+
+                  <div className="text-left md:text-center space-y-1 md:space-y-2 flex-1 min-w-0 text-white">
+                    <h3 className="text-lg md:text-2xl font-bold font-mono text-primary truncate italic">{state.player.nickName}</h3>
+                    <p className="text-sm md:text-lg text-gray-400 font-mono">{state.player.name}</p>
+
+                    <div className="grid grid-cols-2 gap-2 md:gap-4 mt-2 md:mt-4 text-xs md:text-sm font-mono">
+                      <div className="space-y-0.5 md:space-y-1">
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"Nível:"}</span>
+                          <span className="font-bold">{state.player.level || 1}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"HP Máx:"}</span>
+                          <span className="font-bold">{state.player.maxHp}</span>
+                        </div>
+                      </div>
+                      <div className="space-y-0.5 md:space-y-1">
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"Defesa:"}</span>
+                          <span className="font-bold">{state.player.defense || "--"}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"Ataque:"}</span>
+                          <span className="font-bold">{state.player.attack || "--"}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center p-8 text-gray-400">
-                <Swords className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>Nenhum adversário disponível no momento</p>
-                <Button 
-                  onClick={handleRetry}
-                  variant="outline"
-                  size="sm"
-                  className="mt-4"
-                >
-                  Buscar adversários
-                </Button>
-              </div>
+                </div>
+              </Card>
             )}
+          </Card>
+
+          {/* ADVERSÁRIOS - ESTILO CÓDIGO 2 */}
+          <Card className="p-4 md:p-6 bg-[#111827] border-2 border-secondary/30">
+            <div className="flex items-center justify-center gap-2 mb-3 md:mb-6">
+              <Swords className="h-5 w-5 md:h-6 md:w-6 " />
+              <h2 className="text-lg md:text-2xl font-bold text-center  font-mono">{"DESAFIAR JOGADOR"}</h2>
+            </div>
+            
+            <div className="space-y-2 md:space-y-3 max-h-[40vh] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar">
+              {state.opponents.map((user) => {
+                const isSelected = state.selectedUser?.id === user.id
+
+                return (
+                  <Card
+                    key={user.id}
+                    className={`p-3 md:p-4 cursor-pointer transition-all border-2 text-white ${
+                      isSelected
+                        ? "border-secondary bg-secondary/10 scale-[1.02] md:scale-105"
+                        : "border-gray-800 bg-black/40 hover:border-secondary/50 hover:bg-gray-800/80"
+                    }`}
+                    onClick={() => setState(prev => ({ ...prev, selectedUser: user, error: null }))}
+                  >
+                    <div className="flex items-center gap-3 md:gap-4">
+                      <div className="text-3xl md:text-5xl flex-shrink-0 bg-black/20 p-2 rounded-lg">
+                        {user.character?.image || "👤"}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5 md:mb-1 flex-wrap">
+                          <h3 className="text-sm md:text-lg font-bold font-mono truncate italic">{user.character?.nickName}</h3>
+                          <div className="flex items-center gap-1 text-[10px] md:text-xs bg-primary/20 text-primary px-1.5 md:px-2 py-0.5 rounded font-mono">
+                            <Trophy className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                            <span>
+                              {"Lv "}
+                              {user.level}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-xs md:text-sm text-gray-400 mb-1 md:mb-2 font-mono truncate">
+                          {user.character?.name}
+                        </p>
+                        <div className="grid grid-cols-3 gap-1 text-[10px] md:text-xs font-mono text-gray-500">
+                          <span>{"HP:"} {user.character?.maxHp}</span>
+                          <span>{"ATQ:"} {user.character?.attack || "--"}</span>
+                          <span>{"DEF:"} {user.character?.defense || "--"}</span>
+                        </div>
+                      </div>
+
+                      {isSelected && (
+                        <div className="flex-shrink-0 hidden md:block">
+                          <div className="bg-secondary text-secondary-foreground px-3 py-1 rounded font-mono text-xs font-bold animate-pulse">
+                            {"ALVO"}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                )
+              })}
+            </div>
           </Card>
         </div>
 
-        {/* BATTLE BUTTON */}
-        <div className="pt-6">
+        {/* BOTÃO DE INICIAR - ESTILO CÓDIGO 2 */}
+        <div className="flex flex-col items-center gap-4 justify-center pb-4 md:pb-0">
           <Button
-            disabled={!state.selectedUser?.character || !state.player}
-            onClick={handleStartBattle}
-            className="w-full py-6 md:py-8 text-xl md:text-2xl font-mono bg-gradient-to-r from-primary to-secondary hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             size="lg"
+            onClick={handleStartBattle}
+            disabled={!state.selectedUser || !state.player}
+            className="text-base md:text-xl px-8 md:px-12 py-4 md:py-8 font-bold font-mono bg-primary hover:bg-primary/90 disabled:opacity-50 w-full md:w-auto shadow-[0_0_20px_rgba(var(--primary),0.3)] transition-all active:scale-95"
           >
-            {!state.selectedUser?.character ? (
-              "SELECIONE UM ADVERSÁRIO"
-            ) : (
-              <>
-                <Swords className="mr-3 h-6 w-6" />
-                INICIAR BATALHA: {state.player.nickName} vs {state.selectedUser.character.nickName}
-              </>
-            )}
+            <Swords className="mr-2 h-5 w-5 md:h-6 md:w-6" />
+            {!state.selectedUser ? "SELECIONE UM ADVERSÁRIO" : "INICIAR BATALHA"}
           </Button>
-          
-          {/* Informações adicionais */}
-          <div className="mt-4 text-center text-sm text-gray-400">
-            {!state.selectedUser?.character && state.player && (
-              <p>Clique em um adversário disponível para selecioná-lo</p>
-            )}
-          </div>
+          <p className="text-gray-500 text-xs font-mono animate-pulse uppercase tracking-widest">
+            Prepare-se para o combate
+          </p>
         </div>
       </div>
     </div>
-  );
+  )
 }

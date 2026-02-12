@@ -23,7 +23,7 @@ export interface Character {
 
 export interface GameUser {
   id: string; 
-  username: string; 
+  nickName: string; 
   level: number; 
   character: Character;
 }
@@ -123,7 +123,7 @@ export async function hydrateAll() {
     // Transforma cada personagem em um GameUser
     gameUsers.splice(0, gameUsers.length, ...mappedFighters.map((character, index) => ({
       id: character.id,
-      username: `Player${index + 1}`, // Ou use outro campo se disponível
+      nickName: `Player${index + 1}`, // Ou use outro campo se disponível
       level: 1, // Defina o nível apropriado
       character: character
     })));
