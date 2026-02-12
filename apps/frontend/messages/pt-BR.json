@@ -122,6 +122,7 @@
       "navigate": "Navegando para a página da turma {id}. Esta funcionalidade será implementada.",
       "myClassesTitle": "Minhas Turmas",
       "myClassesDescription": "Turmas que você está participando",
+      "description2": "Selecione uma turma para ver suas atividades",
       "noClasses": "Você não está em nenhuma turma ainda.",
       "joinWithCode": "Entre em uma turma usando o código fornecido pelo seu professor.",
       "subject": "Matéria",
