@@ -15,7 +15,6 @@ import {
 import { Swords, UserCircle, Loader2, Home, AlertCircle, Trophy } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-// Interface para estado da batalha - Sincronizada com Código 1
 interface BattleState {
   loading: boolean
   error: string | null
@@ -37,7 +36,6 @@ export default function RPGBattle() {
 
   const router = useRouter()
 
-  // Função para converter characters para GameUsers - Referência do Código 1
   const convertCharactersToGameUsers = useCallback((chars: Character[]): GameUser[] => {
     return chars.map((character, index) => ({
       id: character.id,
@@ -47,11 +45,7 @@ export default function RPGBattle() {
     }))
   }, [])
 
-  // Função para verificar e carregar dados via hydrateAll
   const loadData = useCallback(async () => {
-    console.log("RPGBattle: Verificando dados...")
-    
-    // CORREÇÃO: Usa characters se gameUsers estiver vazio (Padrão Código 1)
     const availableOpponents = gameUsers.length > 0 
       ? gameUsers 
       : convertCharactersToGameUsers(characters)
@@ -69,7 +63,6 @@ export default function RPGBattle() {
 
     try {
       await hydrateAll()
-      
       const updatedOpponents = gameUsers.length > 0 
         ? gameUsers 
         : convertCharactersToGameUsers(characters)
@@ -103,13 +96,10 @@ export default function RPGBattle() {
 
   useEffect(() => {
     loadData()
-    
-    // Listener para atualizações em tempo real conforme Código 1
     const handleUpdate = () => {
       const availableOpponents = gameUsers.length > 0 
         ? gameUsers 
         : convertCharactersToGameUsers(characters)
-      
       if (mainPlayer && availableOpponents.length > 0) {
         setState(prev => ({
           ...prev,
@@ -118,14 +108,12 @@ export default function RPGBattle() {
         }))
       }
     }
-
     window.addEventListener("characters:update", handleUpdate)
     return () => window.removeEventListener("characters:update", handleUpdate)
   }, [loadData, convertCharactersToGameUsers])
 
   const handleStartBattle = () => {
     if (state.player && state.selectedUser?.character) {
-      console.log("Iniciando batalha entre:", state.player.nickName, "vs", state.selectedUser.character.nickName)
       setState(prev => ({ ...prev, battleStarted: true, error: null }))
     } else {
       setState(prev => ({ ...prev, error: "Não é possível iniciar a batalha. Dados incompletos." }))
@@ -153,7 +141,6 @@ export default function RPGBattle() {
     )
   }
 
-  // Estado de Erro estilizado conforme Código 1
   if (state.error && !state.battleStarted) {
     return (
       <div className="min-h-screen bg-[#0a0f1e] flex flex-col items-center justify-center text-white space-y-6 p-6">
@@ -179,93 +166,146 @@ export default function RPGBattle() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-[#0a0f1e] flex flex-col items-center p-4 md:p-8">
-      <div className="max-w-7xl w-full space-y-8">
-        <header className="flex flex-col md:flex-row md:justify-between items-center gap-4">
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-7xl font-bold text-primary font-mono tracking-wider italic">ARENA RPG</h1>
-            <p className="text-gray-400 font-mono">Escolha seu adversário e inicie a batalha</p>
-          </div>
-          <Button variant="outline" onClick={handleGoHome} className="border-gray-700 text-gray-200 hover:bg-gray-800">
+    <div className="min-h-[100dvh] bg-[#0a0f1e] flex flex-col items-center justify-start md:justify-center p-3 md:p-8 overflow-y-auto">
+      <div className="max-w-7xl w-full space-y-4 md:space-y-8">
+        {/* HEADER ADAPTADO DO SEGUNDO CÓDIGO */}
+        <div className="text-center space-y-2 md:space-y-4 pt-2 md:pt-0 relative">
+          <Button 
+            variant="ghost" 
+            onClick={handleGoHome} 
+            className="absolute right-0 top-0 text-gray-400 hover:text-white hidden md:flex"
+          >
             <Home className="mr-2 h-4 w-4" /> Home
           </Button>
-        </header>
+          <h1 className="text-3xl md:text-7xl font-bold text-primary pixel-pulse font-mono tracking-wider">
+            {"ARENA RPG"}
+          </h1>
+          <p className="text-sm md:text-xl text-muted-foreground font-mono">
+            {"Escolha seu adversário e inicie a batalha!"}
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* SEU HERÓI */}
-          <Card className="p-6 bg-gray-900/50 border-2 border-primary/30 text-white shadow-2xl">
-            <h2 className="text-xl font-mono mb-6 flex items-center gap-2">
-              <UserCircle className="text-primary" /> SEU HERÓI
-            </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          {/* SEU PERSONAGEM - ESTILO CÓDIGO 2 */}
+          <Card className="p-4 md:p-6 bg-[#111827] border-2 border-primary/30">
+            <div className="flex items-center justify-center gap-2 mb-3 md:mb-6">
+              <UserCircle className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+              <h2 className="text-lg md:text-2xl font-bold text-center text-primary font-mono">{"SEU PERSONAGEM"}</h2>
+            </div>
+
             {state.player && (
-              <div className="flex flex-col items-center gap-4 bg-primary/5 p-8 rounded-xl border border-primary/10">
-                <div className="text-8xl mb-2 animate-bounce">{state.player.image}</div>
-                <h3 className="text-3xl font-black text-white italic tracking-tighter">{state.player.nickName}</h3>
-                <p className="text-primary font-mono">{state.player.name}</p>
-                <div className="grid grid-cols-2 gap-4 w-full mt-4">
-                  <div className="bg-black/40 p-3 rounded text-center border border-white/5">
-                    <p className="text-xs text-gray-500 uppercase">Nível</p>
-                    <p className="text-xl font-bold">{state.player.level || 1}</p>
-                  </div>
-                  <div className="bg-black/40 p-3 rounded text-center border border-white/5">
-                    <p className="text-xs text-gray-500 uppercase">HP Máximo</p>
-                    <p className="text-xl font-bold">{state.player.maxHp}</p>
+              <Card className="p-4 md:p-6 bg-primary/5 border-2 border-primary">
+                <div className="flex items-center md:flex-col gap-4">
+                  <div className="text-5xl md:text-7xl animate-bounce flex-shrink-0">{state.player.image}</div>
+
+                  <div className="text-left md:text-center space-y-1 md:space-y-2 flex-1 min-w-0 text-white">
+                    <h3 className="text-lg md:text-2xl font-bold font-mono text-primary truncate italic">{state.player.nickName}</h3>
+                    <p className="text-sm md:text-lg text-gray-400 font-mono">{state.player.name}</p>
+
+                    <div className="grid grid-cols-2 gap-2 md:gap-4 mt-2 md:mt-4 text-xs md:text-sm font-mono">
+                      <div className="space-y-0.5 md:space-y-1">
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"Nível:"}</span>
+                          <span className="font-bold">{state.player.level || 1}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"HP Máx:"}</span>
+                          <span className="font-bold">{state.player.maxHp}</span>
+                        </div>
+                      </div>
+                      <div className="space-y-0.5 md:space-y-1">
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"Defesa:"}</span>
+                          <span className="font-bold">{state.player.defense || "--"}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5">
+                          <span className="text-gray-500">{"Ataque:"}</span>
+                          <span className="font-bold">{state.player.attack || "--"}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Card>
             )}
           </Card>
 
-          {/* ADVERSÁRIOS */}
-          <Card className="p-6 bg-gray-900/50 border-2 border-gray-700 text-white">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-mono flex items-center gap-2">
-                <Swords className="text-secondary" /> ADVERSÁRIOS
-              </h2>
-              <span className="text-xs font-mono text-gray-500">{state.opponents.length} prontos</span>
+          {/* ADVERSÁRIOS - ESTILO CÓDIGO 2 */}
+          <Card className="p-4 md:p-6 bg-[#111827] border-2 border-secondary/30">
+            <div className="flex items-center justify-center gap-2 mb-3 md:mb-6">
+              <Swords className="h-5 w-5 md:h-6 md:w-6 " />
+              <h2 className="text-lg md:text-2xl font-bold text-center  font-mono">{"DESAFIAR JOGADOR"}</h2>
             </div>
-            <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {state.opponents.map((user) => (
-                <div
-                  key={user.id}
-                  onClick={() => setState(prev => ({ ...prev, selectedUser: user, error: null }))}
-                  className={`p-4 cursor-pointer transition-all border-2 rounded-xl flex items-center gap-4 ${
-                    state.selectedUser?.id === user.id 
-                      ? "border-secondary bg-secondary/10 shadow-[0_0_15px_rgba(var(--secondary),0.1)]" 
-                      : "border-gray-800 bg-black/20 hover:border-gray-600"
-                  }`}
-                >
-                  <div className="text-4xl bg-black/40 p-2 rounded-lg">{user.character?.image || "👤"}</div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-white italic">{user.character?.nickName} (Lvl {user.level})</h3>
-                    <p className="text-ls text-gray-400 font-mono">{user.character?.name}</p>
+            
+            <div className="space-y-2 md:space-y-3 max-h-[40vh] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar">
+              {state.opponents.map((user) => {
+                const isSelected = state.selectedUser?.id === user.id
 
-                  </div>
-                  <Trophy className={`h-5 w-5 ${state.selectedUser?.id === user.id ? "text-secondary" : "text-gray-700"}`} />
-                </div>
-              ))}
+                return (
+                  <Card
+                    key={user.id}
+                    className={`p-3 md:p-4 cursor-pointer transition-all border-2 text-white ${
+                      isSelected
+                        ? "border-secondary bg-secondary/10 scale-[1.02] md:scale-105"
+                        : "border-gray-800 bg-black/40 hover:border-secondary/50 hover:bg-gray-800/80"
+                    }`}
+                    onClick={() => setState(prev => ({ ...prev, selectedUser: user, error: null }))}
+                  >
+                    <div className="flex items-center gap-3 md:gap-4">
+                      <div className="text-3xl md:text-5xl flex-shrink-0 bg-black/20 p-2 rounded-lg">
+                        {user.character?.image || "👤"}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5 md:mb-1 flex-wrap">
+                          <h3 className="text-sm md:text-lg font-bold font-mono truncate italic">{user.character?.nickName}</h3>
+                          <div className="flex items-center gap-1 text-[10px] md:text-xs bg-primary/20 text-primary px-1.5 md:px-2 py-0.5 rounded font-mono">
+                            <Trophy className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                            <span>
+                              {"Lv "}
+                              {user.level}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-xs md:text-sm text-gray-400 mb-1 md:mb-2 font-mono truncate">
+                          {user.character?.name}
+                        </p>
+                        <div className="grid grid-cols-3 gap-1 text-[10px] md:text-xs font-mono text-gray-500">
+                          <span>{"HP:"} {user.character?.maxHp}</span>
+                          <span>{"ATQ:"} {user.character?.attack || "--"}</span>
+                          <span>{"DEF:"} {user.character?.defense || "--"}</span>
+                        </div>
+                      </div>
+
+                      {isSelected && (
+                        <div className="flex-shrink-0 hidden md:block">
+                          <div className="bg-secondary text-secondary-foreground px-3 py-1 rounded font-mono text-xs font-bold animate-pulse">
+                            {"ALVO"}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                )
+              })}
             </div>
           </Card>
         </div>
 
-        {/* BOTÃO DE INICIAR */}
-        <div className="flex flex-col items-center gap-6 pt-8">
+        {/* BOTÃO DE INICIAR - ESTILO CÓDIGO 2 */}
+        <div className="flex flex-col items-center gap-4 justify-center pb-4 md:pb-0">
           <Button
             size="lg"
             onClick={handleStartBattle}
-            disabled={!state.selectedUser?.character || !state.player}
-            className="w-full md:w-auto px-20 py-10 text-2xl font-black font-mono bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all active:scale-95 shadow-xl disabled:opacity-50"
+            disabled={!state.selectedUser || !state.player}
+            className="text-base md:text-xl px-8 md:px-12 py-4 md:py-8 font-bold font-mono bg-primary hover:bg-primary/90 disabled:opacity-50 w-full md:w-auto shadow-[0_0_20px_rgba(var(--primary),0.3)] transition-all active:scale-95"
           >
-            {!state.selectedUser ? (
-              "SELECIONE UM ADVERSÁRIO"
-            ) : (
-              <>
-                <Swords className="mr-4 h-8 w-8" />
-                BATALHAR: {state.player?.nickName} VS {state.selectedUser.character?.nickName}
-              </>
-            )}
+            <Swords className="mr-2 h-5 w-5 md:h-6 md:w-6" />
+            {!state.selectedUser ? "SELECIONE UM ADVERSÁRIO" : "INICIAR BATALHA"}
           </Button>
-          <p className="text-gray-500 text-sm font-mono animate-pulse">Prepare-se para o combate...</p>
+          <p className="text-gray-500 text-xs font-mono animate-pulse uppercase tracking-widest">
+            Prepare-se para o combate
+          </p>
         </div>
       </div>
     </div>
