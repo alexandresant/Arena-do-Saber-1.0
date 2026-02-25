@@ -272,10 +272,16 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
           </div>
         </div>
         {/* ARENA DE PERSONAGENS */}
-        <div className="relative flex-1 flex items-end justify-between px-12 py-20">
+        <div className="
+          relative flex-1 flex items-end justify-between
+          px-4 md:px-12
+          py-10 md:py-20
+          gap-2 md:gap-0  
+          "
+        >
 
           {/* PLAYER 1 CONTAINER - REMOVI A ANIMAÇÃO DA DIV PAI */}
-          <div className="relative">
+          <div className="relative w-[45%] md:w-auto max-w-[220px] md:max-w-none">
             {/* Div apenas para o Sprite que treme */}
             <div className={battleState.showDamage.player1 ? "animate-super-shake" : ""}>
               <AnimatedSprite
@@ -305,7 +311,7 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
           </div>
 
           {/* PLAYER 2 CONTAINER */}
-          <div className="relative">
+          <div className="relative w-[45%] md:w-auto max-w-[220px] md:max-w-none">
             <div className={battleState.showDamage.player2 ? "animate-super-shake" : ""}>
               <AnimatedSprite
                 characterClass={player2.name}
@@ -334,7 +340,7 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
             )}
           </div>
         </div>
-       
+
 
         {/* MODAL DE VITÓRIA */}
         {battleState.winner && (
