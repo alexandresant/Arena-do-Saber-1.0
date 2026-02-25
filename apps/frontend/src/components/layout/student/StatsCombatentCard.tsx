@@ -145,7 +145,7 @@ export function StatsCombatentCard({
             (currentStats.evasion - minimalStats.evasion) / 10 +
             (currentStats.defense - minimalStats.defense) / 10
 
-        return Math.max(spent * 10, 0)
+        return Math.round(Math.max(spent * 10, 0))
     }
 
     // Adicione estes estados no topo do componente
