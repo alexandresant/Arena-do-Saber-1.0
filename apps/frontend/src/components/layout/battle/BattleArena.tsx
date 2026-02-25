@@ -271,75 +271,62 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
             </div>
           </div>
         </div>
-        {/* ARENA DE PERSONAGENS */}
-        <div className="
-          relative flex-1 flex items-end justify-between
-          px-4 md:px-12
-          py-10 md:py-20
-          gap-2 md:gap-0  
-          "
-        >
+       {/* ARENA DE PERSONAGENS */}
+<div className="
+  relative 
+  flex-1 
+  flex 
+  items-end 
+  justify-center 
+  gap-4 
+  md:gap-20 
+  pb-16 
+  md:pb-28 
+  px-2 
+  overflow-visible
+">
+  {/* PLAYER 1 CONTAINER */}
+  <div className="relative flex-1 flex justify-center max-w-[180px] md:max-w-none">
+    <div className={battleState.showDamage.player1 ? "animate-super-shake" : ""}>
+      <AnimatedSprite
+        characterClass={player1.name}
+        animation={battleState.player1Animation}
+        position="left"
+        isLoser={battleState.winner === "player2"}
+        isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
+      />
+    </div>
 
-          {/* PLAYER 1 CONTAINER - REMOVI A ANIMAÇÃO DA DIV PAI */}
-          <div className="relative w-[45%] md:w-auto max-w-[220px] md:max-w-none">
-            {/* Div apenas para o Sprite que treme */}
-            <div className={battleState.showDamage.player1 ? "animate-super-shake" : ""}>
-              <AnimatedSprite
-                characterClass={player1.name}
-                animation={battleState.player1Animation}
-                position="left"
-                isLoser={battleState.winner === "player2"}
-                isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
-              />
-            </div>
+    {battleState.showDamage.player1 && (
+      <div className="absolute -top-24 md:-top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg flex flex-col items-center">
+        <span className={`text-4xl md:text-7xl font-black italic tracking-tighter text-shadow-damage leading-none ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}`}>
+          {battleState.lastDamage.player1 > 0 ? `-${battleState.lastDamage.player1}` : "MISS"}
+        </span>
+      </div>
+    )}
+  </div>
 
-            {battleState.showDamage.player1 && (
-              <div className="absolute -top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg !bg-transparent !border-none !shadow-none flex flex-col items-center">
-                <span className={`
-      text-7xl font-black italic tracking-tighter text-shadow-damage leading-none
-      ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}
-    `}>
-                  {battleState.lastDamage.player1 > 0 ? `-${battleState.lastDamage.player1}` : "MISS"}
-                </span>
-                {battleState.isCriticalHit && (
-                  <span className="text-yellow-500 font-mono text-sm font-bold uppercase tracking-widest text-shadow-crit animate-pulse">
-                    CRITICAL!
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
+  {/* PLAYER 2 CONTAINER */}
+  <div className="relative flex-1 flex justify-center max-w-[180px] md:max-w-none">
+    <div className={battleState.showDamage.player2 ? "animate-super-shake" : ""}>
+      <AnimatedSprite
+        characterClass={player2.name}
+        animation={battleState.player2Animation}
+        position="right"
+        isLoser={battleState.winner === "player1"}
+        isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
+      />
+    </div>
 
-          {/* PLAYER 2 CONTAINER */}
-          <div className="relative w-[45%] md:w-auto max-w-[220px] md:max-w-none">
-            <div className={battleState.showDamage.player2 ? "animate-super-shake" : ""}>
-              <AnimatedSprite
-                characterClass={player2.name}
-                animation={battleState.player2Animation}
-                position="right"
-                isLoser={battleState.winner === "player1"}
-                isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
-              />
-            </div>
-
-            {/* PLAYER 2 DAMAGE RESET */}
-            {battleState.showDamage.player2 && (
-              <div className="absolute -top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg !bg-transparent !border-none !shadow-none flex flex-col items-center">
-                <span className={`
-      text-7xl font-black italic tracking-tighter text-shadow-damage leading-none
-      ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}
-    `}>
-                  {battleState.lastDamage.player2 > 0 ? `-${battleState.lastDamage.player2}` : "MISS"}
-                </span>
-                {battleState.isCriticalHit && (
-                  <span className="text-yellow-500 font-mono text-sm font-bold uppercase tracking-widest text-shadow-crit animate-pulse">
-                    CRITICAL!
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
+    {battleState.showDamage.player2 && (
+      <div className="absolute -top-24 md:-top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg flex flex-col items-center">
+        <span className={`text-4xl md:text-7xl font-black italic tracking-tighter text-shadow-damage leading-none ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}`}>
+          {battleState.lastDamage.player2 > 0 ? `-${battleState.lastDamage.player2}` : "MISS"}
+        </span>
+      </div>
+    )}
+  </div>
+</div>
 
 
         {/* MODAL DE VITÓRIA */}
