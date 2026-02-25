@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation"
 import { submitPoints } from "@/lib/api/submitPoints"
 // 🎯 Importação do Sonner
 import { toast } from "sonner" 
+import { useSession } from "next-auth/react"
 
 export function SelectActivities() {
   const t = useTranslations("SelectActivities")
@@ -29,6 +30,8 @@ export function SelectActivities() {
   const [score, setScore] = useState({ correctCount: 0, totalPoints: 0 })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const session = useSession()
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -78,7 +81,7 @@ export function SelectActivities() {
   const submmitActivityPoints = async () => {
     try {
       setIsSubmitting(true)
-      const success = await submitPoints(score.totalPoints)
+      const success = await submitPoints(score.totalPoints, session.data?.user.id || "")
       setIsSubmitting(false)
       setIsSubmitted(success)
 

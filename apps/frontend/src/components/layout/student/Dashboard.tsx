@@ -18,12 +18,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RankingStudentsCard } from "./RankingStudentsCard"
 import { RankingFightersCard } from "./RankingFightersCard"
 import { use, useEffect, useState } from "react"
-import type { Character } from "@/types/types"
+import type { Character, FighterProps } from "@/types/types"
 import { getCharacterStatus } from "@/lib/api/createCharacter"
 import { JoinClassForm } from "./SelectClassCard"
 import { getUserPoints } from "@/lib/api/loadpointsUser"
 import { useRouter } from "next/navigation"
 import { ForkKnife } from "lucide-react"
+import { loadRankingFighters } from "@/lib/api/loadRanking"
+import { set } from "zod"
 
 export function StudentDashboard() {
 
@@ -34,11 +36,17 @@ export function StudentDashboard() {
     const [userPoints, setUserPoints] = useState<number | null>(null)
     const router = useRouter()
     const [showDashboard, setShowDashboard] = useState(false)
+    const [victories, setVictories] = useState(0)   
+    const [rankingData, setRankingData] = useState<FighterProps[]>([])  
 
     const coins = 50
-    const victory = 32
 
     useEffect(() => {
+        async function fetchRanking(){
+            const data = await loadRankingFighters()
+            setRankingData(data)
+            setVictories(data.find(fighter => fighter.id === characterStatus?.id)?.victories ?? 0)
+        }
         const fetchCharacterStatus = async () => {
             if (!session?.data?.jwt) return
             try {
@@ -53,6 +61,7 @@ export function StudentDashboard() {
             }
         }
         fetchCharacterStatus()
+        fetchRanking()
     }, [session])
     useEffect(() => {
         const fetchUserData = async () => {
@@ -148,7 +157,7 @@ export function StudentDashboard() {
                         contents={userPoints ?? 0}
                     />
                     <VictoryCard
-                        victory={victory}
+                        victory={victories}
                     />
                 </div>
                 <div
