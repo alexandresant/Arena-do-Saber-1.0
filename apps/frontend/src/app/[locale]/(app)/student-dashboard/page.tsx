@@ -1,6 +1,6 @@
 "use client"
-import { StudentDashboard } from "@/components/layout/student/Dashboard"
+import { StudentIndex } from "@/components/layout/student/Index"
 
 export default function StudentDashboardPage() {
-    return <StudentDashboard />
+    return <StudentIndex />
 }
