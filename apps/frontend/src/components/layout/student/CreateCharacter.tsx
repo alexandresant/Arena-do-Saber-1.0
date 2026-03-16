@@ -123,7 +123,7 @@ export function CreateCharacter() {
                                                         <CardContent className="flex flex-col gap-1 items-start p- pt-0">
                                                             <div className="flex justify-between w-full">
                                                                 <Label>{t('strength')}</Label>
-                                                                <span>{char.strenghtBase}</span>
+                                                                <span>{char.strengthBase}</span>
                                                             </div>
                                                             <div className="flex justify-between w-full">
                                                                 <Label>{t('intelligence')}</Label>
