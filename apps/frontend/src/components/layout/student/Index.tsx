@@ -23,6 +23,8 @@ import { useRouter } from "next/navigation"
 import { loadRankingFighters } from "@/lib/api/loadRanking"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
+import { DashboardLayout } from "./Dashboard"
+import { DailyMissions } from "./DailyMissions"
 
 export function StudentIndex({ children }: { children: React.ReactNode }) {
     const t = useTranslations('StudentDashboardPage')
@@ -69,30 +71,8 @@ export function StudentIndex({ children }: { children: React.ReactNode }) {
     }
 
     return (
-        <SidebarProvider>
-            <AppSidebar />
+        <DashboardLayout>
             <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6 space-y-6">
-                
-                {/* HEADER SUPERIOR - Limpo e Funcional */}
-                <header className="flex flex-row justify-between items-center bg-card p-4 rounded-xl border shadow-sm">
-                    <div className="flex items-center gap-4">
-                        <SidebarTrigger />
-                        <div>
-                            <h1 className="text-xl font-bold tracking-tight">{t('title')}</h1>
-                            <p className="text-sm text-muted-foreground">{t('description', { userName })}</p>
-                        </div>
-                    </div>
-                    <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-muted-foreground hover:text-destructive transition-colors"
-                        onClick={() => signOut()}
-                    >
-                        <LogOut className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Sair</span>
-                    </Button>
-                </header>
-
                 {/* QUICK NAV - Apenas Mobile (Otimizado) */}
                 <nav className="grid grid-cols-4 gap-2 md:hidden">
                     {[
@@ -143,13 +123,11 @@ export function StudentIndex({ children }: { children: React.ReactNode }) {
 
                     {/* COLUNA CENTRAL/DIREITA: Conteúdo e Social */}
                     <div className="xl:col-span-2 space-y-6">
-                        
-
-                        
+                        <DailyMissions />
                     </div>
                 </div>
                 {children}
             </main>
-        </SidebarProvider>
+        </DashboardLayout>
     )
 }

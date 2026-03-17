@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "@/i18n/navigation"
 import { useSearchParams } from "next/navigation"
 import { submitPoints } from "@/lib/api/submitPoints"
-// 🎯 Importação do Sonner
+
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 import { DashboardLayout } from "./Dashboard"
@@ -20,7 +20,6 @@ export function SelectActivities() {
   const t = useTranslations("SelectActivities")
   const router = useRouter()
   const searchParams = useSearchParams()
-  // ❌ REMOVIDO: const { toast } = useToast() 
   const classId = searchParams.get("classId")
   const className = searchParams.get("className")
 

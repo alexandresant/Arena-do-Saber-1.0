@@ -304,11 +304,6 @@ export function StatsCombatentCard({
                         </>
                     )}
                 </Button>
-
-                <Button className="w-full mt-4" onClick={() => router.push("/battle-arena")}>
-                    <Swords />
-                    Batalhar
-                </Button>
             </CardContent>
         </Card>
     )
