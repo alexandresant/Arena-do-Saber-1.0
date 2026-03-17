@@ -25,6 +25,8 @@ export const loadSubjects = async (): Promise<PdfLink[]> => {
         const driveIdMatch = item.googleDriveId.match(/\/d\/([a-zA-Z0-9_-]+)/)
         const cleanId = driveIdMatch ? driveIdMatch[1] : item.googleDriveId.trim()
 
+        //console.log("Subjects carregados:", subjects)
+
         return {
           id: item.id,
           name: item.name,
@@ -36,6 +38,7 @@ export const loadSubjects = async (): Promise<PdfLink[]> => {
         }
       })
       .filter((link): link is PdfLink => link !== null)
+      
   } catch (error) {
     console.error("Erro ao carregar matérias:", error)
     return []

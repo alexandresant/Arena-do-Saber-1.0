@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { set, z } from "zod"
 import { useTranslations } from "next-intl"
 import { loadClasses } from "@/lib/api/loadClasses"
+import { FileQuestion } from "lucide-react"
 
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
@@ -101,11 +102,20 @@ export function JoinClassForm() {
 
   const handleClassClick = (classId: string, className: string) => {
     router.push(`/select-activities?classId=${classId}&className=${className}`)
-    
+
   }
 
   return (
-    <div className="space-y-6">
+    <Card className="border-none shadow-none bg-transparent">
+      <CardHeader className="px-0 pt-0 pb-8 items-center justify-between">
+        <div className=" flex flex-row space-x-2 items-center">
+
+          <FileQuestion className="h-8 w-8 text-primary" />
+          <CardTitle className="text-3xl font-bold flex items-center gap-2">
+            Questionário</CardTitle>
+        </div>
+        <CardDescription>Escolha uma turma ou entre em uma para responder ao questionário</CardDescription>
+      </CardHeader>
       {/* Formulário para entrar em turma */}
       <Card>
         <CardHeader>
@@ -202,6 +212,6 @@ export function JoinClassForm() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </Card>
   )
 }
