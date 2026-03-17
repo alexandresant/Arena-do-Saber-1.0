@@ -26,7 +26,7 @@ import { AppSidebar } from "./AppSidebar"
 import { DashboardLayout } from "./Dashboard"
 import { DailyMissions } from "./DailyMissions"
 
-export function StudentIndex({ children }: { children: React.ReactNode }) {
+export function StudentIndex() {
     const t = useTranslations('StudentDashboardPage')
     const { data: session } = useSession()
     const userName = session?.user?.name || "N/A"
@@ -126,7 +126,6 @@ export function StudentIndex({ children }: { children: React.ReactNode }) {
                         <DailyMissions />
                     </div>
                 </div>
-                {children}
             </main>
         </DashboardLayout>
     )
