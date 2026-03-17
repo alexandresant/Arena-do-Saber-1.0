@@ -1,4 +1,4 @@
-# 🎮 Arena do Saber
+#  Arena do Saber
 
 Plataforma educacional gamificada com elementos de RPG, desenvolvida com o objetivo de aumentar o engajamento e a motivação de estudantes no processo de aprendizagem.
 
@@ -6,7 +6,7 @@ Este projeto foi desenvolvido como parte do Trabalho de Conclusão de Curso (TCC
 
 ---
 
-## 📌 Sobre o Projeto
+##  Sobre o Projeto
 
 O **Arena do Saber** é uma plataforma de estudos que incorpora mecânicas de jogos de RPG, como:
 
@@ -21,7 +21,7 @@ A proposta é transformar o processo de aprendizagem em uma experiência mais en
 
 ---
 
-## 🚀 Demonstração
+##  Demonstração
 
 A aplicação está disponível em:
 
@@ -29,7 +29,7 @@ A aplicação está disponível em:
 
 ---
 
-## 🧠 Objetivo do Projeto
+##  Objetivo do Projeto
 
 Investigar o impacto da gamificação baseada em elementos de RPG no:
 
@@ -39,7 +39,7 @@ Investigar o impacto da gamificação baseada em elementos de RPG no:
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 ### Front-end
 - React
@@ -55,7 +55,7 @@ Investigar o impacto da gamificação baseada em elementos de RPG no:
 
 ---
 
-## ⚙️ Funcionalidades
+##  Funcionalidades
 
 - Cadastro e autenticação de usuários
 - Seleção de personagens com atributos
@@ -67,10 +67,58 @@ Investigar o impacto da gamificação baseada em elementos de RPG no:
 - Missões e progressão
 
 ---
+## Como Executar o Projeto
 
-## 📂 Estrutura do Projeto
+###  Pré-requisitos
+
+Antes de iniciar, certifique-se de ter instalado em sua máquina:
+
+- Node.js
+- npm 
+
+---
+
+###  Front-end
+
+```bash
+cd apps/frontend
+npm install
+npm run dev
+```
+### Back-end
+
+```bash
+cd apps/backend
+npm install
+npm run dev
+````
+
+##  Estrutura do Projeto
 
 ```bash
 apps/
  ├── frontend/
  └── backend/
+```
+
+## Observações
+
+- Este projeto está em desenvolvimento
+- Algumas funcionalidades podem estar em evolução
+- Por ser um MVP, pode apresentar alguns problemas ou bugs
+
+---
+
+## Licença
+
+Este projeto esta sob licença MIT
+
+---
+
+## Autor
+
+- Alexandre dos Santos Bührer
+- Graduando em Engenharia de Software
+
+- Caso tenha interesse ou queira contribuir, entre em contato.
+- Caso deseje utilizar este projeto, sinta se a vontade, apenas de os créditos.
