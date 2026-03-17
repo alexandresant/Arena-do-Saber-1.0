@@ -503,6 +503,7 @@ export interface ApiCharacterCharacter extends Struct.CollectionTypeSchema {
     evasion: Schema.Attribute.Integer;
     experience: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     experienceToNextLevel: Schema.Attribute.Integer;
+    gold: Schema.Attribute.Integer;
     hp: Schema.Attribute.Integer;
     intelligence: Schema.Attribute.Integer;
     level: Schema.Attribute.Integer &
@@ -641,6 +642,12 @@ export interface ApiSubjectSubject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    googleDriveId: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -652,16 +659,13 @@ export interface ApiSubjectSubject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    pdf: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    > &
+    publishedAt: Schema.Attribute.DateTime;
+    subject: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1153,6 +1157,7 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     points: Schema.Attribute.Integer;
+    pointsCharacter: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;

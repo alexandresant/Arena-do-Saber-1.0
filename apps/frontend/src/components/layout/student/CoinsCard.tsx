@@ -10,7 +10,7 @@ export function CoinsCard({coins}: {coins: number}) {
             <CardContent className="flex flex-row gap-2 justify-between items-center">
                 <div className="flex flex-col">
                     <Label className="text-muted-foreground">{t('coins')}</Label>
-                    <Label className="text-2xl">{coins}</Label>
+                    <Label className="text-2xl">Em breve...</Label>
                 </div>
                 <Coins className="h-8 w-8 text-yellow-500"/>
             </CardContent>

@@ -42,7 +42,7 @@ export async function getCharacterTemplates(jwt: string) {
     return response.data
 }
 
-export async function getCharacterStatus(userId: number) {
+export async function getCharacterStatus(userId: string) {
     const session = await getSession()
     //const userId = session?.user?.id
     const jwt = session?.jwt
@@ -55,7 +55,7 @@ export async function getCharacterStatus(userId: number) {
                 },
             }
         );
-        //console.log("Dados do personagem" , response.data)
+        console.log("Dados do personagem" , response.data)
         return response.data;
     } catch (error) {
         //console.error("Erro ao carregar status do personagem.", error);

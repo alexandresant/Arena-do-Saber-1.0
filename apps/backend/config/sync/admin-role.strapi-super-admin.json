@@ -414,7 +414,7 @@
       "locale": null
     },
     {
-      "documentId": "hcj3y0c4c6uhltm5iwkld7ha",
+      "documentId": "v7bherjxhjpgn0ue1vuftdiq",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -422,7 +422,6 @@
         "fields": [
           "name",
           "description",
-          "icone",
           "pdf"
         ],
         "locales": [
@@ -459,7 +458,7 @@
       "locale": null
     },
     {
-      "documentId": "av632jzo8pfmnu5yo8qll82n",
+      "documentId": "pnhxjujxnhiscyndxo1w6izx",
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -467,7 +466,6 @@
         "fields": [
           "name",
           "description",
-          "icone",
           "pdf"
         ],
         "locales": [
@@ -478,7 +476,7 @@
       "locale": null
     },
     {
-      "documentId": "xrvc9ywnzb4vgkxt3p3wt2fs",
+      "documentId": "p0wuk9e4u7rdh5w6ri12lvno",
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
       "subject": "api::subject.subject",
@@ -486,7 +484,6 @@
         "fields": [
           "name",
           "description",
-          "icone",
           "pdf"
         ],
         "locales": [

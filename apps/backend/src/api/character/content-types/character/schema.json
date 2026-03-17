@@ -77,6 +77,9 @@
     },
     "victories": {
       "type": "integer"
+    },
+    "gold": {
+      "type": "integer"
     }
   }
 }

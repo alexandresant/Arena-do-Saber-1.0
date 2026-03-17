@@ -39,12 +39,13 @@ export interface Character {
   experienceToNextLevel?: number
   defense: number
   attack: number
-  maxHp: number
-  maxMana: number
+  hp: number
+  mana: number
   magicAttack: number
   evasion: number,
   points: number
   victories?: number
+  gold: number
 }
 export interface CharacterTemplate {
   id: number
@@ -58,6 +59,12 @@ export interface CharacterTemplate {
   agilityBase: number
 }
 export interface CombatentStats {
+  id: number
+  points: number
+  experience: number
+  level: number
+  name: string
+  nickName: string
   totalHp: number
   totalMana: number
   mana?: number
@@ -154,6 +161,9 @@ export interface PdfLink {
     id: number;
     name: string; // O nome da matéria (ex: "Arduino Básico")
     url: string;  // A URL COMPLETA para download/visualização do PDF
+    googleDriveId: string
+    subject: string
+    description: string
 }
 
 // Interfaces internas para mapear a resposta bruta do Strapi
@@ -176,10 +186,15 @@ export interface StrapiSubjectAttributes {
 export interface StrapiItem {
   id: number
   name: string
+  subject: string
   description?: string
-  pdf?: {
-    id: number
-    url: string
-    name: string
-  }[]
+  googleDriveId: string
+}
+
+
+export interface EvolutionResults{
+  newLevel: number
+  newExperience: number
+  pointsToAssign: number
+  levelUp: boolean
 }

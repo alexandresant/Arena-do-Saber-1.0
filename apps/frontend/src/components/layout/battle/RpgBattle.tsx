@@ -1,172 +1,270 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import BattleArena from "@/components/layout/battle/BattleArena"
-import type { Character, GameUser } from "@/lib/CharacterData"
-import { characters, gameUsers } from "@/lib/CharacterData"
-import { Swords, UserCircle, Trophy } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { BattleArena } from "@/components/layout/battle/BattleArena"
+import { 
+  mainPlayer, 
+  gameUsers, 
+  hydrateAll, 
+  characters, 
+  GameUser, 
+  Character
+} from "@/lib/CharacterData"
+import { 
+  Swords, 
+  UserCircle, 
+  Loader2, 
+  Home, 
+  AlertCircle, 
+  Trophy,
+  Shield,
+  Zap
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import { DashboardLayout } from "../student/Dashboard"
+
+interface BattleState {
+  loading: boolean
+  error: string | null
+  player: Character | null
+  opponents: GameUser[]
+  selectedUser: GameUser | null
+  battleStarted: boolean
+}
 
 export default function RPGBattle() {
-  const [player] = useState<Character>(characters[0])
-  const [selectedUser, setSelectedUser] = useState<GameUser | null>(null)
-  const [battleStarted, setBattleStarted] = useState(false)
+  const [state, setState] = useState<BattleState>({
+    loading: true,
+    error: null,
+    player: null,
+    opponents: [],
+    selectedUser: null,
+    battleStarted: false,
+  })
+
+  const router = useRouter()
+
+  const convertCharactersToGameUsers = useCallback((chars: Character[]): GameUser[] => {
+    return chars.map((character, index) => ({
+      id: character.id,
+      nickName: `Adversário ${index + 1}`,
+      level: character.level || 1,
+      character: character
+    }))
+  }, [])
+
+  const loadData = useCallback(async () => {
+    const availableOpponents = gameUsers.length > 0 
+      ? gameUsers 
+      : convertCharactersToGameUsers(characters)
+    
+    if (mainPlayer && availableOpponents.length > 0) {
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: null,
+        player: mainPlayer,
+        opponents: [...availableOpponents],
+      }))
+      return true
+    }
+
+    try {
+      await hydrateAll()
+      const updatedOpponents = gameUsers.length > 0 
+        ? gameUsers 
+        : convertCharactersToGameUsers(characters)
+      
+      if (mainPlayer && updatedOpponents.length > 0) {
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          error: null,
+          player: mainPlayer,
+          opponents: [...updatedOpponents],
+        }))
+        return true
+      }
+      return false
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: "Erro ao carregar dados.",
+      }))
+      return false
+    }
+  }, [convertCharactersToGameUsers])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   const handleStartBattle = () => {
-    if (player && selectedUser) {
-      setBattleStarted(true)
+    if (state.player && state.selectedUser?.character) {
+      setState(prev => ({ ...prev, battleStarted: true }))
     }
   }
 
-  const handleReset = () => {
-    setSelectedUser(null)
-    setBattleStarted(false)
+  if (state.loading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          <p className="text-sm font-medium text-muted-foreground animate-pulse">Iniciando Arena...</p>
+        </div>
+      </div>
+    )
   }
 
-  if (battleStarted && player && selectedUser) {
-    return <BattleArena player1={player} player2={selectedUser.character} onReset={handleReset} />
+  if (state.battleStarted && state.player && state.selectedUser) {
+    return (
+      <BattleArena 
+        player1={state.player} 
+        player2={state.selectedUser.character} 
+        onReset={() => setState(prev => ({ ...prev, battleStarted: false, selectedUser: null }))}
+      />
+    )
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
-      <div className="max-w-7xl w-full space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-primary pixel-pulse font-mono tracking-wider">
-            {"ARENA RPG"}
+    <DashboardLayout>
+      <main className="container mx-auto min-h-screen p-4 md:p-8 space-y-8">
+        {/* Header Section */}
+        <section className="flex flex-col items-center text-center space-y-4">
+          <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground shadow">
+            MODO ARENA
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
+            Arena de Combate
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground font-mono">
-            {"Desafie outros jogadores para uma batalha épica!"}
+          <p className="max-w-[600px] text-muted-foreground md:text-xl">
+            Selecione um oponente à altura e prove seu valor no campo de batalha.
           </p>
-        </div>
+        </section>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <Card className="p-6 bg-card border-2 border-primary/30">
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <UserCircle className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-center text-primary font-mono">{"SEU PERSONAGEM"}</h2>
-            </div>
-
-            <Card className="p-6 bg-primary/5 border-2 border-primary">
-              <div className="flex flex-col items-center gap-4">
-                <div className="text-7xl float">{player.image}</div>
-
-                <div className="text-center space-y-2 w-full">
-                  <h3 className="text-2xl font-bold font-mono text-primary">{player.nickName}</h3>
-                  <p className="text-lg text-muted-foreground font-mono">{player.name}</p>
-
-                  <div className="grid grid-cols-2 gap-4 mt-4 text-sm font-mono">
-                    <div className="space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{"HP:"}</span>
-                        <span className="font-bold">{player.maxHp}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{"Mana:"}</span>
-                        <span className="font-bold">{player.maxMana}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{"ATQ Físico:"}</span>
-                        <span className="font-bold">{player.attack}</span>
-                      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Lado Esquerdo: Seu Personagem */}
+          <Card className="overflow-hidden border-2 transition-all hover:border-primary/50">
+            <CardHeader className="bg-muted/50 border-b">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <UserCircle className="h-5 w-5 text-primary" />
+                Seu Herói
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              {state.player && (
+                <div className="flex flex-col items-center gap-6">
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div className="relative text-7xl md:text-8xl bg-background rounded-full p-4 border shadow-sm">
+                      {state.player.image}
                     </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{"ATQ Mágico:"}</span>
-                        <span className="font-bold">{player.magicAttack}</span>
+                  </div>
+                  
+                  <div className="w-full text-center space-y-2">
+                    <h3 className="text-2xl font-bold italic text-primary">{state.player.nickName}</h3>
+                    <Badge variant="outline">{state.player.name}</Badge>
+                  </div>
+
+                  <div className="grid grid-cols-2 w-full gap-4 pt-4">
+                    <div className="rounded-lg bg-muted/40 p-3 space-y-1">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase font-bold">
+                        <Zap className="h-3 w-3 text-yellow-500" /> Ataque
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{"Defesa:"}</span>
-                        <span className="font-bold">{player.defense}</span>
+                      <p className="text-xl font-bold">{state.player.attack || "--"}</p>
+                    </div>
+                    <div className="rounded-lg bg-muted/40 p-3 space-y-1">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase font-bold">
+                        <Shield className="h-3 w-3 text-blue-500" /> Defesa
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{"Destreza:"}</span>
-                        <span className="font-bold">{player.dexterity}</span>
-                      </div>
+                      <p className="text-xl font-bold">{state.player.defense || "--"}</p>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Card>
+              )}
+            </CardContent>
           </Card>
 
-          <Card className="p-6 bg-card border-2 border-secondary/30">
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <Swords className="h-6 w-6 text-secondary" />
-              <h2 className="text-2xl font-bold text-center text-secondary font-mono">{"DESAFIAR JOGADOR"}</h2>
-            </div>
-            <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
-              {gameUsers.map((user) => {
-                const isSelected = selectedUser?.id === user.id
-
-                return (
-                  <Card
-                    key={user.id}
-                    className={`p-4 cursor-pointer transition-all border-2 ${
-                      isSelected
-                        ? "border-secondary bg-secondary/10 scale-105"
-                        : "border-border hover:border-secondary/50 hover:bg-card/80"
-                    }`}
-                    onClick={() => setSelectedUser(user)}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="text-5xl flex-shrink-0 float">{user.character.image}</div>
-
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-bold font-mono">{user.username}</h3>
-                          <div className="flex items-center gap-1 text-xs bg-primary/20 text-primary px-2 py-0.5 rounded font-mono">
-                            <Trophy className="h-3 w-3" />
-                            <span>
-                              {"Nível "}
-                              {user.level}
-                            </span>
+          {/* Lado Direito: Seleção de Oponentes */}
+          <Card className="flex flex-col border-2 h-full max-h-[600px]">
+            <CardHeader className="bg-muted/50 border-b">
+              <CardTitle className="flex items-center justify-between text-xl">
+                <div className="flex items-center gap-2">
+                  <Swords className="h-5 w-5 text-destructive" />
+                  Oponentes
+                </div>
+                <span className="text-xs font-normal text-muted-foreground">
+                  {state.opponents.length} disponíveis
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-3">
+                {state.opponents.map((user) => {
+                  const isSelected = state.selectedUser?.id === user.id
+                  return (
+                    <motion.div
+                      key={user.id}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setState(prev => ({ ...prev, selectedUser: user }))}
+                    >
+                      <Card className={`cursor-pointer transition-all ${
+                        isSelected 
+                          ? "ring-2 ring-primary border-primary bg-primary/5" 
+                          : "hover:bg-accent"
+                      }`}>
+                        <CardContent className="p-4 flex items-center gap-4">
+                          <div className="text-4xl bg-muted rounded-md p-2">
+                            {user.character?.image || "👤"}
                           </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2 font-mono">
-                          {user.character.nickName} {"- "}
-                          {user.character.name}
-                        </p>
-                        <div className="grid grid-cols-3 gap-1 text-xs font-mono">
-                          <span>
-                            {"HP:"} {user.character.maxHp}
-                          </span>
-                          <span>
-                            {"ATQ:"} {user.character.attack}
-                          </span>
-                          <span>
-                            {"DEF:"} {user.character.defense}
-                          </span>
-                        </div>
-                      </div>
-
-                      {isSelected && (
-                        <div className="flex-shrink-0">
-                          <div className="bg-secondary text-secondary-foreground px-3 py-1 rounded font-mono text-xs font-bold">
-                            {"SELECIONADO"}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold truncate">{user.character?.nickName}</span>
+                              <Badge variant="secondary" className="text-[10px]">
+                                LVL {user.level}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground italic">{user.character?.name}</p>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-                )
-              })}
-            </div>
+                          {isSelected && (
+                            <div className="h-3 w-3 rounded-full bg-primary animate-pulse" />
+                          )}
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </ScrollArea>
           </Card>
         </div>
 
-        <div className="flex justify-center">
+        {/* Action Bar */}
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-md px-4">
           <Button
             size="lg"
+            className="w-full h-16 text-lg font-bold shadow-2xl transition-all active:scale-95"
+            disabled={!state.selectedUser}
             onClick={handleStartBattle}
-            disabled={!selectedUser}
-            className="text-xl px-12 py-6 font-bold font-mono bg-primary hover:bg-primary/90 disabled:opacity-50"
           >
-            <Swords className="mr-2 h-6 w-6" />
-            {"INICIAR BATALHA"}
+            {state.selectedUser ? (
+              <>
+                <Swords className="mr-2 h-6 w-6" />
+                ENTRAR NA BATALHA
+              </>
+            ) : (
+              "SELECIONE SEU ALVO"
+            )}
           </Button>
         </div>
-      </div>
-    </div>
+      </main>
+    </DashboardLayout>
   )
 }
