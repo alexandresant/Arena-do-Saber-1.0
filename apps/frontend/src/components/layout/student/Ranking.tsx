@@ -10,7 +10,7 @@ export function Ranking() {
     const t = useTranslations('StudentDashboardPage')
     return (
         <DashboardLayout>
-            <Card id="ranking" className="shadow-md">
+            <Card id="ranking" className="bg-transparent border-none">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Trophy className="h-5 w-5 text-yellow-500" />
