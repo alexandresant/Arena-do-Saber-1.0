@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardDescription, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress"
 import { useTranslations } from "next-intl"
 import { useState, useEffect } from "react"
-import { BookOpen } from "lucide-react"
+import { BookOpen, ClipboardList, LogIn } from "lucide-react"
 
 export function DailyMissions() {
 
@@ -15,19 +15,25 @@ export function DailyMissions() {
             </CardHeader>
             <CardContent className="flex flex-col space-y-4">
                 <div className="flex flex-row justify-between items-center space-x-4">
-                    <BookOpen className="mr-2 h-6 w-6" />
+                    <LogIn className="mr-2 h-6 w-6" />
                     <div className="flex-1">
                         <span>Faça login diário</span>
                         <Progress value={100} />
                     </div>
                 </div>
-                <div className="flex items-center justify-between">
-                    <span>Missão 2</span>
-                    <Progress value={30} />
+                <div className="flex flex-row items-center justify-between space-x-4">
+                    <BookOpen className="mr-2 h-6 w-6" />
+                    <div className="flex-1">
+                        <span>Estude um conteúdo</span>
+                        <Progress value={100} />
+                    </div>
                 </div>
-                <div className="flex items-center justify-between">
-                    <span>Missão 3</span>
-                    <Progress value={70} />
+                <div className="flex flex-row items-center justify-between space-x-4">
+                    <ClipboardList className="mr-2 h-6 w-6" />
+                    <div className="flex-1">
+                        <span>Responda 3 questionários</span>
+                        <Progress value={70} />
+                    </div>
                 </div>
             </CardContent>
         </Card>
