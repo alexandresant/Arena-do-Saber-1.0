@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { Character } from "@/lib/CharacterData"
 import { Home, RotateCcw, Sparkles, Coins } from "lucide-react"
-import { calculateDamage, calculateHitChance } from "@/lib/BattleLogic"
+import { calculateDamage, calculateHitChance, applyDamageToTarget } from "@/lib/BattleLogic"
 import AnimatedSprite from "@/components/layout/battle/AnimatedSprite"
 import { updateBattleResults } from "@/lib/api/CharacteService"
 
@@ -141,10 +141,25 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
     setTimeout(() => {
       setBattleState((prev) => {
         const isP1Turn = prev.currentTurn === "player1";
-        const newDefHp = Math.max(0, (isP1Turn ? prev.player2Hp : prev.player1Hp) - damage);
 
-        // Só subtrai mana se for o custo definido (0 para guerreiros)
-        const newAtkMana = Math.max(0, (isP1Turn ? prev.player1Mana : prev.player2Mana) - MANA_COST);
+        const defenderCurrentHp = isP1Turn ? prev.player2Hp : prev.player1Hp;
+        const defenderCurrentMana = isP1Turn ? prev.player2Mana : prev.player1Mana;
+
+        const appliedDamage = applyDamageToTarget(
+          defender,
+          damage,
+          defenderCurrentHp,
+          defenderCurrentMana
+        );
+
+        // Mana do atacante: custo da magia
+        const newAtkMana = Math.max(
+          0,
+          (isP1Turn ? prev.player1Mana : prev.player2Mana) - MANA_COST
+        );
+
+        const newDefHp = appliedDamage.remainingHp;
+        const newDefMana = appliedDamage.remainingMana;
 
         const winner = newDefHp === 0 ? (isP1Turn ? "player1" : "player2") : null;
 
@@ -152,10 +167,12 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
           ...prev,
           player1Hp: isP1Turn ? prev.player1Hp : newDefHp,
           player2Hp: isP1Turn ? newDefHp : prev.player2Hp,
-          player1Mana: isP1Turn ? newAtkMana : prev.player1Mana,
-          player2Mana: !isP1Turn ? newAtkMana : prev.player2Mana,
+          player1Mana: isP1Turn ? newAtkMana : newDefMana,
+          player2Mana: isP1Turn ? newDefMana : newAtkMana,
           battleLog: [
-            didHit ? `${attacker.nickName} causou ${damage}${isCritical ? " 🔥" : ""}!` : `${attacker.nickName} errou!`,
+            didHit
+              ? `${attacker.nickName} causou ${damage}${isCritical ? " 🔥" : ""}!`
+              : `${attacker.nickName} errou!`,
             ...prev.battleLog
           ].slice(0, 8),
           winner,
@@ -271,8 +288,8 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
             </div>
           </div>
         </div>
-       {/* ARENA DE PERSONAGENS */}
-<div className="
+        {/* ARENA DE PERSONAGENS */}
+        <div className="
   relative 
   flex-1 
   flex 
@@ -285,48 +302,48 @@ export function BattleArena({ player1, player2, onReset }: BattleArenaProps) {
   px-2 
   overflow-visible
 ">
-  {/* PLAYER 1 CONTAINER */}
-  <div className="relative flex-1 flex justify-center max-w-[180px] md:max-w-none">
-    <div className={battleState.showDamage.player1 ? "animate-super-shake" : ""}>
-      <AnimatedSprite
-        characterClass={player1.name}
-        animation={battleState.player1Animation}
-        position="left"
-        isLoser={battleState.winner === "player2"}
-        isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
-      />
-    </div>
+          {/* PLAYER 1 CONTAINER */}
+          <div className="relative flex-1 flex justify-center max-w-[180px] md:max-w-none">
+            <div className={battleState.showDamage.player1 ? "animate-super-shake" : ""}>
+              <AnimatedSprite
+                characterClass={player1.name}
+                animation={battleState.player1Animation}
+                position="left"
+                isLoser={battleState.winner === "player2"}
+                isCritical={battleState.isCriticalHit && battleState.currentTurn === "player1"}
+              />
+            </div>
 
-    {battleState.showDamage.player1 && (
-      <div className="absolute -top-24 md:-top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg flex flex-col items-center">
-        <span className={`text-4xl md:text-7xl font-black italic tracking-tighter text-shadow-damage leading-none ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}`}>
-          {battleState.lastDamage.player1 > 0 ? `-${battleState.lastDamage.player1}` : "MISS"}
-        </span>
-      </div>
-    )}
-  </div>
+            {battleState.showDamage.player1 && (
+              <div className="absolute -top-24 md:-top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg flex flex-col items-center">
+                <span className={`text-4xl md:text-7xl font-black italic tracking-tighter text-shadow-damage leading-none ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}`}>
+                  {battleState.lastDamage.player1 > 0 ? `-${battleState.lastDamage.player1}` : "MISS"}
+                </span>
+              </div>
+            )}
+          </div>
 
-  {/* PLAYER 2 CONTAINER */}
-  <div className="relative flex-1 flex justify-center max-w-[180px] md:max-w-none">
-    <div className={battleState.showDamage.player2 ? "animate-super-shake" : ""}>
-      <AnimatedSprite
-        characterClass={player2.name}
-        animation={battleState.player2Animation}
-        position="right"
-        isLoser={battleState.winner === "player1"}
-        isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
-      />
-    </div>
+          {/* PLAYER 2 CONTAINER */}
+          <div className="relative flex-1 flex justify-center max-w-[180px] md:max-w-none">
+            <div className={battleState.showDamage.player2 ? "animate-super-shake" : ""}>
+              <AnimatedSprite
+                characterClass={player2.name}
+                animation={battleState.player2Animation}
+                position="right"
+                isLoser={battleState.winner === "player1"}
+                isCritical={battleState.isCriticalHit && battleState.currentTurn === "player2"}
+              />
+            </div>
 
-    {battleState.showDamage.player2 && (
-      <div className="absolute -top-24 md:-top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg flex flex-col items-center">
-        <span className={`text-4xl md:text-7xl font-black italic tracking-tighter text-shadow-damage leading-none ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}`}>
-          {battleState.lastDamage.player2 > 0 ? `-${battleState.lastDamage.player2}` : "MISS"}
-        </span>
-      </div>
-    )}
-  </div>
-</div>
+            {battleState.showDamage.player2 && (
+              <div className="absolute -top-24 md:-top-32 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-damage-rpg flex flex-col items-center">
+                <span className={`text-4xl md:text-7xl font-black italic tracking-tighter text-shadow-damage leading-none ${battleState.isCriticalHit ? "text-yellow-400" : "text-red-600"}`}>
+                  {battleState.lastDamage.player2 > 0 ? `-${battleState.lastDamage.player2}` : "MISS"}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
 
 
         {/* MODAL DE VITÓRIA */}
