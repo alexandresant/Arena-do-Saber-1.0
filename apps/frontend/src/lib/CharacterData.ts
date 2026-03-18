@@ -78,7 +78,7 @@ export async function hydrateAll() {
           magicAttack: c.magicAttack || 10,
           defense: c.defense || 5,
           dexterity: c.evasion || 5,
-          level: Number(c.level || 1),
+          level: c.level || 1,
           experience: Number(c.experience || 0),
           gold: Number(c.gold || 0),
           points: Number(c.points || 0),
@@ -88,7 +88,7 @@ export async function hydrateAll() {
     }
 
     const fighters = await loadRankingFighters();
-    console.log("Fighters recebidos da API:", fighters.length);
+    console.log("Fighters recebidos da API:", fighters);
 
     // Preenche characters (personagens para batalha)
     const mappedFighters = fighters
@@ -103,7 +103,8 @@ export async function hydrateAll() {
         attack: f.attack || 10,
         magicAttack: f.magicAttack || 10,
         defense: f.defense || 5,
-        dexterity: f.evasion || 5
+        dexterity: f.evasion || 5,
+        level: f.level || 1,
       }));
 
     if (mappedFighters.length === 0) {
@@ -112,7 +113,13 @@ export async function hydrateAll() {
         nickName: "Mestre de Treino",
         name: "Guerreiro",
         image: "⚔️",
-        maxHp: 150, maxMana: 50, attack: 12, magicAttack: 10, defense: 8, dexterity: 5
+        maxHp: 150, 
+        maxMana: 50, 
+        attack: 12, 
+        magicAttack: 10, 
+        defense: 8, 
+        dexterity: 5,
+        level: 5
       });
     }
 
