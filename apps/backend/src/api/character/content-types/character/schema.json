@@ -19,7 +19,7 @@
     "level": {
       "type": "integer",
       "default": 1,
-      "max": 99
+      "max": 200
     },
     "experience": {
       "type": "integer",
