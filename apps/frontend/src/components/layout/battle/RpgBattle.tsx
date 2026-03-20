@@ -58,6 +58,7 @@ export default function RPGBattle() {
     }))
   }, [])
 
+
   const loadData = useCallback(async () => {
     const availableOpponents = gameUsers.length > 0 
       ? gameUsers 
@@ -228,7 +229,7 @@ export default function RPGBattle() {
                             <div className="flex items-center gap-2">
                               <span className="font-bold truncate">{user.character?.nickName}</span>
                               <Badge variant="secondary" className="text-[10px]">
-                                LVL {user.level}
+                                LVL {user.character?.level || "--"}
                               </Badge>
                             </div>
                             <p className="text-xs text-muted-foreground italic">{user.character?.name}</p>

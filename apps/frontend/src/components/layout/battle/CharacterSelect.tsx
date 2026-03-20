@@ -76,7 +76,6 @@ export default function CharacterSelect({ selectedCharacter, onSelectCharacter, 
           const isSelected = selectedCharacter?.id === character.id
 
           return (
-
             <Card
               key={character.id}
               className={`p-4 cursor-pointer transition-all border-2 ${isSelected
