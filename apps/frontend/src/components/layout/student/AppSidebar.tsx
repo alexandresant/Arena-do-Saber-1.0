@@ -62,7 +62,7 @@ export function AppSidebar() {
                                     Ranking
                                 </SidebarMenuButton>
                                 <SidebarMenuButton
-                                    onClick={() => router.push("/student/shop")}
+                                    onClick={() => router.push("/shop")}
                                     className="flex items-center gap-2"
                                 >
                                     <ShoppingCart className="h-5 w-5" />
